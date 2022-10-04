@@ -1,9 +1,9 @@
 const routes = {
-	home: '/home',
+	home: '',
+	notifications: '/notifications',
+	bookmark: '/bookmark',
+	stories: '/stories',
+	write: '/write',
 };
-
-export const privateRoutes = [];
-
-export const publicRoutes = [];
 
 export default routes;
