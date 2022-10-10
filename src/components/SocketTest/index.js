@@ -1,5 +1,5 @@
+import { useEffect, useState } from 'react';
 import { Button, TextField } from '@mui/material';
-import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 
 const SocketTest = () => {
@@ -15,7 +15,7 @@ const SocketTest = () => {
 		});
 
 		return () => {
-			if (socket) socket.disconnect();
+			if (socket) socket.unsubscribe('/topic/message');
 		};
 	}, [socket]);
 

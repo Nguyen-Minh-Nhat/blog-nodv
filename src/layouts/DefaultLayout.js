@@ -1,14 +1,11 @@
-import { Outlet } from 'react-router-dom';
 import SidebarLeft from './components/SidebarLeft';
 import SidebarRight from './components/SidebarRight';
 
-const DefaultLayout = () => {
+const DefaultLayout = ({ children }) => {
 	return (
 		<div className="flex h-screen w-screen">
 			<SidebarLeft />
-			<div className="flex-1">
-				<Outlet />
-			</div>
+			<div className="flex-1">{children}</div>
 			<SidebarRight />
 		</div>
 	);
