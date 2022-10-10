@@ -2,7 +2,10 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
 	loading: false,
-	data: null,
+	data: {
+		info: null,
+		accessToken: null,
+	},
 	error: undefined,
 };
 
@@ -10,10 +13,15 @@ const userSlice = createSlice({
 	name: 'user',
 	initialState,
 	reducers: {
-		setUser: () => {},
+		setUser: (state, action) => {
+			state.data.info = action.payload;
+		},
+		setAccessToken: (state, action) => {
+			state.data.accessToken = action.payload;
+		},
 	},
 });
 
-export const { setUser } = userSlice.actions;
+export const { setUser, setAccessToken } = userSlice.actions;
 
 export default userSlice.reducer;
