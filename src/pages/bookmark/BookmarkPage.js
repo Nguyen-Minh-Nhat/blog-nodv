@@ -1,7 +1,22 @@
-import React from 'react';
+import PageWithTitle from '../../components/PageWithTitle';
+import { BookmarkStackList } from '../../features/bookmark';
 
 const BookmarkPage = () => {
-	return <div>BookmarkPage</div>;
+	const bookmarkStackList = [
+		{
+			name: 'new 1',
+			numPosts: 4,
+			thumbnails: [],
+		},
+	];
+
+	return (
+		<PageWithTitle title="Bookmark" tabItems={[{ id: 1, title: 'Saved' }]}>
+			<div>
+				<BookmarkStackList />
+			</div>
+		</PageWithTitle>
+	);
 };
 
 export default BookmarkPage;

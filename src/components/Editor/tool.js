@@ -19,6 +19,9 @@ const EDITOR_JS_TOOLS = {
 	paragraph: {
 		class: Paragraph,
 		inlineToolbar: true,
+		config: {
+			placeholder: 'Tell your story...',
+		},
 	},
 	embed: Embed,
 	table: Table,
@@ -30,6 +33,9 @@ const EDITOR_JS_TOOLS = {
 	header: {
 		class: Header,
 		inlineToolbar: true,
+		config: {
+			placeholder: 'Title',
+		},
 	},
 	quote: { class: Quote, inlineToolbar: true },
 	marker: Marker,
