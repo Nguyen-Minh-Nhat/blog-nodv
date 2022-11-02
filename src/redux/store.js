@@ -4,11 +4,13 @@ import storage from 'redux-persist/lib/storage';
 import userReducer from './slices/userSlice';
 import socketReducer from './slices/socketSlice';
 import postReducer from './slices/postSlice';
+import commentReducer from './slices/commentSlice';
 
 const rootReducer = combineReducers({
 	user: userReducer,
 	socket: socketReducer,
 	post: postReducer,
+	comment: commentReducer,
 });
 
 const persistConfig = {

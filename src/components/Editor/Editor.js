@@ -1,13 +1,25 @@
 import Image from '@editorjs/image';
-import { Button } from '@mui/material';
-import { useCallback, useMemo, useRef, useState } from 'react';
+import { useCallback, useMemo, useRef } from 'react';
 import { createReactEditorJS } from 'react-editor-js';
 import { deleteImg, uploadImg } from '../../utils/firebaseFns';
+import readingTime from '../../utils/readingTime';
 import EDITOR_JS_TOOLS from './tool';
-const Editor = () => {
-	const [data, setData] = useState(null);
+const Editor = ({
+	onChange,
+	defaultValue = {
+		blocks: [
+			{
+				id: 'sheNwCUP5A',
+				type: 'header',
+				data: {
+					level: 1,
+				},
+			},
+		],
+	},
+	readOnly,
+}) => {
 	const editorCore = useRef(null);
-
 	const prevImage = useRef([]);
 
 	const tools = useMemo(() => {
@@ -38,10 +50,10 @@ const Editor = () => {
 	}, []);
 	const handleSave = useCallback(async () => {
 		const savedData = await editorCore.current.save();
-		setData(savedData);
+		return savedData;
 	}, []);
 
-	const handleChange = (e) => {
+	const handleChange = async (e) => {
 		const currentImages = [];
 		document
 			.querySelectorAll('.image-tool__image-picture')
@@ -53,35 +65,25 @@ const Editor = () => {
 				}
 			});
 		}
-
 		prevImage.current = currentImages;
+		const data = await handleSave();
+
+		onChange(data, readingTime());
 	};
 
 	const ReactEditorJS = createReactEditorJS();
 	return (
-		<div>
+		<div id="article" className="prose max-w-none">
 			<ReactEditorJS
+				readOnly={readOnly}
 				tools={tools}
 				onInitialize={handleInitialize}
-				autofocus
-				defaultValue={{
-					time: 1635603431943,
-					blocks: [
-						{
-							id: 'sheNwCUP5A',
-							type: 'header',
-							data: {
-								text: 'Tittle',
-								level: 2,
-							},
-						},
-					],
-				}}
+				// autofocus
+				defaultValue={defaultValue}
 				onChange={(e) => {
 					handleChange(e);
 				}}
 			/>
-			<Button onClick={handleSave}>Save</Button>
 		</div>
 	);
 };

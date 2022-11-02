@@ -1,3 +1,10 @@
 {
-	"cSpell.words": ["cloudinary", "Firestore", "nodv"]
+	"cSpell.words": [
+		"cloudinary",
+		"describedby",
+		"Firestore",
+		"nodv",
+		"persistor",
+		"reduxjs"
+	]
 }
