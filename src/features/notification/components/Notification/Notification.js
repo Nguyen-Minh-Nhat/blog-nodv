@@ -37,7 +37,11 @@ const Notification = ({ notification }) => {
 			} p-5`}
 		>
 			<div className="flex items-center gap-4">
-				<Avatar className="h-8 w-8" src={notification.sender?.avatar} />
+				<Avatar
+					className="h-8 w-8"
+					alt={notification.sender?.username}
+					src={notification.sender?.avatar}
+				/>
 
 				<div className="flex flex-col">
 					<span className="text-base">
