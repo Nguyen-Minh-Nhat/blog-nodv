@@ -1,10 +1,11 @@
 import { useSelector } from 'react-redux';
 import { Route, Routes } from 'react-router-dom';
+import SuspenseProgress from './components/SuspenseProgress/SuspenseProgress';
 import DefaultLayout from './layouts/DefaultLayout';
 import HeaderOnly from './layouts/HeaderOnly';
+import ComponentPage from './pages/component-test';
 import routes, { routesWithComponents } from './routes/route-paths';
 import SocketClient from './web-socket/SocketClient';
-import ComponentPage from './pages/component-test';
 
 const App = () => {
 	const isLoggedIn = useSelector((state) => state.user.data.isLoggedIn);
@@ -23,7 +24,9 @@ const App = () => {
 								key={route.path}
 								path={route.path}
 								element={
-									<LayoutComponent>{<route.component />}</LayoutComponent>
+									<LayoutComponent>
+										<SuspenseProgress>{<route.component />}</SuspenseProgress>
+									</LayoutComponent>
 								}
 							/>
 						);

@@ -1,9 +1,10 @@
-import BookmarkPage from '../pages/bookmark/BookmarkPage';
-import HomePage from '../pages/home/HomePage';
-import NotificationsPage from '../pages/notifications/NotificationsPage';
-import PostPage from '../pages/post/PostPage';
-import StoriesPage from '../pages/stories/StoriesPage';
-import WritePage from '../pages/write/WritePage';
+import { lazy } from 'react';
+const BookmarkPage = lazy(() => import('../pages/bookmark'));
+const HomePage = lazy(() => import('../pages/home/HomePage'));
+const NotificationsPage = lazy(() => import('../pages/notifications'));
+const StoriesPage = lazy(() => import('../pages/stories/StoriesPage'));
+const PostPage = lazy(() => import('../pages/post/PostPage'));
+const WritePage = lazy(() => import('../pages/write/WritePage'));
 
 const routes = {
 	home: '/',

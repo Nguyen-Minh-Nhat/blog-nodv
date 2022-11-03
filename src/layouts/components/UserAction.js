@@ -36,9 +36,10 @@ const UserAction = () => {
 				sx={{ width: 36, height: 36 }}
 				className="cursor-pointer bg-slate-600"
 				src={user.avatar}
+				alt={user.username}
 				aria-describedby={id}
 				onClick={handleClick}
-			></Avatar>
+			/>
 			<Popover
 				id={id}
 				open={open}

@@ -24,7 +24,11 @@ const PostHeader = ({ post }) => {
 		<div className="mt-14 flex items-center justify-between">
 			<div className="flex">
 				<div className="mr-4 rounded-full shadow-[0_0_0_1px_#f1f5f9]">
-					<Avatar className="h-12 w-12" src={post.user.avatar} alt={'user'} />
+					<Avatar
+						className="h-12 w-12"
+						src={post.user.avatar}
+						alt={post.user.username}
+					/>
 				</div>
 				<div className="flex flex-col justify-between">
 					<span>{post.user.username}</span>
