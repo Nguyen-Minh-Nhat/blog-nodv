@@ -14,24 +14,24 @@ const App = () => {
 		<div className="h-screen w-screen overflow-hidden">
 			<SocketClient />
 			<Routes>
-				<Route path="/">
-					{routesWithComponents.map((route) => {
-						let LayoutComponent = DefaultLayout;
-						if (route.path === routes.home && !isLoggedIn)
-							LayoutComponent = HeaderOnly;
-						return (
-							<Route
-								key={route.path}
-								path={route.path}
-								element={
-									<LayoutComponent>
-										<SuspenseProgress>{<route.component />}</SuspenseProgress>
-									</LayoutComponent>
-								}
-							/>
-						);
-					})}
-				</Route>
+				{/* <Route path="/"> */}
+				{routesWithComponents.map((route) => {
+					let LayoutComponent = DefaultLayout;
+					if (route.path === routes.home && !isLoggedIn)
+						LayoutComponent = HeaderOnly;
+					return (
+						<Route
+							key={route.path}
+							path={route.path}
+							element={
+								<LayoutComponent>
+									<SuspenseProgress>{<route.component />}</SuspenseProgress>
+								</LayoutComponent>
+							}
+						/>
+					);
+				})}
+				{/* </Route> */}
 				<Route path={'/component'} element={<ComponentPage />} />
 			</Routes>
 		</div>

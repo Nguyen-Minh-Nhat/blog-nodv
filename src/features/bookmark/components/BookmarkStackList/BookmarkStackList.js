@@ -1,14 +1,11 @@
 import BookmarkStack from '../BookmarkStack';
 
-const BookmarkStackList = () => {
+const BookmarkStackList = ({ bookmarkStackList }) => {
 	return (
 		<div className="flex flex-col gap-6">
-			<BookmarkStack />
-			<BookmarkStack />
-			<BookmarkStack />
-			<BookmarkStack />
-			<BookmarkStack />
-			<BookmarkStack />
+			{bookmarkStackList.map((bookmarkStack) => (
+				<BookmarkStack key={bookmarkStack.id} bookmarkStack={bookmarkStack} />
+			))}
 		</div>
 	);
 };
