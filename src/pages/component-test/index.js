@@ -1,11 +1,16 @@
+import { Button } from '@mui/material';
+import ModalTrigger from '../../components/ModalTrigger';
+
+const Test = ({ onClose }) => {
+	return <Button onClick={onClose}>click</Button>;
+};
+
 const ComponentPage = () => {
 	return (
 		<div className="flex h-screen items-center justify-center">
-			<div
-				data-lyket-type="clap"
-				data-lyket-namespace="testing-widget"
-				data-lyket-id="everybody-clap-now"
-			/>
+			<ModalTrigger>
+				<Test />
+			</ModalTrigger>
 		</div>
 	);
 };

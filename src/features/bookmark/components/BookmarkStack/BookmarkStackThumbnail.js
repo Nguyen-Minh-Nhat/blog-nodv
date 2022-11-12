@@ -1,6 +1,6 @@
 import React from 'react';
 
-const BookmarkStackThumbnail = ({ thumbnails = [] }) => {
+const BookmarkStackThumbnail = ({ bookmarkStack }) => {
 	return (
 		<div>
 			<div className="flex">
@@ -11,11 +11,11 @@ const BookmarkStackThumbnail = ({ thumbnails = [] }) => {
 							zIndex: 3 - index,
 							marginLeft: (-166 / 3) * 2 + 'px',
 						}}
-						className="h-[166px] w-[166px] overflow-hidden rounded-lg bg-slate-300 shadow-[0_0_0_1px_#fff]"
+						className="h-[166px] w-[166px] overflow-hidden rounded-lg bg-slate-300 shadow-[0_0_0_1px_#e6e6e6]"
 					>
-						{thumbnails[index] && (
+						{bookmarkStack?.postList[index] && (
 							<img
-								src={thumbnails[index]}
+								src={bookmarkStack.postList[index].thumbnail}
 								alt=""
 								className="h-full w-full object-cover"
 							/>

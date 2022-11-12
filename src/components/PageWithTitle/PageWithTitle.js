@@ -1,4 +1,3 @@
-import { Button } from '@mui/material';
 import Tab from '../Tab';
 
 const PageWithTitle = ({
@@ -13,11 +12,7 @@ const PageWithTitle = ({
 				<div className="mx-4 basis-[700px]">
 					<div className="mb-10 flex items-center justify-between">
 						<h2 className="text-5xl font-bold text-[#292929]">{title}</h2>
-						<div>
-							<Button className="btn" variant="contained" color="success">
-								Create list
-							</Button>
-						</div>
+						{rightComponent}
 					</div>
 					{tabItems && <Tab tabItems={tabItems} />}
 				</div>

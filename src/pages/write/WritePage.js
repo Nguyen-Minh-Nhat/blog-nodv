@@ -3,7 +3,8 @@ import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import Editor from '../../components/Editor';
 import QuestionDialog from '../../components/QuestionDialog/QuestionDialog';
-import PostPreviewForm from '../../features/post/components/PostPublicPreview';
+import PostPublicPreview from '../../features/post/components/PostPublicPreview';
+
 import usePrompt from '../../hooks/usePrompt';
 import Header from './components/Header';
 const WritePage = () => {
@@ -83,7 +84,7 @@ const WritePage = () => {
 			<Editor onChange={autoSave} />
 			<Modal open={showPublicModal} onClose={() => setShowPublicModal(false)}>
 				<div className="position-center absolute">
-					<PostPreviewForm
+					<PostPublicPreview
 						post={post}
 						setPost={setPost}
 						onSubmit={handlePublic}
