@@ -1,31 +1,18 @@
-import { IconButton, Popover } from '@mui/material';
-import usePopover from '../../hooks/usePopover';
+import { IconButton } from '@mui/material';
+import { useState } from 'react';
 import IconWrapper from '../IconWrapper';
+import Popover from '../Popover';
 
 const MenuTrigger = ({ children }) => {
-	const { id, handleClick, handleClose, anchorEl, open } = usePopover();
+	const [open, setOpen] = useState(false);
 	return (
 		<div>
-			<IconButton size="small" onClick={handleClick}>
-				<IconWrapper>
-					<i className="fa-solid fa-ellipsis"></i>
-				</IconWrapper>
-			</IconButton>
-			<Popover
-				id={id}
-				open={open}
-				anchorEl={anchorEl}
-				onClose={handleClose}
-				anchorOrigin={{
-					vertical: 'top',
-					horizontal: 'left',
-				}}
-				transformOrigin={{
-					vertical: 'bottom',
-					horizontal: 'left',
-				}}
-			>
-				{children}
+			<Popover visible={open} setVisible={setOpen} content={children}>
+				<IconButton size="small" onClick={() => setOpen((prev) => !prev)}>
+					<IconWrapper>
+						<i className="fa-solid fa-ellipsis"></i>
+					</IconWrapper>
+				</IconButton>
 			</Popover>
 		</div>
 	);

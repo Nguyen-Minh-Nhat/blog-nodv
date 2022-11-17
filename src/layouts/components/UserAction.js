@@ -15,7 +15,6 @@ import routes from "../../routes/route-paths";
 
 const UserAction = () => {
   const { pathname } = useLocation();
-  console.log(pathname);
   const user = useSelector((state) => state.user.data.info);
   const dispatch = useDispatch();
   const [anchorEl, setAnchorEl] = useState(null);
