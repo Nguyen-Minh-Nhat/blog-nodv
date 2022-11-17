@@ -5,6 +5,7 @@ const NotificationsPage = lazy(() => import('../pages/notifications'));
 const StoriesPage = lazy(() => import('../pages/stories/StoriesPage'));
 const PostPage = lazy(() => import('../pages/post/PostPage'));
 const WritePage = lazy(() => import('../pages/write/WritePage'));
+const SettingPage = lazy(() => import('../pages/setting/SettingPage'));
 
 const routes = {
 	home: '/',
@@ -13,6 +14,7 @@ const routes = {
 	bookmark: '/bookmark',
 	stories: '/stories',
 	write: '/write',
+	setting: '/setting',
 };
 
 export const routesWithComponents = [
@@ -39,6 +41,10 @@ export const routesWithComponents = [
 	{
 		path: routes.post,
 		component: PostPage,
+	},
+	{
+		path: routes.setting,
+		component: SettingPage,
 	},
 ];
 
