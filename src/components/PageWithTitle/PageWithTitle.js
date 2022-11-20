@@ -8,8 +8,8 @@ const PageWithTitle = ({
   onTabChange,
 }) => {
   return (
-    <div className="h-screen">
-      <header className="mt-12  flex justify-center">
+    <div className="flex h-screen flex-col">
+      <header className="flex justify-center pt-12">
         <div className="mx-4 basis-[700px]">
           <div className="mb-10 flex items-center justify-between">
             <h2 className="text-5xl font-bold text-[#292929]">{title}</h2>
@@ -18,7 +18,7 @@ const PageWithTitle = ({
           {tabItems && <Tab tabItems={tabItems} onChange={onTabChange} />}
         </div>
       </header>
-      <main className="flex h-full justify-center overflow-y-auto pt-7">
+      <main className="flex flex-1 justify-center overflow-y-auto pt-7">
         <div className="mx-4 basis-[700px]">{children}</div>
       </main>
     </div>

@@ -1,4 +1,7 @@
 import { lazy } from "react";
+import AccountTab from "../pages/setting/tab/AccountTab";
+import NotificationsTab from "../pages/setting/tab/NotificationsTab";
+import PublishedTab from "../pages/setting/tab/PublishedTab";
 const BookmarkPage = lazy(() => import("../pages/bookmark"));
 const HomePage = lazy(() => import("../pages/home/HomePage"));
 const NotificationsPage = lazy(() => import("../pages/notifications"));
@@ -14,7 +17,7 @@ const routes = {
   bookmark: "/bookmark",
   stories: "/stories",
   write: "/write",
-  setting: "/setting/*",
+  setting: "/setting",
 };
 
 export const routesWithComponents = [
@@ -45,6 +48,11 @@ export const routesWithComponents = [
   {
     path: routes.setting,
     component: SettingPage,
+    children: [
+      { path: "", component: AccountTab },
+      { path: "published", component: PublishedTab },
+      { path: "notifications", component: NotificationsTab },
+    ],
   },
 ];
 
