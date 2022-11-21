@@ -7,7 +7,7 @@ const PageWithTitle = ({
 	rightComponent,
 }) => {
 	return (
-		<div className="h-screen">
+		<div className="flex h-screen flex-col">
 			<header className="mt-12  flex justify-center">
 				<div className="mx-4 basis-[700px]">
 					<div className="mb-10 flex items-center justify-between">
@@ -17,7 +17,7 @@ const PageWithTitle = ({
 					{tabItems && <Tab tabItems={tabItems} />}
 				</div>
 			</header>
-			<main className="flex h-full justify-center overflow-y-auto pt-7">
+			<main className="flex flex-1 justify-center overflow-y-auto pt-7">
 				<div className="mx-4 basis-[700px]">{children}</div>
 			</main>
 		</div>

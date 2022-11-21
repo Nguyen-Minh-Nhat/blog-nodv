@@ -45,6 +45,69 @@ const bookmarkStackList = [
 			},
 		],
 	},
+	{
+		id: 2,
+
+		name: 'new 2',
+		postList: [
+			{
+				id: 1,
+				thumbnail:
+					'https://miro.medium.com/fit/c/140/140/1*AmSI1OyNQJqTBBkAD5jUGg.png',
+			},
+			{
+				id: 2,
+				thumbnail: 'https://miro.medium.com/max/828/0*ITCatxekJnNvC7s7',
+			},
+			{
+				id: 3,
+				thumbnail:
+					'https://miro.medium.com/fit/c/140/140/1*AmSI1OyNQJqTBBkAD5jUGg.png',
+			},
+		],
+	},
+	{
+		id: 2,
+
+		name: 'new 2',
+		postList: [
+			{
+				id: 1,
+				thumbnail:
+					'https://miro.medium.com/fit/c/140/140/1*AmSI1OyNQJqTBBkAD5jUGg.png',
+			},
+			{
+				id: 2,
+				thumbnail: 'https://miro.medium.com/max/828/0*ITCatxekJnNvC7s7',
+			},
+			{
+				id: 3,
+				thumbnail:
+					'https://miro.medium.com/fit/c/140/140/1*AmSI1OyNQJqTBBkAD5jUGg.png',
+			},
+		],
+	},
+	{
+		id: 2,
+
+		name: 'new 2',
+		postList: [
+			{
+				id: 1,
+				thumbnail:
+					'https://miro.medium.com/fit/c/140/140/1*AmSI1OyNQJqTBBkAD5jUGg.png',
+			},
+			{
+				id: 2,
+				thumbnail: 'https://miro.medium.com/max/828/0*ITCatxekJnNvC7s7',
+			},
+			{
+				id: 3,
+				thumbnail:
+					'https://miro.medium.com/fit/c/140/140/1*AmSI1OyNQJqTBBkAD5jUGg.png',
+			},
+		],
+	},
 ];
 const BookmarkPage = () => {
 	return (
