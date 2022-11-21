@@ -3,8 +3,7 @@ import React from "react";
 
 const SocialActivity = () => {
   return (
-    <div>
-      <h2 className="pt-7 font-semibold">Social Activity</h2>
+    <>
       <div className="my-8 flex justify-between">
         <div className="flex flex-col">
           <label for="flhl" className="text-sm hover:cursor-pointer">
@@ -22,7 +21,7 @@ const SocialActivity = () => {
           <option value={2}>Off</option>
         </NativeSelect>
       </div>
-    </div>
+    </>
   );
 };
 

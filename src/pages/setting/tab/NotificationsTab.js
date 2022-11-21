@@ -1,20 +1,36 @@
-import Recommen from "../components/NotificationTab/Recommen";
+import Recommend from "../components/NotificationTab/Recommend";
 import WriterPublic from "../components/NotificationTab/WriterPublic";
 import SocialActivity from "../components/NotificationTab/SocialActivity";
 import Writers from "../components/NotificationTab/Writers";
 import Others from "../components/NotificationTab/Others";
+import BlockSetting from "../components/BlockSetting";
 const NotificationsTab = () => {
   return (
     <div>
-      <Recommen></Recommen>
+      <BlockSetting
+        tittle="Story recommendations"
+        children={<Recommend></Recommend>}
+      ></BlockSetting>
       <div className="border-b"></div>
-      <WriterPublic></WriterPublic>
+      <BlockSetting
+        tittle="From writers and publications"
+        children={<WriterPublic></WriterPublic>}
+      ></BlockSetting>
       <div className="border-b"></div>
-      <SocialActivity></SocialActivity>
+      <BlockSetting
+        tittle="Social Activity"
+        children={<SocialActivity></SocialActivity>}
+      ></BlockSetting>
       <div className="border-b"></div>
-      <Writers></Writers>
+      <BlockSetting
+        tittle="Writers"
+        children={<Writers></Writers>}
+      ></BlockSetting>
       <div className="border-b"></div>
-      <Others></Others>
+      <BlockSetting
+        tittle="Others from Medium"
+        children={<Others></Others>}
+      ></BlockSetting>
     </div>
   );
 };
