@@ -13,7 +13,7 @@ const axiosClient = axios.create({
 
 export const setHeader = () => {
 	return {
-		Authorization: store.getState().auth.accessToken,
+		Authorization: 'Bearer ' + store.getState().user.data.accessToken,
 	};
 };
 
