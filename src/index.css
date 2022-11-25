@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 @import url('./assets/icons/css/all.min.css');
-
+   @tailwindcss line-clamp
 @layer base {
 	.position-center {
 		@apply top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2;

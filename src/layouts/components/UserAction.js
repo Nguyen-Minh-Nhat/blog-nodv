@@ -9,12 +9,12 @@ import {
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../redux/slices/userSlice";
-import { useLocation, matchPath } from "react-router";
+// import { useLocation } from "react-router";
 import { NavLink } from "react-router-dom";
 import routes from "../../routes/route-paths";
 
 const UserAction = () => {
-  const { pathname } = useLocation();
+  // const { pathname } = useLocation();
   const user = useSelector((state) => state.user.data.info);
   const dispatch = useDispatch();
   const [anchorEl, setAnchorEl] = useState(null);
