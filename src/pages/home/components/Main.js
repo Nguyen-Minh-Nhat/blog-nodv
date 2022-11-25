@@ -1,8 +1,17 @@
+import { useQuery } from 'react-query';
 import { useSelector } from 'react-redux';
+import { getPosts } from '../../../api/postApi';
 import { PostList } from '../../../features/post';
 
 const Main = () => {
 	const user = useSelector((state) => state.user.data.info);
+
+	useQuery('posts', getPosts, {
+		onSuccess: (data) => {
+			console.log(data);
+		},
+	});
+
 	const postList = [
 		{
 			id: 1,
@@ -11,7 +20,7 @@ const Main = () => {
 				'Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusamus sapiente commodi nobis dolore ex. Accusamus cupiditate amet, vitae facilis quas officia nobis debitis deleniti nesciunt dignissimos quae incidunt praesentium officiis?',
 			thumbnail: 'https://miro.medium.com/fit/c/140/140/0*ITCatxekJnNvC7s7',
 			user,
-			createdAt: new Date(2022, 9, 2),
+			createdDate: new Date(2022, 9, 2),
 			topics: ['react'],
 			timeRead: 5,
 		},
@@ -22,7 +31,7 @@ const Main = () => {
 				'Lorem, ipsum dolor sit amet consectetur adipisicing elit. Odit similique iusto nihil beatae possimus autem cum, rerum, culpa molestias nesciunt repellat, praesentium veniam ad. Cum odio totam quas velit animi.',
 			thumbnail: 'https://miro.medium.com/fit/c/140/140/0*ITCatxekJnNvC7s7',
 			user,
-			createdAt: new Date(2022, 9, 3),
+			createdDate: new Date(2022, 9, 3),
 			topics: ['hello', 'react', 'react2'],
 			timeRead: 1,
 		},
@@ -33,7 +42,7 @@ const Main = () => {
 				'Lorem ipsum dolor sit amet consectetur adipisicing elit. Quasi sapiente illo perferendis repudiandae maiores, doloremque qui inventore provident, assumenda, soluta possimus esse aliquid iusto. Temporibus vel nostrum iste quaerat inventore.',
 			thumbnail: 'https://miro.medium.com/fit/c/140/140/0*ITCatxekJnNvC7s7',
 			user,
-			createdAt: new Date(2022, 9, 4),
+			createdDate: new Date(2022, 9, 4),
 			topics: ['hello', 'react', 'react2', 'ala1saa', 'ádfasdfasfdas ádfasdf '],
 			timeRead: 1,
 		},

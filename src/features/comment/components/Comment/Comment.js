@@ -96,7 +96,7 @@ const Comment = ({ comment }) => {
 							initialComment={{
 								id: uuid(),
 								replyId: comment.id,
-								createdAt: new Date(),
+								createdDate: new Date(),
 							}}
 							onSubmit={handleReply}
 						/>

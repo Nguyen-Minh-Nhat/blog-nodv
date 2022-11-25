@@ -2,7 +2,7 @@ import { Button, TextField, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import React, { useState } from "react";
 
-const EmailAdressForm = ({ onSubmit, initialValue, onClose }) => {
+const EmailAddressForm = ({ onSubmit, initialValue, onClose }) => {
   const [email, setEmail] = useState(initialValue.username);
   console.log(email);
 
@@ -62,4 +62,4 @@ const EmailAdressForm = ({ onSubmit, initialValue, onClose }) => {
   );
 };
 
-export default EmailAdressForm;
+export default EmailAddressForm;

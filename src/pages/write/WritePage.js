@@ -1,16 +1,19 @@
 import { Modal } from '@mui/material';
 import { useState } from 'react';
+import { useMutation } from 'react-query';
 import { useSelector } from 'react-redux';
+import { createPost } from '../../api/postApi';
 import Editor from '../../components/Editor';
 import QuestionDialog from '../../components/QuestionDialog/QuestionDialog';
 import PostPublicPreview from '../../features/post/components/PostPublicPreview';
 
 import usePrompt from '../../hooks/usePrompt';
+import { convertToPost } from '../../utils/editorJsUtils';
 import Header from './components/Header';
 const WritePage = () => {
 	const user = useSelector((state) => state.user.data.info);
 	const [showPublicModal, setShowPublicModal] = useState(false);
-	const [rawContent, setRawContent] = useState(null);
+	const [editorJsData, setEditorJsData] = useState(null);
 	const [showDialog, setShowDialog] = useState(false);
 	const [post, setPost] = useState({
 		title: '',
@@ -19,56 +22,51 @@ const WritePage = () => {
 		user,
 		thumbnail: '',
 		topics: [],
-		createdAt: new Date(),
+		createdDate: new Date(),
+	});
+
+	const createPostMutation = useMutation(createPost, {
+		onSuccess: (data) => {
+			console.log(data);
+		},
 	});
 
 	const [showPrompt, confirmNavigation, cancelNavigation] =
 		usePrompt(showDialog);
 
-	const convertRawContentToPost = (rawContent) => {
-		let title = '';
-		let subtitle = '';
-		const imageList = [];
-
-		rawContent.blocks.forEach((block) => {
-			if (!title && (block.type === 'header' || block.type === 'paragraph')) {
-				title = block.data.text;
-				return;
-			}
-
-			if (
-				title &&
-				!subtitle &&
-				(block.type === 'header' || block.type === 'paragraph')
-			) {
-				subtitle = block.data.text;
-				return;
-			}
-
-			if (block.type === 'image') imageList.push(block.data.file.url);
-		});
+	const convertRawContentToPost = (editorJsData) => {
+		const post = convertToPost(editorJsData);
 
 		setPost((prev) => ({
 			...prev,
-			title,
-			subtitle,
-			thumbnail: imageList[0],
-			imageList,
+			title: post.title,
+			subtitle: post.subtitle,
+			thumbnail: post.thumbnail,
+			images: post.images,
 		}));
 	};
 
 	const handleShowPublicPreview = () => {
-		convertRawContentToPost(rawContent);
+		convertRawContentToPost(editorJsData);
 		setShowPublicModal(true);
 	};
 
 	const handlePublic = () => {
 		setShowDialog(false);
-		post.content = rawContent;
+		post.content = editorJsData;
+		const postUpload = {
+			title: post.title,
+			subtitle: post.subtitle,
+			content: JSON.stringify(post.content),
+			thumbnail: post.thumbnail,
+			topics: post.topics,
+			timeRead: post.timeRead,
+		};
+		createPostMutation.mutate(postUpload);
 	};
 
-	const autoSave = (rawContent, timeRead) => {
-		setRawContent(rawContent);
+	const autoSave = (editorJsData, timeRead) => {
+		setEditorJsData(editorJsData);
 		setPost((prev) => ({ ...prev, timeRead }));
 		setShowDialog(true);
 	};
@@ -78,7 +76,7 @@ const WritePage = () => {
 			<div className="sticky top-0 z-[100] bg-white">
 				<Header
 					onPublic={handleShowPublicPreview}
-					enablePublic={!!rawContent}
+					enablePublic={!!editorJsData}
 				/>
 			</div>
 			<Editor onChange={autoSave} />

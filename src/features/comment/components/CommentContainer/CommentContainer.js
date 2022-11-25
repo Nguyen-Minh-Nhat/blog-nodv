@@ -15,7 +15,7 @@ const CommentContainer = ({ onClose }) => {
 		dispatch(addComment(comment));
 	};
 
-	const initialComment = { id: uuid(), createdAt: new Date() };
+	const initialComment = { id: uuid(), createdDate: new Date() };
 
 	return (
 		<div className="w-[414px]">

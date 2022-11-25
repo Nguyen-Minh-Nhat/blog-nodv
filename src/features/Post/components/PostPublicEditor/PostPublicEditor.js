@@ -4,7 +4,7 @@ import InputTopic from './InputTopics';
 import ThumbnailSelectBox from './ThumbnailSelectBox';
 
 const PostPublicEditor = ({ post, setPost }) => {
-	const [thumbnailSelected, setThumbnailSelected] = useState(post.imageList[0]);
+	const [thumbnailSelected, setThumbnailSelected] = useState(post?.images[0]);
 	const [topics, setTopics] = useState(post.topics);
 	return (
 		<div className="">
@@ -53,7 +53,7 @@ const PostPublicEditor = ({ post, setPost }) => {
 				</div>
 
 				<ThumbnailSelectBox
-					imageList={post.imageList}
+					images={post.images}
 					onChange={(thumbnailSelected) => {
 						setThumbnailSelected(thumbnailSelected);
 						setPost((prev) => ({ ...prev, thumbnail: thumbnailSelected }));

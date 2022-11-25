@@ -50,7 +50,7 @@ const Notification = ({ notification }) => {
 					</span>
 					<div className="flex items-center gap-2 text-sm text-slate-500">
 						<span className="capitalize text-slate-500">
-							{formatRelative(notification.createdAt, new Date())}
+							{formatRelative(notification.createdDate, new Date())}
 						</span>
 						{type.icon}
 					</div>

@@ -34,7 +34,7 @@ const PostHeader = ({ post }) => {
 					<span>{post.user.username}</span>
 					<div className="flex gap-2 text-sm text-slate-700">
 						<span className="text-slate-600">
-							{format(new Date(post.createdAt), 'MMM d')}
+							{format(new Date(post.createdDate), 'MMM d')}
 						</span>
 						.<span>{post.timeRead} min read</span> .
 						<div className="cursor-pointer hover:text-[#98d0c0]">

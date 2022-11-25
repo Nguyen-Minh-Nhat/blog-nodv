@@ -14,7 +14,7 @@ const PostPreviewHeader = ({ post }) => {
 				<div className="flex h-full opacity-50">
 					<i className="fa-solid fa-period"></i>
 				</div>
-				<span>{intlFormatDistance(post.createdAt, new Date())}</span>
+				<span>{intlFormatDistance(post.createdDate, new Date())}</span>
 			</div>
 		</div>
 	);
