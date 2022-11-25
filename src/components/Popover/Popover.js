@@ -1,5 +1,5 @@
 import { Popover as PopoverMui } from '@mui/material';
-import { useEffect, useId, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 const Popover = ({
 	visible,
