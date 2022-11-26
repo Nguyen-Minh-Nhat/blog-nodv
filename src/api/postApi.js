@@ -4,7 +4,7 @@ const url = '/posts';
 
 const postApi = {
 	getPosts: () => axiosClient.get(url),
-	getPostById: (id) => axiosClient.get(`${url}${id}`),
+	getPostById: (id) => axiosClient.get(`${url}/${id}`),
 	createPost: (post) =>
 		axiosClientPrivate.post(url, post, { headers: setHeader() }),
 };

@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useMutation } from 'react-query';
+import { searchUser } from '../../api/userApi';
 import useDebounce from '../../hooks/useDebounce';
 import Popover from '../Popover';
 import SearchInput from './SearchInput';
@@ -9,31 +10,43 @@ const Search = () => {
 	const [searchInput, setSearchInput] = useState('');
 	const [searchResult, setSearchResult] = useState('');
 	const debouncedValue = useDebounce(searchInput, TIMEOUT);
-	const user = useSelector((state) => state.user.data.info);
 	const [showResult, setShowResult] = useState(false);
+
+	const searchUserMutation = useMutation(searchUser, {
+		onSuccess: (data) => {
+			const users = data.data.content;
+			setSearchResult(users);
+			setShowResult(true);
+		},
+	});
 	useEffect(() => {
 		if (!debouncedValue.trim()) {
 			setSearchResult([]);
 			setShowResult(false);
 			return;
 		}
-		setSearchResult([user]);
-		setShowResult(true);
+		searchUserMutation.mutate(debouncedValue);
+		console.log(searchUserMutation.data);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [debouncedValue]);
 
 	return (
-		<Popover
-			visible={showResult}
-			fullWidth
-			setVisible={setShowResult}
-			content={<SearchResult searchResult={searchResult} />}
-		>
-			<SearchInput
-				onChange={(e) => {
-					setSearchInput(e.target.value);
-				}}
-			/>
-		</Popover>
+		<>
+			<input type="text" onFocus={() => setShowResult(true)} />
+			<Popover
+				visible={showResult}
+				fullWidth
+				setVisible={setShowResult}
+				content={<SearchResult searchResult={searchResult} />}
+			>
+				<SearchInput
+					onChange={(e) => {
+						setSearchInput(e.target.value);
+					}}
+					// onFocus={() => setShowResult(true)}
+				/>
+			</Popover>
+		</>
 	);
 };
 

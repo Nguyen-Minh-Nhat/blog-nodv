@@ -1,18 +1,18 @@
-import { Modal } from '@mui/material';
+import { Button, Modal } from '@mui/material';
 import { useState } from 'react';
 import { useMutation } from 'react-query';
 import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import { createPost } from '../../api/postApi';
 import Editor from '../../components/Editor';
 import QuestionDialog from '../../components/QuestionDialog/QuestionDialog';
 import PostPublicPreview from '../../features/post/components/PostPublicPreview';
-
+import ModalTrigger from '../../components/ModalTrigger';
 import usePrompt from '../../hooks/usePrompt';
 import { convertToPost } from '../../utils/editorJsUtils';
 import Header from './components/Header';
 const WritePage = () => {
 	const user = useSelector((state) => state.user.data.info);
-	const [showPublicModal, setShowPublicModal] = useState(false);
 	const [editorJsData, setEditorJsData] = useState(null);
 	const [showDialog, setShowDialog] = useState(false);
 	const [post, setPost] = useState({
@@ -25,9 +25,10 @@ const WritePage = () => {
 		createdDate: new Date(),
 	});
 
+	const navigate = useNavigate();
 	const createPostMutation = useMutation(createPost, {
 		onSuccess: (data) => {
-			console.log(data);
+			navigate(`/post/${data.data.id}`);
 		},
 	});
 
@@ -36,19 +37,14 @@ const WritePage = () => {
 
 	const convertRawContentToPost = (editorJsData) => {
 		const post = convertToPost(editorJsData);
-
 		setPost((prev) => ({
 			...prev,
-			title: post.title,
-			subtitle: post.subtitle,
-			thumbnail: post.thumbnail,
-			images: post.images,
+			...post,
 		}));
 	};
 
 	const handleShowPublicPreview = () => {
 		convertRawContentToPost(editorJsData);
-		setShowPublicModal(true);
 	};
 
 	const handlePublic = () => {
@@ -75,21 +71,34 @@ const WritePage = () => {
 		<div className="h-screen overflow-y-scroll">
 			<div className="sticky top-0 z-[100] bg-white">
 				<Header
-					onPublic={handleShowPublicPreview}
-					enablePublic={!!editorJsData}
+					headerAction={
+						<div className="flex">
+							<Button color="success" className="btn rounded-full normal-case">
+								Save
+							</Button>
+							<ModalTrigger
+								button={
+									<Button
+										color="success"
+										variant="contained"
+										className="btn ml-2 rounded-full normal-case"
+										onClick={handleShowPublicPreview}
+									>
+										Public
+									</Button>
+								}
+							>
+								<PostPublicPreview
+									post={post}
+									setPost={setPost}
+									onSubmit={handlePublic}
+								/>
+							</ModalTrigger>
+						</div>
+					}
 				/>
 			</div>
 			<Editor onChange={autoSave} />
-			<Modal open={showPublicModal} onClose={() => setShowPublicModal(false)}>
-				<div className="position-center absolute">
-					<PostPublicPreview
-						post={post}
-						setPost={setPost}
-						onSubmit={handlePublic}
-						onClose={() => setShowPublicModal(false)}
-					/>
-				</div>
-			</Modal>
 			<QuestionDialog
 				title="Warning"
 				message="There are some changes? Are you sure you want to navigate!!!!"

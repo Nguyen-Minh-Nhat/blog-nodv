@@ -1,5 +1,5 @@
+import { Drawer } from '@mui/material';
 import React, { useState } from 'react';
-import { Button, Drawer } from '@mui/material';
 import { CommentContainer } from '../../../comment';
 import PostActionBar from './PostActionBar';
 import PostBody from './PostBody';
@@ -11,7 +11,7 @@ const Post = ({ post, isPersona = false }) => {
 		setOpen(false);
 	};
 	return (
-		<div>
+		<div className="relative h-full">
 			<PostHeader post={post} />
 			<PostBody post={post} />
 			<div>

@@ -26,7 +26,6 @@ const SidebarRight = () => {
 			)}
 			<div className="mt-10">
 				<Search />
-				<Search />
 				<RecommendTopic />
 				<WhoToFollow />
 			</div>

@@ -21,7 +21,7 @@ const PostHeader = ({ post }) => {
 		];
 	}, []);
 	return (
-		<div className="mt-14 flex items-center justify-between">
+		<div className="flex items-center justify-between pt-14">
 			<div className="flex">
 				<div className="mr-4 rounded-full shadow-[0_0_0_1px_#f1f5f9]">
 					<Avatar
