@@ -9,12 +9,10 @@ import {
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../redux/slices/userSlice";
-import { useLocation, matchPath } from "react-router";
-import { NavLink } from "react-router-dom";
+import { Link } from "react-router-dom";
 import routes from "../../routes/route-paths";
 
 const UserAction = () => {
-  const { pathname } = useLocation();
   const user = useSelector((state) => state.user.data.info);
   const dispatch = useDispatch();
   const [anchorEl, setAnchorEl] = useState(null);
@@ -67,12 +65,12 @@ const UserAction = () => {
               Logout
             </MenuItem>
             <MenuItem>
-              <NavLink to={routes.setting} className="active">
+              <Link to={routes.setting}>
                 <ListItemIcon>
                   <i className="fa-solid fa-gear text-lg"></i>
                 </ListItemIcon>
                 Setting
-              </NavLink>
+              </Link>
             </MenuItem>
           </MenuList>
           <div className="border-t p-4">
@@ -83,15 +81,17 @@ const UserAction = () => {
               </span>
             </div>
             <div>
-              <Button
-                fullWidth
-                variant="outlined"
-                color="inherit"
-                size="small"
-                className="rounded-full"
-              >
-                View Profile
-              </Button>
+              <Link to={routes.profile}>
+                <Button
+                  fullWidth
+                  variant="outlined"
+                  color="inherit"
+                  size="small"
+                  className="rounded-full"
+                >
+                  View Profile
+                </Button>
+              </Link>
             </div>
           </div>
         </div>
