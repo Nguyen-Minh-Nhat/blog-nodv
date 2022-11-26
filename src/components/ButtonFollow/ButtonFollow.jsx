@@ -1,26 +1,25 @@
-import { Chip } from "@mui/material";
-import React from "react";
-import { useState } from "react";
+import { Chip } from '@mui/material';
+import React from 'react';
+import { useState } from 'react';
 
-const ButtonFollow = ({ item }) => {
-  const [followed, setFollowed] = useState();
+const ButtonFollow = ({ isFollowed = false, onClick = () => {} }) => {
+	const [followed, setFollowed] = useState(isFollowed);
 
-  const handleFollowed = (item) => {
-    item.follow = !item.follow;
-    setFollowed(item.follow);
-  };
-  return (
-    <>
-      <Chip
-        label={item.follow ? "Following" : "Follow"}
-        variant="outlined"
-        className={item.follow ? "bg-black text-white" : "border-rgb"}
-        onClick={() => {
-          handleFollowed(item);
-        }}
-      />
-    </>
-  );
+	const handleToggleFollow = () => {
+		setFollowed(!followed);
+		onClick(!followed);
+	};
+
+	return (
+		<>
+			<Chip
+				label={followed ? 'Following' : 'Follow'}
+				variant="outlined"
+				className={followed ? 'bg-black text-white' : 'border-rgb'}
+				onClick={handleToggleFollow}
+			/>
+		</>
+	);
 };
 
 export default ButtonFollow;

@@ -1,6 +1,6 @@
 import IconWrapper from '../IconWrapper';
 
-const SearchInput = ({ onChange }) => {
+const SearchInput = ({ onChange, onFocus }) => {
 	return (
 		<div className="flex h-10 w-full items-center rounded-full border p-1">
 			<div className="cursor-pointer">
@@ -12,6 +12,7 @@ const SearchInput = ({ onChange }) => {
 				placeholder="search"
 				className="w-full outline-none placeholder:font-thin"
 				onChange={onChange}
+				onFocus={onFocus}
 			/>
 		</div>
 	);

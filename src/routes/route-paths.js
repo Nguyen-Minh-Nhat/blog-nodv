@@ -20,6 +20,62 @@ const routes = {
   setting: "/setting",
 };
 
+const home = {
+	path: '/',
+	element: <HomePage />,
+};
+
+const post = {
+	path: '/post/:id',
+	element: <PostPage />,
+	children: {
+		id: {
+			path: '/:id',
+			element: <PostPage />,
+		},
+	},
+};
+
+const notifications = {
+	path: '/notifications',
+	element: <NotificationsPage />,
+};
+
+const bookmark = {
+	path: '/bookmark',
+	element: <BookmarkPage />,
+};
+
+const stories = {
+	path: '/stories',
+	element: <StoriesPage />,
+};
+
+const write = {
+	path: '/write',
+	element: <WritePage />,
+};
+
+const setting = {
+	path: '/setting',
+	element: <WritePage />,
+	children: {
+		published: {
+			path: '/published',
+		},
+	},
+};
+
+const routesV2 = {
+	home,
+	post,
+	notifications,
+	bookmark,
+	stories,
+	write,
+	setting,
+};
+
 export const routesWithComponents = [
   {
     path: routes.home,
@@ -57,3 +113,4 @@ export const routesWithComponents = [
 ];
 
 export default routes;
+

@@ -18,7 +18,7 @@ const NotificationsPage = () => {
 			receiver: user,
 			type: TYPE_NOTIFICATION.follow,
 			content: 'Nguyễn Minh Nhật đã follow bạn',
-			createdAt: new Date(),
+			createdDate: new Date(),
 			status: 1,
 		},
 		{
@@ -28,7 +28,7 @@ const NotificationsPage = () => {
 			receiver: user,
 			type: TYPE_NOTIFICATION.comment,
 			content: 'Nguyễn Minh Nhật đã follow bạn',
-			createdAt: new Date(),
+			createdDate: new Date(),
 			status: 1,
 		},
 		{
@@ -38,7 +38,7 @@ const NotificationsPage = () => {
 			receiver: user,
 			type: TYPE_NOTIFICATION.clap,
 			content: 'Nguyễn Minh Nhật đã follow bạn',
-			createdAt: new Date(),
+			createdDate: new Date(),
 			status: 0,
 		},
 	];

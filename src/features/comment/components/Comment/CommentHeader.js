@@ -6,8 +6,8 @@ import CommentMenu from './CommentMenu';
 
 const CommentHeader = ({ comment, isUser, onDelete, onEdit }) => {
 	const time = useMemo(() => {
-		return intlFormatDistance(new Date(comment.createdAt), new Date());
-	}, [comment.createdAt]);
+		return intlFormatDistance(new Date(comment.createdDate), new Date());
+	}, [comment.createdDate]);
 	return (
 		<div className="flex items-center justify-between">
 			<AccountQuickView
