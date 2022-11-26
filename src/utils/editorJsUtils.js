@@ -7,7 +7,6 @@ const editorJsUtils = {
 			subtitle: '',
 			thumbnail: '',
 			images: [],
-			topics: [],
 		};
 		blocks.forEach((block) => {
 			switch (block.type) {
@@ -21,6 +20,9 @@ const editorJsUtils = {
 					break;
 				case 'image':
 					post.images.push(block.data.file.url);
+					break;
+				case 'simpleImage':
+					post.images.push(block.data.url);
 					break;
 				default:
 					break;
