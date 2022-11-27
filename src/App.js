@@ -2,6 +2,7 @@ import { useQuery } from 'react-query';
 import { useDispatch, useSelector } from 'react-redux';
 import { Route, Routes, useParams } from 'react-router-dom';
 import { getAuthInfo } from './api/authApi';
+import SocketTest from './components/SocketTest';
 import SuspenseProgress from './components/SuspenseProgress/SuspenseProgress';
 import DefaultLayout from './layouts/DefaultLayout';
 import HeaderOnly from './layouts/HeaderOnly';
@@ -22,7 +23,7 @@ const App = () => {
 	});
 	return (
 		<div className="h-screen w-screen overflow-hidden">
-			{/* <SocketClient /> */}
+			<SocketClient />
 			<Routes>
 				{routesWithComponents.map((route) => {
 					let LayoutComponent = DefaultLayout;

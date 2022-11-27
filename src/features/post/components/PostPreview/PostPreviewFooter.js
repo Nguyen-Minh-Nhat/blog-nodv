@@ -5,10 +5,12 @@ const PostPreviewFooter = ({ post }) => {
 	return (
 		<div className="flex justify-between py-8">
 			<div className="flex items-center gap-2">
-				<TopicList topics={post.topics} limitDisplay={1} />
+				{post?.topics?.length > 0 && (
+					<TopicList topics={post.topics} limitDisplay={1} />
+				)}
 				<div className="text-sm font-thin">{post?.timeRead} min read</div>
 			</div>
-			<PostAction />
+			<PostAction post={post} />
 		</div>
 	);
 };

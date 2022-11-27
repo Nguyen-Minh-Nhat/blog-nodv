@@ -1,5 +1,6 @@
+import { useSelect } from '@mui/base';
 import { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import SockJS from 'sockjs-client';
 import { over } from 'stompjs';
 import { setSocket } from '../redux/slices/socketSlice';
@@ -29,6 +30,8 @@ const SocketClient = () => {
 	const onSuccessConnect = (stomp) => {
 		dispatch(setSocket(stomp));
 	};
+
+	const socket = useSelector((state) => state.socket.data);
 
 	return <></>;
 };

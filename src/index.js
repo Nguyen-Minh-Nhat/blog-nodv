@@ -8,6 +8,8 @@ import { PersistGate } from 'redux-persist/integration/react';
 import App from './App';
 import './index.css';
 import store from './redux/store';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 const queryClient = new QueryClient();
@@ -17,6 +19,7 @@ root.render(
 		<PersistGate loading={null} persistor={persistStore(store)}>
 			<QueryClientProvider client={queryClient}>
 				<BrowserRouter>
+					<ToastContainer />
 					<App />
 				</BrowserRouter>
 			</QueryClientProvider>

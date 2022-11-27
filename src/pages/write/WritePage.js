@@ -1,13 +1,13 @@
-import { Button, Modal } from '@mui/material';
+import { Button } from '@mui/material';
 import { useState } from 'react';
 import { useMutation } from 'react-query';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { createPost } from '../../api/postApi';
 import Editor from '../../components/Editor';
+import ModalTrigger from '../../components/ModalTrigger';
 import QuestionDialog from '../../components/QuestionDialog/QuestionDialog';
 import PostPublicPreview from '../../features/post/components/PostPublicPreview';
-import ModalTrigger from '../../components/ModalTrigger';
 import usePrompt from '../../hooks/usePrompt';
 import { convertToPost } from '../../utils/editorJsUtils';
 import Header from './components/Header';
@@ -83,6 +83,7 @@ const WritePage = () => {
 										variant="contained"
 										className="btn ml-2 rounded-full normal-case"
 										onClick={handleShowPublicPreview}
+										disabled={!editorJsData}
 									>
 										Public
 									</Button>

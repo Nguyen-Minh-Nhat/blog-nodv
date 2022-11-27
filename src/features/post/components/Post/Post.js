@@ -5,7 +5,7 @@ import PostActionBar from './PostActionBar';
 import PostBody from './PostBody';
 import PostHeader from './PostHeader';
 
-const Post = ({ post, isPersona = false }) => {
+const Post = ({ post }) => {
 	const [open, setOpen] = useState(false);
 	const handleClose = () => {
 		setOpen(false);
@@ -20,7 +20,7 @@ const Post = ({ post, isPersona = false }) => {
 				</Drawer>
 			</div>
 			<div className="sticky bottom-4 z-10 flex w-full justify-center">
-				<PostActionBar onComment={() => setOpen(true)} />
+				<PostActionBar post={post} onComment={() => setOpen(true)} />
 			</div>
 		</div>
 	);
