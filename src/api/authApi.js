@@ -1,8 +1,8 @@
-import { axiosClientPrivate, setHeader } from './axiosClient';
+import { axiosClientPrivate } from './axiosClient';
 const url = '/auth';
 const authApi = {
 	getAuthInfo: () => {
-		return axiosClientPrivate.get(url + '/info', { headers: setHeader() });
+		return axiosClientPrivate.get(url + '/info');
 	},
 };
 

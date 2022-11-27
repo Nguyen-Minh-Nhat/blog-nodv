@@ -4,7 +4,6 @@ import { useState } from 'react';
 
 const ButtonFollow = ({ isFollowed = false, onClick = () => {} }) => {
 	const [followed, setFollowed] = useState(isFollowed);
-
 	const handleToggleFollow = () => {
 		setFollowed(!followed);
 		onClick(!followed);

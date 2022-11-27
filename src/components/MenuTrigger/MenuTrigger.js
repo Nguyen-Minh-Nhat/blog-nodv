@@ -1,20 +1,27 @@
 import { IconButton } from '@mui/material';
 import { useState } from 'react';
+import { Popover } from 'react-tiny-popover';
 import IconWrapper from '../IconWrapper';
-import Popover from '../Popover';
+import ShadowWrapper from '../ShadowWrapper';
+import DotIcon from '../Icons/DotIcon';
 
 const MenuTrigger = ({ children }) => {
 	const [open, setOpen] = useState(false);
 	return (
-		<div>
-			<Popover visible={open} setVisible={setOpen} content={children}>
-				<IconButton size="small" onClick={() => setOpen((prev) => !prev)}>
-					<IconWrapper>
-						<i className="fa-solid fa-ellipsis"></i>
-					</IconWrapper>
-				</IconButton>
-			</Popover>
-		</div>
+		<Popover
+			isOpen={open}
+			padding={4}
+			positions={['bottom']}
+			onClickOutside={() => setOpen(false)}
+			content={<ShadowWrapper>{children}</ShadowWrapper>}
+			containerStyle={{ zIndex: 1000 }}
+		>
+			<IconButton size="small" onClick={() => setOpen(!open)}>
+				<IconWrapper>
+					<DotIcon />
+				</IconWrapper>
+			</IconButton>
+		</Popover>
 	);
 };
 

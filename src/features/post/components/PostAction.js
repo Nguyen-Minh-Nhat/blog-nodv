@@ -2,7 +2,7 @@ import { IconButton } from '@mui/material';
 import MenuTrigger from '../../../components/MenuTrigger/MenuTrigger';
 import PostMenu from './PostPreview/PostPreviewMenu';
 
-const PostAction = () => {
+const PostAction = ({ post }) => {
 	return (
 		<div className="flex gap-2">
 			<IconButton size="small" className="h-8 w-8">
@@ -13,7 +13,7 @@ const PostAction = () => {
 			</IconButton>
 
 			<MenuTrigger>
-				<PostMenu />
+				<PostMenu post={post} />
 			</MenuTrigger>
 		</div>
 	);

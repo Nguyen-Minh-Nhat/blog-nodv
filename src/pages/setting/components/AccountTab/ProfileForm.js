@@ -14,26 +14,33 @@ import {
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import PhotoUpload from '../../../../components/PhotoUpload';
+import { uploadImg } from '../../../../utils/firebaseFns';
 
-const ProfileForm = ({ initialValue, onClose }) => {
+const BIO_MAX_LENGTH = 160;
+const ProfileForm = ({ initialValue, onClose, onSubmit }) => {
 	var user = initialValue;
-	console.log(user);
+
 	const {
 		register,
 		handleSubmit,
-		getValues,
 		formState: { errors },
 	} = useForm();
-	const [upLoadData, setUploadData] = useState(null);
+	const [upLoadData, setUploadData] = useState({
+		previewImg: user?.avatar,
+		file: null,
+	});
 	const [lengthBio, SetLengthBio] = useState(7);
-	console.log(getValues('bio'));
-	const onSubmit = async (data) => {
-		const formData = new FormData();
-		formData.append('username', data.username);
-		formData.append('gender', data.gender);
-		formData.append('bio', data.bio);
-		formData.append('avatar', upLoadData.file);
-		console.log(formData.get('email'));
+	const handleSave = async (data) => {
+		if (upLoadData.file) {
+			try {
+				const url = await uploadImg(upLoadData.file);
+				data.avatar = url;
+			} catch (error) {
+				console.log(error);
+			}
+		} else data.avatar = user.avatar;
+
+		onSubmit(data);
 	};
 
 	return (
@@ -101,10 +108,11 @@ const ProfileForm = ({ initialValue, onClose }) => {
 			<TextField
 				id="standard-helperText"
 				label="Bio"
-				{...register('bio')}
-				//defaultValue={user?.bio}
-				defaultValue="khanhvi"
-				helperText={`${lengthBio}/160`}
+				{...register('bio', {
+					maxLength: BIO_MAX_LENGTH,
+				})}
+				defaultValue={user?.bio}
+				helperText={`${lengthBio}/${BIO_MAX_LENGTH}`}
 				variant="standard"
 				onChange={(e) => {
 					SetLengthBio(e.target.value.length);
@@ -115,7 +123,7 @@ const ProfileForm = ({ initialValue, onClose }) => {
 				<FormLabel id="demo-radio-buttons-group-label">Gender</FormLabel>
 				<RadioGroup
 					aria-labelledby="demo-radio-buttons-group-label"
-					defaultValue={true}
+					defaultValue={user.gender}
 					name="radio-buttons-group"
 					row
 				>
@@ -150,8 +158,7 @@ const ProfileForm = ({ initialValue, onClose }) => {
 					size="medium"
 					color="success"
 					disableElevation
-					disabled
-					onClick={handleSubmit(onSubmit)}
+					onClick={handleSubmit(handleSave)}
 				>
 					Save
 				</Button>
