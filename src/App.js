@@ -4,8 +4,10 @@ import { Route, Routes, useParams } from 'react-router-dom';
 import { getAuthInfo } from './api/authApi';
 import SocketTest from './components/SocketTest';
 import SuspenseProgress from './components/SuspenseProgress/SuspenseProgress';
+import Login from './features/auth/components/Login';
 import DefaultLayout from './layouts/DefaultLayout';
 import HeaderOnly from './layouts/HeaderOnly';
+import LoginPage from './pages/auth/LoginPage';
 import RedirectLogin from './pages/auth/RedirectLogin';
 import ComponentPage from './pages/component-test';
 import { setUser } from './redux/slices/userSlice';
@@ -18,12 +20,14 @@ const App = () => {
 	useQuery('user', getAuthInfo, {
 		enabled: isLogin,
 		onSuccess: (data) => {
-			dispatch(setUser(data.data));
+			dispatch(setUser(data));
 		},
 	});
+
 	return (
 		<div className="h-screen w-screen overflow-hidden">
-			<SocketClient />
+			<LoginPage />
+			{/* <SocketClient /> */}
 			<Routes>
 				{routesWithComponents.map((route) => {
 					let LayoutComponent = DefaultLayout;

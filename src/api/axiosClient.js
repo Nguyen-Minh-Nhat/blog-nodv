@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { setIsCallLogin } from '../redux/slices/authSlice';
 import store from '../redux/store';
 const baseURL = process.env.REACT_APP_API_URL;
 const axiosClient = axios.create({
@@ -25,6 +26,10 @@ axiosClientPrivate.interceptors.request.use(
 	async (config) => {
 		const accessToken = store.getState().user.data.accessToken;
 		config.headers['Authorization'] = `Bearer ${accessToken}`;
+		if (accessToken === null) {
+			store.dispatch(setIsCallLogin(true));
+		}
+
 		// const decodeToken = jwtDecode(accessToken);
 		// const today = new Date();
 
