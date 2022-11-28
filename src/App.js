@@ -1,10 +1,8 @@
 import { useQuery } from 'react-query';
 import { useDispatch, useSelector } from 'react-redux';
-import { Route, Routes, useParams } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import { getAuthInfo } from './api/authApi';
-import SocketTest from './components/SocketTest';
 import SuspenseProgress from './components/SuspenseProgress/SuspenseProgress';
-import Login from './features/auth/components/Login';
 import DefaultLayout from './layouts/DefaultLayout';
 import HeaderOnly from './layouts/HeaderOnly';
 import LoginPage from './pages/auth/LoginPage';
@@ -12,7 +10,6 @@ import RedirectLogin from './pages/auth/RedirectLogin';
 import ComponentPage from './pages/component-test';
 import { setUser } from './redux/slices/userSlice';
 import routes, { routesWithComponents } from './routes/route-paths';
-import SocketClient from './web-socket/SocketClient';
 
 const App = () => {
 	const isLogin = useSelector((state) => !!state.user.data.accessToken);
