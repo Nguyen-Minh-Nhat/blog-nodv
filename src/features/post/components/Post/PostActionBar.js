@@ -1,26 +1,25 @@
-import { useMutation } from 'react-query';
-import { useDispatch, useSelector } from 'react-redux';
+import { useMutation, useQueryClient } from 'react-query';
+import { useSelector } from 'react-redux';
 import { likePost, unLikePost } from '../../../../api/postApi';
+import { CommentIcon, DotIcon } from '../../../../components/Icons';
 import IconWrapper from '../../../../components/IconWrapper';
 import LikeButton from '../../../../components/LikeButton';
 import Number from '../../../../components/Number';
-import { setPost } from '../../../../redux/slices/postSlice';
-import { CommentIcon, DotIcon } from '../../../../components/Icons';
 
 const PostActionBar = ({ post, onComment }) => {
-	const userId = useSelector((state) => state.user.data.info.id);
+	const userId = useSelector((state) => state.user?.data?.info?.id);
 	const isLiked = post?.userLikeIds?.includes(userId);
-	const dispatch = useDispatch();
+	const queryClient = useQueryClient();
 
 	const likePostMutation = useMutation(likePost, {
 		onSuccess: (data) => {
-			dispatch(setPost(data.data));
+			queryClient.setQueryData(['post'], data);
 		},
 	});
 
 	const unlikePostMutation = useMutation(unLikePost, {
 		onSuccess: (data) => {
-			dispatch(setPost(data.data));
+			queryClient.setQueryData(['post'], data);
 		},
 	});
 
