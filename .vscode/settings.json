@@ -8,6 +8,7 @@
 		"nodv",
 		"NOVD",
 		"persistor",
-		"reduxjs"
+		"reduxjs",
+		"toastify"
 	]
 }

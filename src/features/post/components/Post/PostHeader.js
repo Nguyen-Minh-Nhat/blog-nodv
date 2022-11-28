@@ -59,7 +59,7 @@ const PostHeader = ({ post }) => {
 						</Tooltip>
 					</div>
 				</div>
-				<PostAction />
+				<PostAction post={post} />
 			</div>
 		</div>
 	);

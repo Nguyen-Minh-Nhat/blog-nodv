@@ -22,7 +22,6 @@ export const deleteImg = async (url) => {
       "%2F",
       "/"
     );
-    console.log(directory);
     const storageRef = ref(storage, directory);
     await deleteObject(storageRef);
     return true;
