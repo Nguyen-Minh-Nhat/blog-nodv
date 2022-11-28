@@ -1,18 +1,14 @@
-import { useState } from 'react';
 import { HandClappingIcon } from '../Icons';
 import IconWrapper from '../IconWrapper';
 
 const LikeButton = ({ isLiked, onClick = () => {} }) => {
-	const [isLikedState, setIsLikedState] = useState(isLiked);
 	const handleClick = () => {
-		setIsLikedState(!isLikedState);
-		onClick(!isLikedState);
+		onClick(!isLiked);
 	};
-
 	return (
 		<div onClick={handleClick}>
 			<IconWrapper>
-				<HandClappingIcon type={isLikedState ? 'solid' : 'light'} />
+				<HandClappingIcon type={isLiked ? 'solid' : 'light'} />
 			</IconWrapper>
 		</div>
 	);

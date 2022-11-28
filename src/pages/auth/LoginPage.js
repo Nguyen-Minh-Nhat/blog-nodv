@@ -18,18 +18,16 @@ const LoginPage = () => {
 		dispatch(setIsCallLogin(false));
 	};
 	return (
-		<div>
-			<Modal open={openModal} onClose={handleClose}>
-				<div className="position-center absolute">
-					<Login />
-					<div className="absolute right-4 top-4">
-						<IconButton onClick={handleClose} className="h-10 w-10">
-							<i className="fa-solid fa-xmark"></i>
-						</IconButton>
-					</div>
+		<Modal open={openModal} onClose={handleClose}>
+			<div className="position-center absolute">
+				<Login />
+				<div className="absolute right-4 top-4">
+					<IconButton onClick={handleClose} className="h-10 w-10">
+						<i className="fa-solid fa-xmark"></i>
+					</IconButton>
 				</div>
-			</Modal>
-		</div>
+			</div>
+		</Modal>
 	);
 };
 

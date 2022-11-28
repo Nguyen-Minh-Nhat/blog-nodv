@@ -1,6 +1,7 @@
 import { Collapse } from '@mui/material';
 import { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { setIsCallLogin } from '../../../../redux/slices/authSlice';
 import CommentEditorFooter from './CommentEditorFooter';
 import CommentEditorHeader from './CommentEditorHeader';
 import CommentEditorInput from './CommentEditorInput';
@@ -17,8 +18,14 @@ const CommentEditor = ({
 	const [inputValue, setInputValue] = useState(
 		initialComment?.content ? initialComment.content : ''
 	);
+	const dispatch = useDispatch();
 	const user = useSelector((state) => state.user.data.info);
+	const isLogin = useSelector((state) => !!state.user.data.accessToken);
 	const handleFocus = () => {
+		if (!isLogin) {
+			dispatch(setIsCallLogin(true));
+			return;
+		}
 		setIsFocused(true);
 	};
 	const handleCancel = () => {
@@ -38,19 +45,28 @@ const CommentEditor = ({
 		onSubmit(comment);
 	};
 
+	const handleOpenCreateComment = (e) => {
+		if (!isLogin) {
+			dispatch(setIsCallLogin(true));
+			return;
+		}
+		setIsFocused(true);
+	};
+
 	return (
 		<div className="mx-6 rounded py-4 shadow-[0_2px_8px_rgba(0,0,0,0.12)]">
 			<Collapse orientation="vertical" in={isFocused && !hideHeader}>
 				<CommentEditorHeader />
 			</Collapse>
-			<CommentEditorInput
-				value={inputValue}
-				onFocus={handleFocus}
-				isFocused={isFocused}
-				onChange={(e) => {
-					setInputValue(e.target.value);
-				}}
-			/>
+			<div onClick={handleOpenCreateComment}>
+				<CommentEditorInput
+					value={inputValue}
+					isFocused={isFocused}
+					onChange={(e) => {
+						setInputValue(e.target.value);
+					}}
+				/>
+			</div>
 			<Collapse orientation="vertical" in={isFocused}>
 				<CommentEditorFooter
 					onCancel={handleCancel}

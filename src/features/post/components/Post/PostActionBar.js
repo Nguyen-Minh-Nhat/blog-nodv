@@ -13,13 +13,13 @@ const PostActionBar = ({ post, onComment }) => {
 
 	const likePostMutation = useMutation(likePost, {
 		onSuccess: (data) => {
-			queryClient.setQueryData(['post'], data);
+			queryClient.setQueryData(['post', post.id], data);
 		},
 	});
 
 	const unlikePostMutation = useMutation(unLikePost, {
 		onSuccess: (data) => {
-			queryClient.setQueryData(['post'], data);
+			queryClient.setQueryData(['post', post.id], data);
 		},
 	});
 

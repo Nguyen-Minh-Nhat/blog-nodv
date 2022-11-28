@@ -10,7 +10,7 @@ const SideBarLeft = () => {
 				<Logo />
 			</div>
 			<Navbar />
-			<UserAction />
+			{<UserAction />}
 		</div>
 	);
 };
