@@ -5,12 +5,14 @@ import userReducer from './slices/userSlice';
 import socketReducer from './slices/socketSlice';
 import postReducer from './slices/postSlice';
 import commentReducer from './slices/commentSlice';
+import authReducer from './slices/authSlice';
 
 const rootReducer = combineReducers({
 	user: userReducer,
 	socket: socketReducer,
 	post: postReducer,
 	comment: commentReducer,
+	auth: authReducer,
 });
 
 const persistConfig = {

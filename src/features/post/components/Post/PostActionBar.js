@@ -1,36 +1,38 @@
-import { useMutation } from "react-query";
-import { useDispatch, useSelector } from "react-redux";
+import { useState } from "react";
+import { useMutation, useQueryClient } from "react-query";
+import { useSelector } from "react-redux";
 import { likePost, unLikePost } from "../../../../api/postApi";
+import { createNotification } from "../../../../api/notificationApi";
+import { CommentIcon, DotIcon } from "../../../../components/Icons";
 import IconWrapper from "../../../../components/IconWrapper";
 import LikeButton from "../../../../components/LikeButton";
 import Number from "../../../../components/Number";
-import { setPost } from "../../../../redux/slices/postSlice";
-import { CommentIcon, DotIcon } from "../../../../components/Icons";
-import { createNotification } from "../../../../api/notificationApi";
-import { useState } from "react";
 
 const PostActionBar = ({ post, onComment }) => {
   const userId = useSelector((state) => state.user?.data?.info?.id);
   const isLiked = post?.userLikeIds?.includes(userId);
-  const dispatch = useDispatch();
+  const queryClient = useQueryClient();
   const [notification, setNotification] = useState({
     link: "hihi",
     receiverId: "6380a83ca02bf36c12197e28",
     type: "LIKE",
   });
+
   const likePostMutation = useMutation(likePost, {
     onSuccess: (data) => {
-      dispatch(setPost(data.data));
+      queryClient.setQueryData(["post", post.id], data);
     },
   });
+
+  const unlikePostMutation = useMutation(unLikePost, {
+    onSuccess: (data) => {
+      queryClient.setQueryData(["post", post.id], data);
+    },
+  });
+
   const createNotificationLikePostMutation = useMutation(createNotification, {
     onSuccess: (data) => {
       console.log(data.data);
-    },
-  });
-  const unlikePostMutation = useMutation(unLikePost, {
-    onSuccess: (data) => {
-      dispatch(setPost(data.data));
     },
   });
 
