@@ -58,6 +58,7 @@ const WritePage = () => {
       topics: post.topics,
       timeRead: post.timeRead,
     };
+    console.log(postUpload);
     createPostMutation.mutate(postUpload);
   };
 
