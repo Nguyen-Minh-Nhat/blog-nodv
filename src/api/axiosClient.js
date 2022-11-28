@@ -19,6 +19,7 @@ export const axiosClientPrivate = axios.create({
 		'content-type': 'application/json',
 	},
 	credentials: 'include',
+	timeout: 60000,
 	withCredentials: true,
 });
 
@@ -46,7 +47,27 @@ axiosClientPrivate.interceptors.request.use(
 		return config;
 	},
 	(err) => {
-		return Promise.reject(err);
+		console.log('err here', err);
+		return Promise.reject(err.response.data);
+		// return err;
+	}
+);
+
+axiosClientPrivate.interceptors.response.use(
+	function (response) {
+		return response.data;
+	},
+	function (error) {
+		return Promise.reject(error.response.data);
+	}
+);
+
+axiosClient.interceptors.response.use(
+	function (response) {
+		return response.data;
+	},
+	function (error) {
+		return Promise.reject(error.response.data);
 	}
 );
 
