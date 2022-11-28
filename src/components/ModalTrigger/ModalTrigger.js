@@ -18,7 +18,7 @@ const ModalTrigger = ({ button = 'click', children }) => {
 		<div>
 			<div onClick={() => setOpen(true)}>{button}</div>
 			<Modal open={open} onClose={handleClose}>
-				<div>{childrenWithProps}</div>
+				<div className="position-center absolute">{childrenWithProps}</div>
 			</Modal>
 		</div>
 	);

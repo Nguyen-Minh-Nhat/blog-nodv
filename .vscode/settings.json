@@ -1,9 +1,12 @@
 {
 	"cSpell.words": [
+		"appspot",
 		"cloudinary",
 		"describedby",
+		"firebaseapp",
 		"Firestore",
 		"nodv",
+		"NOVD",
 		"persistor",
 		"reduxjs"
 	]

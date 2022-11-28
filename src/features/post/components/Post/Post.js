@@ -1,17 +1,17 @@
-import React, { useState } from 'react';
 import { Drawer } from '@mui/material';
+import React, { useState } from 'react';
 import { CommentContainer } from '../../../comment';
 import PostActionBar from './PostActionBar';
 import PostBody from './PostBody';
 import PostHeader from './PostHeader';
 
-const Post = ({ post }) => {
+const Post = ({ post, isPersona = false }) => {
 	const [open, setOpen] = useState(false);
 	const handleClose = () => {
 		setOpen(false);
 	};
 	return (
-		<div>
+		<div className="relative h-full">
 			<PostHeader post={post} />
 			<PostBody post={post} />
 			<div>

@@ -8,12 +8,13 @@ import {
 } from "@mui/material";
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { NavLink, useNavigate } from "react-router-dom";
 import { logout } from "../../redux/slices/userSlice";
-import { Link } from "react-router-dom";
 import routes from "../../routes/route-paths";
 
 const UserAction = () => {
   const user = useSelector((state) => state.user.data.info);
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const [anchorEl, setAnchorEl] = useState(null);
 
@@ -26,6 +27,7 @@ const UserAction = () => {
   };
 
   const handleLogout = () => {
+    navigate(routes.home);
     dispatch(logout());
   };
 
@@ -37,8 +39,8 @@ const UserAction = () => {
       <Avatar
         sx={{ width: 36, height: 36 }}
         className="cursor-pointer bg-slate-600"
-        src={user.avatar}
-        alt={user.username}
+        src={user?.avatar}
+        alt={user?.username}
         aria-describedby={id}
         onClick={handleClick}
       />
@@ -64,34 +66,32 @@ const UserAction = () => {
               </ListItemIcon>
               Logout
             </MenuItem>
-            <MenuItem>
-              <Link to={routes.setting}>
+            <NavLink to={routes.setting} className="active">
+              <MenuItem>
                 <ListItemIcon>
                   <i className="fa-solid fa-gear text-lg"></i>
                 </ListItemIcon>
                 Setting
-              </Link>
-            </MenuItem>
+              </MenuItem>
+            </NavLink>
           </MenuList>
           <div className="border-t p-4">
             <div className="mb-4 flex flex-col">
-              <span className="">{user.username}</span>
+              <span className="">{user?.username}</span>
               <span className="overflow-hidden text-ellipsis text-[13px] text-slate-500">
-                {user.email}
+                {user?.email}
               </span>
             </div>
             <div>
-              <Link to={routes.profile}>
-                <Button
-                  fullWidth
-                  variant="outlined"
-                  color="inherit"
-                  size="small"
-                  className="rounded-full"
-                >
-                  View Profile
-                </Button>
-              </Link>
+              <Button
+                fullWidth
+                variant="outlined"
+                color="inherit"
+                size="small"
+                className="rounded-full"
+              >
+                View Profile
+              </Button>
             </div>
           </div>
         </div>

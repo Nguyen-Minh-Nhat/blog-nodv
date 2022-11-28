@@ -31,7 +31,7 @@ const CommentEditor = ({
 			id: initialComment.id,
 			content: inputValue.trim(),
 			user,
-			createdAt: initialComment?.createdAt,
+			createdDate: initialComment?.createdDate,
 			replyId: initialComment?.replyId,
 		};
 		setInputValue('');

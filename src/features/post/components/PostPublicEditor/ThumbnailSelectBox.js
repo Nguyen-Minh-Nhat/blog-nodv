@@ -1,11 +1,12 @@
 import PostThumbnail from '../PostPreview/PostThumbnail';
 
-const ThumbnailSelectBox = ({ initial, imageList, onChange }) => {
+const ThumbnailSelectBox = ({ initial, images, onChange }) => {
+	console.log(images);
 	return (
 		<div className="flex items-center rounded border p-4">
-			{imageList.length > 0 ? (
+			{images.length > 0 ? (
 				<div className="mx-auto my-4 grid grid-cols-5 gap-2">
-					{imageList.map((img) => (
+					{images.map((img) => (
 						<div
 							key={img}
 							className={`cursor-pointer rounded-xl ${

@@ -1,11 +1,14 @@
-import axiosClient from './axiosClient';
+import axiosClient, { axiosClientPrivate, setHeader } from './axiosClient';
 
-const url = 'post/';
+const url = '/posts';
 
 const postApi = {
-	getAllPosts: () => axiosClient.get(url + 'get-all-posts'),
+	getPosts: () => axiosClient.get(url),
+	getPostById: (id) => axiosClient.get(`${url}/${id}`),
+	createPost: (post) =>
+		axiosClientPrivate.post(url, post, { headers: setHeader() }),
 };
 
-export const { getAllPosts } = postApi;
+export const { getPosts, createPost, getPostById } = postApi;
 
 export default postApi;

@@ -1,16 +1,19 @@
-import { Modal } from "@mui/material";
+import { Button, Modal } from "@mui/material";
 import { useState } from "react";
+import { useMutation } from "react-query";
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { createPost } from "../../api/postApi";
 import Editor from "../../components/Editor";
 import QuestionDialog from "../../components/QuestionDialog/QuestionDialog";
 import PostPublicPreview from "../../features/post/components/PostPublicPreview";
-
+import ModalTrigger from "../../components/ModalTrigger";
 import usePrompt from "../../hooks/usePrompt";
+import { convertToPost } from "../../utils/editorJsUtils";
 import Header from "./components/Header";
 const WritePage = () => {
   const user = useSelector((state) => state.user.data.info);
-  const [showPublicModal, setShowPublicModal] = useState(false);
-  const [rawContent, setRawContent] = useState(null);
+  const [editorJsData, setEditorJsData] = useState(null);
   const [showDialog, setShowDialog] = useState(false);
   const [post, setPost] = useState({
     title: "",
@@ -19,53 +22,48 @@ const WritePage = () => {
     user,
     thumbnail: "",
     topics: [],
-    createdAt: new Date(),
+    createdDate: new Date(),
   });
+
+  const navigate = useNavigate();
+  const createPostMutation = useMutation(createPost, {
+    onSuccess: (data) => {
+      navigate(`/post/${data.data.id}`);
+    },
+  });
+
   const [showPrompt, confirmNavigation, cancelNavigation] =
     usePrompt(showDialog);
 
-  const convertRawContentToPost = (rawContent) => {
-    let title = "";
-    let subtitle = "";
-    const imageList = [];
-
-    rawContent.blocks.forEach((block) => {
-      if (!title && (block.type === "header" || block.type === "paragraph")) {
-        title = block.data.text;
-        return;
-      }
-
-      if (
-        title &&
-        !subtitle &&
-        (block.type === "header" || block.type === "paragraph")
-      ) {
-        subtitle = block.data.text;
-        return;
-      }
-
-      if (block.type === "image") imageList.push(block.data.file.url);
-    });
+  const convertRawContentToPost = (editorJsData) => {
+    const post = convertToPost(editorJsData);
     setPost((prev) => ({
       ...prev,
-      title,
-      subtitle,
-      thumbnail: imageList[0],
-      imageList,
+      ...post,
     }));
   };
+
   const handleShowPublicPreview = () => {
-    convertRawContentToPost(rawContent);
-    setShowPublicModal(true);
+    convertRawContentToPost(editorJsData);
   };
 
   const handlePublic = () => {
     setShowDialog(false);
-    post.content = rawContent;
+    post.content = editorJsData;
+    const postUpload = {
+      title: post.title,
+      subtitle: post.subtitle,
+      content: JSON.stringify(post.content),
+      thumbnail: post.thumbnail,
+      topics: post.topics,
+      timeRead: post.timeRead,
+    };
+    createPostMutation.mutate(postUpload);
   };
 
-  const autoSave = (rawContent, timeRead) => {
-    setRawContent(rawContent);
+  const autoSave = (editorJsData, timeRead) => {
+    console.log(editorJsData);
+    setEditorJsData(editorJsData);
     setPost((prev) => ({ ...prev, timeRead }));
     setShowDialog(true);
   };
@@ -74,21 +72,34 @@ const WritePage = () => {
     <div className="h-screen overflow-y-scroll">
       <div className="sticky top-0 z-[100] bg-white">
         <Header
-          onPublic={handleShowPublicPreview}
-          enablePublic={!!rawContent}
+          headerAction={
+            <div className="flex">
+              <Button color="success" className="btn rounded-full normal-case">
+                Save
+              </Button>
+              <ModalTrigger
+                button={
+                  <Button
+                    color="success"
+                    variant="contained"
+                    className="btn ml-2 rounded-full normal-case"
+                    onClick={handleShowPublicPreview}
+                  >
+                    Public
+                  </Button>
+                }
+              >
+                <PostPublicPreview
+                  post={post}
+                  setPost={setPost}
+                  onSubmit={handlePublic}
+                />
+              </ModalTrigger>
+            </div>
+          }
         />
       </div>
       <Editor onChange={autoSave} />
-      <Modal open={showPublicModal} onClose={() => setShowPublicModal(false)}>
-        <div className="position-center absolute">
-          <PostPublicPreview
-            post={post}
-            setPost={setPost}
-            onSubmit={handlePublic}
-            onClose={() => setShowPublicModal(false)}
-          />
-        </div>
-      </Modal>
       <QuestionDialog
         title="Warning"
         message="There are some changes? Are you sure you want to navigate!!!!"
