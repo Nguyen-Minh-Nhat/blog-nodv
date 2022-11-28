@@ -17,7 +17,7 @@ const AccountTab = () => {
 
 	const updateProfileMutation = useMutation(updateUserProfile, {
 		onSuccess: (data) => {
-			dispatch(setUser(data.data));
+			dispatch(setUser(data));
 			toast.success('Update profile successfully');
 		},
 	});
