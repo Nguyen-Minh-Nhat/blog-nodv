@@ -5,6 +5,7 @@ import { CommentIcon, DotIcon } from '../../../../components/Icons';
 import IconWrapper from '../../../../components/IconWrapper';
 import LikeButton from '../../../../components/LikeButton';
 import Number from '../../../../components/Number';
+import AuthClick from '../../../auth/components/AuthClick';
 
 const PostActionBar = ({ post, onComment }) => {
 	const userId = useSelector((state) => state.user?.data?.info?.id);
@@ -33,7 +34,9 @@ const PostActionBar = ({ post, onComment }) => {
 	return (
 		<div className="flex h-10 items-center rounded-full bg-white px-4 font-thin text-[#757575] shadow">
 			<ButtonAction>
-				<LikeButton isLiked={isLiked} onClick={handleLike} />
+				<AuthClick>
+					<LikeButton isLiked={isLiked} onClick={handleLike} />
+				</AuthClick>
 				<Number>{post?.userLikeIds ? post.userLikeIds.length : 0}</Number>
 			</ButtonAction>
 

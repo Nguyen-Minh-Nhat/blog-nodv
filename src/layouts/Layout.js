@@ -38,11 +38,8 @@ const Layout = ({ children }) => {
 				item.children ? `${item.path}/*` : item.path, // if has children, match all sub routes
 				pathname
 			);
-			console.log(isMatch);
-			if (isMatch) {
-				console.log(isMatch);
-				setLayout(item.layout);
-			}
+
+			if (isMatch) setLayout(item.layout);
 		});
 	}, [pathname]);
 

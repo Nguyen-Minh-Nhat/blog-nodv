@@ -112,7 +112,7 @@ const ProtectedRoutes = () => {
 	return isAuthenticated ? (
 		<Outlet />
 	) : (
-		<Navigate to={appRoutes.LOGIN} replace />
+		<Navigate to={appRoutes.AUTH_LOGIN} replace />
 	);
 };
 

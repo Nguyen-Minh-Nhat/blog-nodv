@@ -17,7 +17,7 @@ const Search = () => {
 	const searchUserMutation = useMutation(searchUser, {
 		onSuccess: (data) => {
 			console.log(data);
-			const searchResult = data?.data || [];
+			const searchResult = data || [];
 			setSearchResult(searchResult);
 		},
 	});
@@ -57,6 +57,7 @@ const Search = () => {
 			>
 				<div>
 					<SearchBar
+						loading={searchUserMutation.isLoading}
 						onChange={handleTypingInput}
 						onFocus={() => {
 							if (searchResult.length > 0) setShowResult(true);

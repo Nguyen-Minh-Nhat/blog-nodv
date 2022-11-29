@@ -25,37 +25,3 @@ const App = () => {
 };
 
 export default App;
-
-{
-	/* <Routes>
-	{routesWithComponents.map((route) => {
-		let LayoutComponent = DefaultLayout;
-		if (route.path === routes.home && !isLogin) LayoutComponent = HeaderOnly;
-		return (
-			<Route
-				key={route.path}
-				path={route.path}
-				element={
-					<LayoutComponent>
-						<SuspenseProgress>{<route.component />}</SuspenseProgress>
-					</LayoutComponent>
-				}
-			>
-				{route?.children &&
-					route.children.map((child) => {
-						const Component = child.component;
-						return (
-							<Route
-								key={child.path}
-								path={child.path}
-								element={<Component />}
-							/>
-						);
-					})}
-			</Route>
-		);
-	})}
-	<Route path={'/oauth2/redirect'} element={<RedirectLogin />} />
-	<Route path={'/profile/:email'} element={<RedirectLogin />} />
-</Routes>; */
-}
