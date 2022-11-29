@@ -47,9 +47,7 @@ axiosClientPrivate.interceptors.request.use(
 		return config;
 	},
 	(err) => {
-		console.log('err here', err);
 		return Promise.reject(err.response.data);
-		// return err;
 	}
 );
 
