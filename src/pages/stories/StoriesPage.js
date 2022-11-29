@@ -5,7 +5,7 @@ import PageWithTitle from '../../components/PageWithTitle';
 import { PostList } from '../../features/post';
 
 const StoriesPage = () => {
-	const { data } = useQuery('stories', () => getOwnedPosts(), []);
+	const { data } = useQuery('stories', () => getOwnedPosts());
 	return (
 		<PageWithTitle
 			title={'Your Stories'}
@@ -19,7 +19,7 @@ const StoriesPage = () => {
 			]}
 		>
 			<div>
-				<PostList postList={data?.data} />
+				<PostList postList={data} />
 			</div>
 		</PageWithTitle>
 	);
