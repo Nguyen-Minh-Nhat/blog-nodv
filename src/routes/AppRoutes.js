@@ -1,4 +1,4 @@
-import React, { lazy, useMemo } from 'react';
+import React, { lazy, memo, useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import { Navigate, Outlet, useRoutes } from 'react-router-dom';
 import SuspenseProgress from '../components/SuspenseProgress/SuspenseProgress';
@@ -108,12 +108,8 @@ export const routeConfig = [
 ];
 
 const ProtectedRoutes = () => {
-	const isAuthenticated = useSelector((state) => !!state.user.data.accessToken);
-	return isAuthenticated ? (
-		<Outlet />
-	) : (
-		<Navigate to={appRoutes.AUTH_LOGIN} replace />
-	);
+	const { isLogin } = useSelector((state) => state.user.data);
+	return isLogin ? <Outlet /> : <Navigate to={appRoutes.AUTH_LOGIN} replace />;
 };
 
 const AppRoutes = () => {
@@ -139,4 +135,4 @@ const AppRoutes = () => {
 	);
 };
 
-export default AppRoutes;
+export default memo(AppRoutes);

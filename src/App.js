@@ -6,7 +6,7 @@ import { setUser } from './redux/slices/userSlice';
 import AppRoutes from './routes/AppRoutes';
 
 const App = () => {
-	const isLogin = useSelector((state) => !!state.user.data.accessToken);
+	const { isLogin } = useSelector((state) => state.user.data);
 	const dispatch = useDispatch();
 	useQuery('user', getAuthInfo, {
 		enabled: isLogin,

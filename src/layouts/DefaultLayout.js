@@ -3,7 +3,7 @@ import SidebarLeft from './components/SidebarLeft';
 import SidebarRight from './components/SidebarRight';
 
 const DefaultLayout = ({ children }) => {
-	const isLogin = useSelector((state) => !!state.user.data.accessToken);
+	const { isLogin } = useSelector((state) => state.user.data);
 	return (
 		<div className="flex h-screen w-screen">
 			{isLogin && <SidebarLeft />}

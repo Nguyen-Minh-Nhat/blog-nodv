@@ -6,7 +6,7 @@ import WhoToFollow from '../../components/WhoToFollow/WhoToFollow';
 import RecommendTopic from '../../components/RecommendTopic/RecommendTopic';
 
 const SidebarRight = () => {
-	const isLogin = useSelector((state) => !!state.user.data.accessToken);
+	const { isLogin } = useSelector((state) => state.user.data);
 
 	return (
 		<div className="w-[394px] border-l px-8">
