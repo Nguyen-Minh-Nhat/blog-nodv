@@ -3,16 +3,15 @@ import { HandClappingIcon } from '../Icons';
 import IconWrapper from '../IconWrapper';
 
 const LikeButton = ({ isLiked, onClick = () => {} }) => {
-	const [isLikedState, setIsLikedState] = useState(isLiked);
+	const [isLike, setIsLike] = useState(isLiked);
 	const handleClick = () => {
-		setIsLikedState(!isLikedState);
-		onClick(!isLikedState);
+		onClick(!isLike);
+		setIsLike(!isLike);
 	};
-
 	return (
 		<div onClick={handleClick}>
 			<IconWrapper>
-				<HandClappingIcon type={isLikedState ? 'solid' : 'light'} />
+				<HandClappingIcon type={isLike ? 'solid' : 'light'} />
 			</IconWrapper>
 		</div>
 	);

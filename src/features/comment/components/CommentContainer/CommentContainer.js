@@ -1,6 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux';
 import uuid from 'react-uuid';
 import { addComment } from '../../../../redux/slices/commentSlice';
+import AuthClick from '../../../auth/components/AuthClick';
 import CommentEditor from '../CommentEditor';
 import CommentList from '../CommentList';
 import CommentContainerHeader from './CommentContainerHeader';
@@ -20,10 +21,12 @@ const CommentContainer = ({ onClose }) => {
 	return (
 		<div className="w-[414px]">
 			<CommentContainerHeader onClose={onClose} />
-			<CommentEditor
-				initialComment={initialComment}
-				onSubmit={handleCreateComment}
-			/>
+			<AuthClick>
+				<CommentEditor
+					initialComment={initialComment}
+					onSubmit={handleCreateComment}
+				/>
+			</AuthClick>
 			{rootComments != null && rootComments.length > 0 && (
 				<div className="mt-4">
 					<CommentList comments={rootComments} />

@@ -1,7 +1,7 @@
 import PostAction from '../PostAction';
 import TopicList from './TopicList';
 
-const PostPreviewFooter = ({ post }) => {
+const PostPreviewFooter = ({ post, ...menuActionProps }) => {
 	return (
 		<div className="flex justify-between py-8">
 			<div className="flex items-center gap-2">
@@ -10,7 +10,7 @@ const PostPreviewFooter = ({ post }) => {
 				)}
 				<div className="text-sm font-thin">{post?.timeRead} min read</div>
 			</div>
-			<PostAction post={post} />
+			<PostAction post={post} {...menuActionProps} />
 		</div>
 	);
 };

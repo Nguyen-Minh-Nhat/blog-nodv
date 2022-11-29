@@ -1,6 +1,6 @@
 import Header from './components/Header';
 
-const HeaderOnly = ({ children }) => {
+const HeaderOnlyLayout = ({ children }) => {
 	return (
 		<div className="flex flex-col">
 			<Header />
@@ -9,4 +9,4 @@ const HeaderOnly = ({ children }) => {
 	);
 };
 
-export default HeaderOnly;
+export default HeaderOnlyLayout;

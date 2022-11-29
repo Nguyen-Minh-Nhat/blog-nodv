@@ -1,6 +1,7 @@
 import { Chip, ListItemIcon, MenuItem, MenuList } from '@mui/material';
 import { NavLink, useNavigate } from 'react-router-dom';
-import routes from '../../routes/route-paths';
+import { appRoutes } from '../../routes/AppRoutes';
+
 import ShadowWrapper from '../ShadowWrapper';
 
 const UserMenu = ({ user, onLogout }) => {
@@ -15,7 +16,7 @@ const UserMenu = ({ user, onLogout }) => {
 						</ListItemIcon>
 						Logout
 					</MenuItem>
-					<NavLink to={routes.setting} className="active">
+					<NavLink to={appRoutes.SETTING} className="active">
 						<MenuItem>
 							<ListItemIcon>
 								<i className="fa-solid fa-gear text-lg"></i>
@@ -36,7 +37,7 @@ const UserMenu = ({ user, onLogout }) => {
 							label="View Profile"
 							variant="outlined"
 							className="w-full"
-							onClick={() => navigate(routes.profile)}
+							onClick={() => navigate(appRoutes.PROFILE)}
 						/>
 					</div>
 				</div>

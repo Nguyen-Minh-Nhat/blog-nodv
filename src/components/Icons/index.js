@@ -6,6 +6,8 @@ import FlagIcon from './FlagIcon';
 import HandClappingIcon from './HandClappingIcon';
 import DotIcon from './DotIcon';
 import CommentIcon from './CommentIcon';
+import LoadingIcon from './LoadingIcon';
+import MagnifyingGlassIcon from './MagnifyingGlassIcon';
 export {
 	DeleteIcon,
 	EditIcon,
@@ -15,4 +17,6 @@ export {
 	HandClappingIcon,
 	DotIcon,
 	CommentIcon,
+	LoadingIcon,
+	MagnifyingGlassIcon,
 };
