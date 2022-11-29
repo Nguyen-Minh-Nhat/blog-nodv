@@ -2,10 +2,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setIsCallLogin } from '../../../redux/slices/authSlice';
 
 const AuthClick = ({ children }) => {
-	const isAuthenticated = useSelector((state) => !!state.user.data.accessToken);
+	const { isLogin } = useSelector((state) => state.user.data);
 	const dispatch = useDispatch();
 	const handleClick = (e) => {
-		if (isAuthenticated) return;
+		if (isLogin) return;
 		e.preventDefault();
 		e.stopPropagation();
 		dispatch(setIsCallLogin(true));
@@ -13,7 +13,7 @@ const AuthClick = ({ children }) => {
 
 	return (
 		<div className="relative" onClick={handleClick}>
-			{!isAuthenticated && <div className="absolute h-full w-full"></div>}
+			{!isLogin && <div className="absolute h-full w-full"></div>}
 			{children}
 		</div>
 	);

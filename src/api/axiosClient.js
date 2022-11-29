@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { setIsCallLogin } from '../redux/slices/authSlice';
-import * as jwtDecode from 'jwt-decode';
 import store from '../redux/store';
+import jwt_decode from 'jwt-decode';
 import { appRoutes } from '../routes/AppRoutes';
 const baseURL = process.env.REACT_APP_API_URL;
 const axiosClient = axios.create({
@@ -31,9 +31,8 @@ axiosClientPrivate.interceptors.request.use(
 		config.headers['Authorization'] = `Bearer ${accessToken}`;
 		if (accessToken === null) {
 			store.dispatch(setIsCallLogin(true));
-			throw new Error('Token is null');
 		} else {
-			const decodeToken = jwtDecode(accessToken);
+			const decodeToken = jwt_decode(accessToken);
 			const today = new Date();
 			if (decodeToken.exp < today.getTime() / 1000) {
 				window.location.href = appRoutes.AUTH_LOGIN;
@@ -47,6 +46,7 @@ axiosClientPrivate.interceptors.request.use(
 				// }
 			}
 		}
+
 		return config;
 	},
 	(error) => {
