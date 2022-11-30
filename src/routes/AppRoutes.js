@@ -24,6 +24,7 @@ export const appRoutes = {
 	BOOKMARK: '/bookmark',
 	STORIES: '/stories',
 	WRITE: '/write',
+	WRITE_EDIT: '/write/:id',
 	SETTING: '/setting',
 	SETTING_ACCOUNT: '/setting',
 	SETTING_NOTIFICATION: '/setting/notification',
@@ -76,6 +77,12 @@ export const routeConfig = [
 		element: <WritePage />,
 		protected: true,
 		layout: layouts.DEFAULT,
+		children: [
+			{
+				path: appRoutes.WRITE_EDIT,
+				element: <WritePage />,
+			},
+		],
 	},
 	{
 		path: appRoutes.SETTING,

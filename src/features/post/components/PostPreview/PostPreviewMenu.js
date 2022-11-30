@@ -10,6 +10,7 @@ import {
 	EyeSlashIcon,
 	FlagIcon,
 } from '../../../../components/Icons';
+import { appRoutes } from '../../../../routes/AppRoutes';
 
 const PostMenu = ({ post, onDelete, onPublish, onUnpublish, onEdit }) => {
 	const userId = useSelector((state) => state.user?.data?.info?.id);
@@ -23,7 +24,7 @@ const PostMenu = ({ post, onDelete, onPublish, onUnpublish, onEdit }) => {
 				{
 					icon: <EditIcon />,
 					label: 'Edit',
-					onClick: () => navigate(`/post/${post.id}/edit`),
+					onClick: () => navigate(`${appRoutes.WRITE}/${post.id}`),
 				},
 				{
 					icon: <DeleteIcon />,

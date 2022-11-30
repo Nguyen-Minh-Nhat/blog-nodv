@@ -78,7 +78,6 @@ const Editor = ({
 				readOnly={readOnly}
 				tools={tools}
 				onInitialize={handleInitialize}
-				// autofocus
 				defaultValue={defaultValue}
 				onChange={(e) => {
 					handleChange(e);

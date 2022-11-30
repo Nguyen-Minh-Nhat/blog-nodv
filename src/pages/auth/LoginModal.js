@@ -2,6 +2,7 @@ import { IconButton, Modal } from '@mui/material';
 import { useEffect } from 'react';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { XMarkIcon } from '../../components/Icons';
 import Login from '../../features/auth/components/Login';
 import { setIsCallLogin } from '../../redux/slices/authSlice';
 
@@ -23,7 +24,7 @@ const LoginModal = () => {
 				<Login />
 				<div className="absolute right-4 top-4">
 					<IconButton onClick={handleClose} className="h-10 w-10">
-						<i className="fa-solid fa-xmark"></i>
+						<XMarkIcon />
 					</IconButton>
 				</div>
 			</div>

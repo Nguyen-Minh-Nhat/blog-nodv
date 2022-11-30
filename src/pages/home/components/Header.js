@@ -1,5 +1,6 @@
 import { Box, IconButton } from '@mui/material';
 import { useMemo } from 'react';
+import { PlusIcon } from '../../../components/Icons';
 import Tab from '../../../components/Tab';
 
 const Header = ({
@@ -20,7 +21,7 @@ const Header = ({
 				<Box sx={{ width: '100%' }} className="flex">
 					<div className="flex h-[49px] items-center border-b">
 						<IconButton size="small" className="h-8 w-8">
-							<i className="fa-solid fa-plus"></i>
+							<PlusIcon />
 						</IconButton>
 					</div>
 					<Tab tabItems={tabItems} />

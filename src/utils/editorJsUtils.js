@@ -29,7 +29,6 @@ const editorJsUtils = {
 			}
 		});
 		post.thumbnail = post?.images[0];
-		console.log(post);
 		return post;
 	},
 };

@@ -7,7 +7,7 @@ import PostBody from './PostBody';
 import PostHeader from './PostHeader';
 import PostShares from './PostShares';
 
-const Post = ({ post, ...menuActionProps }) => {
+const Post = ({ post, onLike, onUnlike, ...menuActionProps }) => {
 	const [open, setOpen] = useState(false);
 	const handleClose = () => {
 		setOpen(false);
@@ -25,7 +25,12 @@ const Post = ({ post, ...menuActionProps }) => {
 				</Drawer>
 			</div>
 			<div className="sticky bottom-4 z-10 flex w-full justify-center">
-				<PostActionBar post={post} onComment={() => setOpen(true)} />
+				<PostActionBar
+					post={post}
+					onComment={() => setOpen(true)}
+					onUnlike={onUnlike}
+					onLike={onLike}
+				/>
 			</div>
 		</div>
 	);
