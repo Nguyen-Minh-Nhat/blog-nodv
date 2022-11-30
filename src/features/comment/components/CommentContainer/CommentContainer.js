@@ -12,16 +12,20 @@ const CommentContainer = ({ post, onClose }) => {
   const rootComments = useSelector(
     (state) => state.comment.commentsByParentId[null]
   );
+  console.log(rootComments);
 
-  useQuery("comments", () => getComment(post.id), {
+  useQuery(["comments", post.id], () => getComment(post.id), {
     onSuccess: (data) => {
       dispatch(setComments(data));
     },
   });
-  const createNewComment = useMutation(createComment);
+  const createNewComment = useMutation(createComment, {
+    onSuccess: (data) => {
+      dispatch(addComment(data));
+    },
+  });
   const handleCreateComment = (comment) => {
     createNewComment.mutate(comment);
-    dispatch(addComment(comment));
   };
 
   const initialComment = {};
@@ -36,7 +40,7 @@ const CommentContainer = ({ post, onClose }) => {
       />
       {rootComments != null && rootComments.length > 0 && (
         <div className="mt-4">
-          <CommentList comments={rootComments} />
+          <CommentList comments={rootComments} post={post} />
         </div>
       )}
     </div>

@@ -29,9 +29,10 @@ const CommentEditor = ({
   };
 
   const handleSubmit = () => {
+    console.log(post.id);
     const comment = {
       content: inputValue.trim(),
-      // replyId: initialComment?.replyId,
+      replyId: initialComment?.replyId,
       postId: post.id,
     };
     setInputValue("");
