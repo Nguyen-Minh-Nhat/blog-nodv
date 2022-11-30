@@ -1,5 +1,6 @@
 import { ListItemIcon, MenuItem, MenuList } from '@mui/material';
 import { useMemo } from 'react';
+import { EditIcon } from '../../../../components/Icons';
 
 const CommentMenu = ({ onEdit, onDelete, onReport, isUser }) => {
 	const Items = useMemo(() => {
@@ -8,7 +9,7 @@ const CommentMenu = ({ onEdit, onDelete, onReport, isUser }) => {
 				<MenuList>
 					<MenuItem className="text-sm" onClick={onEdit}>
 						<ListItemIcon>
-							<i className="fa-solid fa-edit"></i>
+							<EditIcon />
 						</ListItemIcon>
 						Edit this comment
 					</MenuItem>
