@@ -1,4 +1,4 @@
-import axiosClient, { axiosClientPrivate } from "./axiosClient";
+import { axiosClientPrivate } from "./axiosClient";
 
 const url = "/notifications";
 

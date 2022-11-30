@@ -17,10 +17,9 @@ const NotificationsPage = () => {
 
   useQuery(["notifications", filter], () => getNotifications(filter), {
     onSuccess: (data) => {
-      setNotifications(data.data);
+      setNotifications(data);
     },
   });
-  console.log(filter);
   return (
     <PageWithTitle
       onTabChange={(id) => {

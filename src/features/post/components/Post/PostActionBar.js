@@ -13,14 +13,15 @@ const PostActionBar = ({ post, onComment }) => {
   const isLiked = post?.userLikeIds?.includes(userId);
   const queryClient = useQueryClient();
   const [notification, setNotification] = useState({
-    link: "hihi",
-    receiverId: "6380a83ca02bf36c12197e28",
+    link: `/posts/${post.id}`,
+    receiverId: `${post.userId}`,
     type: "LIKE",
   });
 
   const likePostMutation = useMutation(likePost, {
     onSuccess: (data) => {
       queryClient.setQueryData(["post", post.id], data);
+      console.log(post);
     },
   });
 
@@ -39,6 +40,9 @@ const PostActionBar = ({ post, onComment }) => {
   const handleLike = (isLike) => {
     if (isLike) {
       likePostMutation.mutate(post.id);
+      {
+        console.log(notification);
+      }
       createNotificationLikePostMutation.mutate(notification);
     } else {
       unlikePostMutation.mutate(post.id);
