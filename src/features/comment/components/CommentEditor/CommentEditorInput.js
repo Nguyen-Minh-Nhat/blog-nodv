@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 
-const CommentEditorInput = ({ onFocus, isFocused, onChange, value }) => {
+const CommentEditorInput = ({ isFocused, onChange, value }) => {
 	const inputRef = useRef();
 	useEffect(() => {
 		if (inputRef?.current) {
@@ -19,7 +19,6 @@ const CommentEditorInput = ({ onFocus, isFocused, onChange, value }) => {
 				let val = e.target.value;
 				e.target.value = '';
 				e.target.value = val;
-				onFocus();
 			}}
 			rows={1}
 			onChange={onChange}

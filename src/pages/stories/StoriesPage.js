@@ -5,7 +5,7 @@ import PageWithTitle from '../../components/PageWithTitle';
 import { PostList } from '../../features/post';
 
 const StoriesPage = () => {
-	const { data } = useQuery('stories', () => getOwnedPosts());
+	const { data } = useQuery('posts', () => getOwnedPosts());
 	return (
 		<PageWithTitle
 			title={'Your Stories'}

@@ -1,13 +1,20 @@
+import { LoadingIcon, MagnifyingGlassIcon } from '../Icons';
 import IconWrapper from '../IconWrapper';
 
-const SearchBar = ({ onChange, onFocus }) => {
+const SearchBar = ({ onChange, onFocus, loading }) => {
 	return (
 		<div className="flex h-10 w-full items-center rounded-full border p-1">
-			<div className="cursor-pointer">
+			{loading ? (
 				<IconWrapper size="h-10 w-10">
-					<i className="fa-solid fa-magnifying-glass font-normal"></i>
+					<LoadingIcon />
 				</IconWrapper>
-			</div>
+			) : (
+				<div className="cursor-pointer">
+					<IconWrapper size="h-10 w-10">
+						<MagnifyingGlassIcon />
+					</IconWrapper>
+				</div>
+			)}
 			<input
 				placeholder="search"
 				className="w-full bg-transparent outline-none placeholder:font-thin"
