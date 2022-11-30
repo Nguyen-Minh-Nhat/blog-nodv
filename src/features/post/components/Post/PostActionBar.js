@@ -7,28 +7,15 @@ import LikeButton from '../../../../components/LikeButton';
 import Number from '../../../../components/Number';
 import AuthClick from '../../../auth/components/AuthClick';
 
-const PostActionBar = ({ post, onComment }) => {
+const PostActionBar = ({ post, onComment, onLike, onUnlike }) => {
 	const userId = useSelector((state) => state.user?.data?.info?.id);
 	const isLiked = post?.userLikeIds?.includes(userId);
-	const queryClient = useQueryClient();
-
-	const likePostMutation = useMutation(likePost, {
-		onSuccess: (data) => {
-			queryClient.setQueryData(['post', post.id], data);
-		},
-	});
-
-	const unlikePostMutation = useMutation(unLikePost, {
-		onSuccess: (data) => {
-			queryClient.setQueryData(['post', post.id], data);
-		},
-	});
 
 	const handleLike = (isLike) => {
 		if (isLike) {
-			likePostMutation.mutate(post.id);
+			onLike(post.id);
 		} else {
-			unlikePostMutation.mutate(post.id);
+			onUnlike(post.id);
 		}
 	};
 	return (

@@ -3,10 +3,10 @@ import { useMutation, useQueryClient } from 'react-query';
 import { deletePost, publishPost, unpublishPost } from '../../../api/postApi';
 import { toast } from 'react-toastify';
 
-export const PostList = ({ postList = [] }) => {
+export const PostList = ({ postList = [], storeKey = 'post' }) => {
 	const queryClient = useQueryClient();
 	const updateLocalPost = (updatedPost) => {
-		queryClient.setQueryData('posts', (oldData) =>
+		queryClient.setQueryData(storeKey, (oldData) =>
 			oldData.map((post) => {
 				if (post.id === updatedPost.id) {
 					return updatedPost;
@@ -16,7 +16,7 @@ export const PostList = ({ postList = [] }) => {
 		);
 	};
 	const deleteLocalPost = (postId) => {
-		queryClient.setQueryData('posts', (oldData) => {
+		queryClient.setQueryData(storeKey, (oldData) => {
 			const newPostList = oldData.filter((post) => post.id !== postId);
 			return newPostList;
 		});
@@ -43,6 +43,9 @@ export const PostList = ({ postList = [] }) => {
 	});
 	return (
 		<div className="flex flex-col">
+			{postList.length <= 0 && (
+				<div className="text-center text-gray-500">No posts found</div>
+			)}
 			{postList.map((post) => (
 				<div key={post.id} className="border-b pt-8 first:pt-0">
 					<PostPreview

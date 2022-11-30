@@ -21,7 +21,7 @@ export const axiosClientPrivate = axios.create({
 		'content-type': 'application/json',
 	},
 	credentials: 'include',
-	timeout: 60000,
+	timeout: 2000,
 	withCredentials: true,
 });
 

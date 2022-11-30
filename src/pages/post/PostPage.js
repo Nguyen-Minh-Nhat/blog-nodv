@@ -3,31 +3,43 @@ import { useParams } from 'react-router-dom';
 import {
 	deletePost,
 	getPostById,
+	likePost,
 	publishPost,
+	unLikePost,
 	unpublishPost,
 } from '../../api/postApi';
 import Header from './components/Header';
 import Main from './components/Main';
 import Post from '../../features/post/components/Post';
 import { toast } from 'react-toastify';
+import { useEffect } from 'react';
+import { useSelector } from 'react-redux';
 
 const PostPage = () => {
 	const { id } = useParams();
+
+	const socket = useSelector((state) => state.socket.data);
 
 	const queryClient = useQueryClient();
 
 	const post = queryClient.getQueryData(['post', id]);
 
 	useQuery(['post', id], () => getPostById(id), {
-		onSuccess: (data) => {
-			queryClient.setQueriesData(['post', id], data);
-		},
 		onError: (error) => {
 			if (error.response.status === 404) {
 				window.location.href = '/404';
 			}
 		},
 	});
+
+	const updateLocalPost = (updatedPost) => {
+		queryClient.setQueryData(['post', id], (oldPost) => {
+			return {
+				...oldPost,
+				...updatedPost,
+			};
+		});
+	};
 
 	const deletePostMutation = useMutation(deletePost, {
 		onSuccess: () => {
@@ -37,17 +49,50 @@ const PostPage = () => {
 
 	const publishPostMutation = useMutation(publishPost, {
 		onSuccess: (data) => {
-			queryClient.setQueryData(['post', id], data);
+			updateLocalPost(data);
 			toast.success('Post was published');
 		},
 	});
 
 	const unpublishPostMutation = useMutation(unpublishPost, {
 		onSuccess: (data) => {
-			queryClient.setQueryData(['post', id], data);
-			toast.success('Post was unpublished ');
+			updateLocalPost(data);
+			toast.success('Post was unpublished');
 		},
 	});
+
+	const likePostMutation = useMutation(likePost, {
+		onSuccess: (data) => {
+			queryClient.setQueryData(['post', post.id], data);
+			// handleSendLikePostSocket(data);
+		},
+	});
+
+	const unlikePostMutation = useMutation(unLikePost, {
+		onSuccess: (data) => {
+			queryClient.setQueryData(['post', post.id], data);
+			// handleSendLikePostSocket(data);
+		},
+	});
+
+	const handleReceiveLikePostSocket = (payload) => {
+		console.log(payload);
+		const { userLikeIds } = JSON.parse(payload.body);
+		updateLocalPost({ userLikeIds: userLikeIds });
+	};
+
+	useEffect(() => {
+		const topic = `/topic/posts/${post?.id}/like`;
+		if (socket) {
+			socket.subscribe(topic, handleReceiveLikePostSocket, { id: topic });
+		}
+		return () => {
+			if (socket) {
+				console.log('unsubscribing');
+				socket.unsubscribe(topic);
+			}
+		};
+	}, [post?.id, socket]);
 
 	return (
 		<div className="flex h-screen flex-col">
@@ -59,6 +104,8 @@ const PostPage = () => {
 						onPublish={publishPostMutation.mutate}
 						onDelete={deletePostMutation.mutate}
 						onUnpublish={unpublishPostMutation.mutate}
+						onLike={likePostMutation.mutate}
+						onUnlike={unlikePostMutation.mutate}
 					/>
 				)}
 			</Main>
