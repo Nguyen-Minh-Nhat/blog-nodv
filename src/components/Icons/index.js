@@ -10,6 +10,8 @@ import LoadingIcon from './LoadingIcon';
 import MagnifyingGlassIcon from './MagnifyingGlassIcon';
 import XMarkIcon from './XMarkIcon';
 import BookmarkIcon from './BookmarkIcon';
+import TrashIcon from './TrashIcon';
+import PlusIcon from './PlusIcon';
 export {
 	DeleteIcon,
 	EditIcon,
@@ -23,4 +25,6 @@ export {
 	MagnifyingGlassIcon,
 	XMarkIcon,
 	BookmarkIcon,
+	TrashIcon,
+	PlusIcon,
 };

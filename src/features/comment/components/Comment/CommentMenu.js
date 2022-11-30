@@ -1,6 +1,6 @@
 import { ListItemIcon, MenuItem, MenuList } from '@mui/material';
 import { useMemo } from 'react';
-import { EditIcon } from '../../../../components/Icons';
+import { EditIcon, FlagIcon, TrashIcon } from '../../../../components/Icons';
 
 const CommentMenu = ({ onEdit, onDelete, onReport, isUser }) => {
 	const Items = useMemo(() => {
@@ -15,7 +15,7 @@ const CommentMenu = ({ onEdit, onDelete, onReport, isUser }) => {
 					</MenuItem>
 					<MenuItem className="text-sm" onClick={onDelete}>
 						<ListItemIcon>
-							<i className="fa-solid fa-trash"></i>
+							<TrashIcon />
 						</ListItemIcon>
 						Delete
 					</MenuItem>
@@ -25,7 +25,7 @@ const CommentMenu = ({ onEdit, onDelete, onReport, isUser }) => {
 			<MenuList>
 				<MenuItem className="text-sm" onClick={onReport}>
 					<ListItemIcon>
-						<i className="fa-solid fa-flag"></i>
+						<FlagIcon />
 					</ListItemIcon>
 					Report this comment
 				</MenuItem>
