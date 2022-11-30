@@ -1,12 +1,13 @@
 import { useState } from "react";
 import { useMutation, useQueryClient } from "react-query";
 import { useSelector } from "react-redux";
-import { likePost, unLikePost } from "../../../../api/postApi";
 import { createNotification } from "../../../../api/notificationApi";
+import { likePost, unLikePost } from "../../../../api/postApi";
 import { CommentIcon, DotIcon } from "../../../../components/Icons";
 import IconWrapper from "../../../../components/IconWrapper";
 import LikeButton from "../../../../components/LikeButton";
 import Number from "../../../../components/Number";
+import AuthClick from "../../../auth/components/AuthClick";
 
 const PostActionBar = ({ post, onComment }) => {
   const userId = useSelector((state) => state.user?.data?.info?.id);
@@ -21,7 +22,6 @@ const PostActionBar = ({ post, onComment }) => {
   const likePostMutation = useMutation(likePost, {
     onSuccess: (data) => {
       queryClient.setQueryData(["post", post.id], data);
-      console.log(post);
     },
   });
 
@@ -30,7 +30,6 @@ const PostActionBar = ({ post, onComment }) => {
       queryClient.setQueryData(["post", post.id], data);
     },
   });
-
   const createNotificationLikePostMutation = useMutation(createNotification, {
     onSuccess: (data) => {
       console.log(data.data);
@@ -40,9 +39,6 @@ const PostActionBar = ({ post, onComment }) => {
   const handleLike = (isLike) => {
     if (isLike) {
       likePostMutation.mutate(post.id);
-      {
-        console.log(notification);
-      }
       createNotificationLikePostMutation.mutate(notification);
     } else {
       unlikePostMutation.mutate(post.id);
@@ -51,7 +47,9 @@ const PostActionBar = ({ post, onComment }) => {
   return (
     <div className="flex h-10 items-center rounded-full bg-white px-4 font-thin text-[#757575] shadow">
       <ButtonAction>
-        <LikeButton isLiked={isLiked} onClick={handleLike} />
+        <AuthClick>
+          <LikeButton isLiked={isLiked} onClick={handleLike} />
+        </AuthClick>
         <Number>{post?.userLikeIds ? post.userLikeIds.length : 0}</Number>
       </ButtonAction>
 

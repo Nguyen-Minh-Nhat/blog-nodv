@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import PostPreviewFooter from "./PostPreviewFooter";
 import PostThumbnail from "./PostThumbnail";
 
-const PostPreviewBody = ({ post }) => {
+const PostPreviewBody = ({ post, ...menuActionProps }) => {
   const postLink = `/post/${post.id}`;
   return (
     <div className="mt-3 flex">
@@ -11,7 +11,7 @@ const PostPreviewBody = ({ post }) => {
           <Title>{post.title}</Title>
           <Subtitle>{post.subtitle}</Subtitle>
         </Link>
-        <PostPreviewFooter post={post} />
+        <PostPreviewFooter post={post} {...menuActionProps} />
       </div>
       <Link to={postLink}>
         <div className="ml-14 ">

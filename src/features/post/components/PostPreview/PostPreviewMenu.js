@@ -1,6 +1,7 @@
 import { ListItemIcon, MenuItem, MenuList } from '@mui/material';
 import { useMemo } from 'react';
 import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
 import {
 	DeleteIcon,
@@ -12,6 +13,7 @@ import {
 
 const PostMenu = ({ post, onDelete, onPublish, onUnpublish, onEdit }) => {
 	const userId = useSelector((state) => state.user?.data?.info?.id);
+	const navigate = useNavigate();
 	const isUser = post.user.id === userId;
 	const menuItems = useMemo(() => {
 		let items = [];
@@ -21,7 +23,7 @@ const PostMenu = ({ post, onDelete, onPublish, onUnpublish, onEdit }) => {
 				{
 					icon: <EditIcon />,
 					label: 'Edit',
-					onClick: () => onEdit(post.id),
+					onClick: () => navigate(`/post/${post.id}/edit`),
 				},
 				{
 					icon: <DeleteIcon />,
@@ -57,8 +59,8 @@ const PostMenu = ({ post, onDelete, onPublish, onUnpublish, onEdit }) => {
 		return items;
 	}, [
 		isUser,
+		navigate,
 		onDelete,
-		onEdit,
 		onPublish,
 		onUnpublish,
 		post.id,

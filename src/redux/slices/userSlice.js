@@ -5,7 +5,7 @@ const initialState = {
 	data: {
 		info: null,
 		accessToken: null,
-		isLoggedIn: false,
+		isLogin: false,
 	},
 	error: undefined,
 };
@@ -16,13 +16,14 @@ const userSlice = createSlice({
 	reducers: {
 		setUser: (state, action) => {
 			state.data.info = action.payload;
-			state.data.isLoggedIn = true;
+			state.data.isLogin = true;
 		},
 		setAccessToken: (state, action) => {
 			state.data.accessToken = action.payload;
+			state.data.isLogin = true;
 		},
 		logout: (state, action) => {
-			state.data.isLoggedIn = false;
+			state.data.isLogin = false;
 			state.data.info = null;
 			state.data.accessToken = null;
 		},

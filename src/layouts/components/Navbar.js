@@ -1,43 +1,42 @@
-import React from "react";
-import { NavLink } from "react-router-dom";
-import routes from "../../routes/route-paths";
-import IconButton from "@mui/material/IconButton";
-import { useLocation, matchPath } from "react-router";
 import { Tooltip } from "@mui/material";
+import IconButton from "@mui/material/IconButton";
+import React from "react";
+import { matchPath, useLocation } from "react-router";
+import { NavLink } from "react-router-dom";
+import { appRoutes } from "../../routes/AppRoutes";
 
 const Navbar = () => {
   const { pathname } = useLocation();
-
   const navbarItems = [
     {
       title: "Home",
       icon: <i className="fa-light fa-house"></i>,
       iconActive: <i className="fa-solid fa-house"></i>,
-      path: routes.home,
+      path: appRoutes.HOME,
     },
     {
       title: "Notifications",
       icon: <i className="fa-light fa-bell"></i>,
       iconActive: <i className="fa-solid fa-bell"></i>,
-      path: routes.notifications,
+      path: appRoutes.NOTIFICATION,
     },
     {
       title: "Bookmark",
       icon: <i className="fa-light fa-bookmark"></i>,
       iconActive: <i className="fa-solid fa-bookmark"></i>,
-      path: routes.bookmark,
+      path: appRoutes.BOOKMARK,
     },
     {
       title: "Stories",
       icon: <i className="fa-light fa-rectangle-history"></i>,
       iconActive: <i className="fa-solid fa-rectangle-history"></i>,
-      path: routes.stories,
+      path: appRoutes.STORIES,
     },
     {
       title: "write",
       icon: <i className="fa-light fa-file-pen"></i>,
       iconActive: <i className="fa-solid fa-file-pen"></i>,
-      path: routes.write,
+      path: appRoutes.WRITE,
     },
   ];
 

@@ -1,7 +1,8 @@
 import axios from "axios";
 import { setIsCallLogin } from "../redux/slices/authSlice";
 import store from "../redux/store";
-
+import jwt_decode from "jwt-decode";
+import { appRoutes } from "../routes/AppRoutes";
 const baseURL = process.env.REACT_APP_API_URL;
 const axiosClient = axios.create({
   baseURL,
@@ -30,27 +31,26 @@ axiosClientPrivate.interceptors.request.use(
     config.headers["Authorization"] = `Bearer ${accessToken}`;
     if (accessToken === null) {
       store.dispatch(setIsCallLogin(true));
+    } else {
+      const decodeToken = jwt_decode(accessToken);
+      const today = new Date();
+      if (decodeToken.exp < today.getTime() / 1000) {
+        window.location.href = appRoutes.AUTH_LOGIN;
+        // try {
+        // 	const res = await refreshToken();
+        // 	store.dispatch(setAccessToken(res.data.access_token));
+        // 	config.headers['Authorization'] = res.data.access_token;
+        // } catch (error) {
+        // 	store.dispatch(logout());
+        // 	toast.error('expire login');
+        // }
+      }
     }
 
-    // const decodeToken = jwtDecode(accessToken);
-    // const today = new Date();
-
-    // if (decodeToken.exp < today.getTime() / 1000) {
-    // 	try {
-    // 		const res = await refreshToken();
-    // 		store.dispatch(setAccessToken(res.data.access_token));
-    // 		config.headers['Authorization'] = res.data.access_token;
-    // 	} catch (error) {
-    // 		store.dispatch(logout());
-    // 		toast.error('expire login');
-    // 	}
-    // }
     return config;
   },
-  (err) => {
-    console.log("err here", err);
-    return Promise.reject(err.response.data);
-    // return err;
+  (error) => {
+    return Promise.reject(error.response.data);
   }
 );
 

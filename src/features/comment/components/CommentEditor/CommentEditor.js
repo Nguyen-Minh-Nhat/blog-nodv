@@ -1,6 +1,7 @@
 import { Collapse } from "@mui/material";
 import { useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { setIsCallLogin } from "../../../../redux/slices/authSlice";
 import CommentEditorFooter from "./CommentEditorFooter";
 import CommentEditorHeader from "./CommentEditorHeader";
 import CommentEditorInput from "./CommentEditorInput";
@@ -42,14 +43,15 @@ const CommentEditor = ({
       <Collapse orientation="vertical" in={isFocused && !hideHeader}>
         <CommentEditorHeader />
       </Collapse>
-      <CommentEditorInput
-        value={inputValue}
-        onFocus={handleFocus}
-        isFocused={isFocused}
-        onChange={(e) => {
-          setInputValue(e.target.value);
-        }}
-      />
+      <div onClick={handleFocus}>
+        <CommentEditorInput
+          value={inputValue}
+          isFocused={isFocused}
+          onChange={(e) => {
+            setInputValue(e.target.value);
+          }}
+        />
+      </div>
       <Collapse orientation="vertical" in={isFocused}>
         <CommentEditorFooter
           onCancel={handleCancel}

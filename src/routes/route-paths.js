@@ -2,9 +2,6 @@ import { lazy } from "react";
 import AccountTab from "../pages/setting/tab/AccountTab";
 import NotificationsTab from "../pages/setting/tab/NotificationsTab";
 import PublishedTab from "../pages/setting/tab/PublishedTab";
-import AboutTab from "../pages/Profile/tab/AboutTab";
-import HomeTab from "../pages/Profile/tab/HomeTab";
-import ListTab from "../pages/Profile/tab/ListTab";
 const BookmarkPage = lazy(() => import("../pages/bookmark"));
 const HomePage = lazy(() => import("../pages/home/HomePage"));
 const NotificationsPage = lazy(() => import("../pages/notifications"));
@@ -12,7 +9,6 @@ const StoriesPage = lazy(() => import("../pages/stories/StoriesPage"));
 const PostPage = lazy(() => import("../pages/post/PostPage"));
 const WritePage = lazy(() => import("../pages/write/WritePage"));
 const SettingPage = lazy(() => import("../pages/setting/SettingPage"));
-const ProfilePage = lazy(() => import("../pages/Profile/ProfilePage"));
 
 const routes = {
   home: "/",
@@ -22,7 +18,6 @@ const routes = {
   stories: "/stories",
   write: "/write",
   setting: "/setting",
-  profile: "/profile",
 };
 
 const home = {
@@ -31,14 +26,8 @@ const home = {
 };
 
 const post = {
-  path: "/post/:id",
-  element: <PostPage />,
-  children: {
-    id: {
-      path: "/:id",
-      element: <PostPage />,
-    },
-  },
+  path: "/post",
+  children: [{ path: "/:id", element: <PostPage /> }],
 };
 
 const notifications = {
@@ -64,11 +53,11 @@ const write = {
 const setting = {
   path: "/setting",
   element: <WritePage />,
-  children: {
-    published: {
-      path: "/published",
-    },
-  },
+  children: [
+    { path: "/account", element: <AccountTab /> },
+    { path: "/notifications", element: <NotificationsTab /> },
+    { path: "/published", element: <PublishedTab /> },
+  ],
 };
 
 const routesV2 = {
@@ -113,15 +102,6 @@ export const routesWithComponents = [
       { path: "", component: AccountTab },
       { path: "published", component: PublishedTab },
       { path: "notifications", component: NotificationsTab },
-    ],
-  },
-  {
-    path: routes.profile,
-    component: ProfilePage,
-    children: [
-      { path: "", component: HomeTab },
-      { path: "list", component: ListTab },
-      { path: "about", component: AboutTab },
     ],
   },
 ];
