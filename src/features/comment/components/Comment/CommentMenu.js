@@ -34,7 +34,7 @@ const CommentMenu = ({ onEdit, onDelete, onReport, isUser }) => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [isUser]);
 
-	return <div className="flex flex-col justify-end">{Items}</div>;
+	return <div className="flex flex-col justify-end bg-white">{Items}</div>;
 };
 
 export default CommentMenu;
