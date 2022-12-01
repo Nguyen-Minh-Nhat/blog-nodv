@@ -11,7 +11,7 @@ const MenuTrigger = ({ children }) => {
 		<Popover
 			isOpen={open}
 			padding={4}
-			positions={['bottom']}
+			positions={['bottom', 'top']}
 			onClickOutside={() => setOpen(false)}
 			content={<ShadowWrapper>{children}</ShadowWrapper>}
 			containerStyle={{ zIndex: 9999 }}
