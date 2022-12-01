@@ -13,11 +13,15 @@ const SocketClient = () => {
 	useEffect(() => {
 		const sock = new SockJS(SOCKET_URL);
 		const stomp = over(sock);
-		stomp.debug = false;
-		stomp.connect({}, () => onSuccessConnect(stomp), onError);
+		if (id) {
+			stomp.debug = false;
+			stomp.connect({}, () => onSuccessConnect(stomp), onError);
+		}
 
 		return () => {
-			stomp.disconnect();
+			if (id) {
+				stomp.disconnect();
+			}
 		};
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [id]);
