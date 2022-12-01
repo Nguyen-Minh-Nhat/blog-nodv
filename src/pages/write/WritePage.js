@@ -105,7 +105,7 @@ const WritePage = () => {
 	};
 
 	return (
-		<div className="h-screen overflow-y-scroll">
+		<div>
 			<div className="sticky top-0 z-[100] bg-white">
 				<Header>
 					<ModalTrigger
