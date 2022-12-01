@@ -95,7 +95,7 @@ const PostPage = () => {
 	}, [post?.id, socket]);
 
 	return (
-		<div className="flex h-screen flex-col">
+		<div className="flex flex-col">
 			<Header />
 			<Main>
 				{post && (
