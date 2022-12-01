@@ -19,7 +19,7 @@ const App = () => {
 	return (
 		<div className="h-screen w-screen overflow-hidden">
 			<LoginModal />
-			<SocketClient />
+			{isLogin && <SocketClient />}
 			<AppRoutes />
 		</div>
 	);

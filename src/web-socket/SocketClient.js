@@ -7,7 +7,7 @@ import { setSocket } from '../redux/slices/socketSlice';
 const SOCKET_URL = process.env.REACT_APP_API_URL + '/ws';
 
 const SocketClient = () => {
-	const { id } = useSelector((state) => state.user.data.info);
+	const id = useSelector((state) => state.user.data?.info?.id);
 	const dispatch = useDispatch();
 
 	useEffect(() => {

@@ -4,21 +4,7 @@ import { createReactEditorJS } from 'react-editor-js';
 import { deleteImg, uploadImg } from '../../utils/firebaseFns';
 import readingTime from '../../utils/readingTime';
 import EDITOR_JS_TOOLS from './tool';
-const Editor = ({
-	onChange,
-	defaultValue = {
-		blocks: [
-			{
-				id: 'sheNwCUP5A',
-				type: 'header',
-				data: {
-					level: 1,
-				},
-			},
-		],
-	},
-	readOnly,
-}) => {
+const Editor = ({ onChange, defaultValue }) => {
 	const editorCore = useRef(null);
 	const prevImage = useRef([]);
 
@@ -67,7 +53,6 @@ const Editor = ({
 		}
 		prevImage.current = currentImages;
 		const data = await handleSave();
-
 		onChange(data, readingTime());
 	};
 
@@ -75,10 +60,11 @@ const Editor = ({
 	return (
 		<div id="article" className="prose max-w-none">
 			<ReactEditorJS
-				readOnly={readOnly}
 				tools={tools}
 				onInitialize={handleInitialize}
 				defaultValue={defaultValue}
+				defaultBlock="header"
+				placeholder="Title"
 				onChange={(e) => {
 					handleChange(e);
 				}}

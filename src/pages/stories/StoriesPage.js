@@ -18,8 +18,9 @@ const filterConfigs = [
 
 const StoriesPage = () => {
 	const [filter, setFilter] = React.useState(filterType.ALL);
-	const { data } = useQuery(['posts', filter], () => getOwnedPosts(filter));
-	// console.log(queryClient.getQueryData('posts'));
+	const queryClient = useQueryClient();
+	useQuery(['stories', filter], () => getOwnedPosts(filter));
+	const data = queryClient.getQueryData(['stories', filter]);
 	return (
 		<PageWithTitle
 			title={'Your Stories'}
@@ -29,7 +30,7 @@ const StoriesPage = () => {
 			tabItems={filterConfigs}
 		>
 			<div>
-				<PostList postList={data} storeKey={['posts', filter]} />
+				<PostList postList={data} storeKey={['stories', filter]} />
 			</div>
 		</PageWithTitle>
 	);

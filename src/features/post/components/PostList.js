@@ -3,7 +3,7 @@ import { useMutation, useQueryClient } from 'react-query';
 import { deletePost, publishPost, unpublishPost } from '../../../api/postApi';
 import { toast } from 'react-toastify';
 
-export const PostList = ({ postList = [], storeKey = 'post' }) => {
+export const PostList = ({ postList = [], storeKey = 'posts' }) => {
 	const queryClient = useQueryClient();
 	const updateLocalPost = (updatedPost) => {
 		queryClient.setQueryData(storeKey, (oldData) =>
