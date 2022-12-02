@@ -9,9 +9,9 @@ const SidebarRight = () => {
 	const { isLogin } = useSelector((state) => state.user.data);
 
 	return (
-		<div className="w-[394px] border-l px-8">
+		<div className="min-h-screen w-[394px] border-l px-8">
 			{!isLogin && (
-				<div className="mt-10">
+				<div className="pt-10">
 					<TriggerLogin>
 						<Button
 							variant="contained"
@@ -24,7 +24,7 @@ const SidebarRight = () => {
 					</TriggerLogin>
 				</div>
 			)}
-			<div className="mt-10">
+			<div className="pt-10">
 				<Search />
 				<RecommendTopic />
 				<WhoToFollow />

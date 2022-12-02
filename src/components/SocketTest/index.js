@@ -6,14 +6,13 @@ const SocketTest = () => {
 	const user = useSelector((state) => state.user.data.info);
 	const socket = useSelector((state) => state.socket.data);
 	const [message, setMessage] = useState('');
-	const handleSendMessage = () => {
-		socket.send('/app/message', {}, user.id);
-	};
+	const handleSendMessage = () => {};
 	useEffect(() => {
-		if (!socket) return;
-		socket.subscribe('/topic/message', (message) => {
-			console.log(message);
-		});
+		if (socket) {
+			socket.subscribe('/topic/message', (message) => {
+				console.log(message);
+			});
+		}
 
 		return () => {
 			if (socket) socket.unsubscribe('/topic/message');

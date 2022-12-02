@@ -4,13 +4,13 @@ import { deletePost, publishPost, unpublishPost } from "../../../api/postApi";
 import { toast } from "react-toastify";
 import { updatePostToBookmark } from "../../../api/bookmarkApi";
 import { useDispatch } from "react-redux";
-import {
-  updatePostIds,
-  updatePosts,
-  updateBookmark,
-} from "../../../redux/slices/bookmarkSlice";
+import { updateBookmark } from "../../../redux/slices/bookmarkSlice";
 
-export const PostList = ({ postList = [], postIdsBookmark = [] }) => {
+export const PostList = ({
+  postList = [],
+  postIdsBookmark = [],
+  storeKey = "posts",
+}) => {
   const queryClient = useQueryClient();
   const dispatch = useDispatch();
 
@@ -73,7 +73,7 @@ export const PostList = ({ postList = [], postIdsBookmark = [] }) => {
           </div>
         ))
       ) : (
-        <h2>No post here.</h2>
+        <div className="text-center text-gray-500">No posts found</div>
       )}
     </div>
   );

@@ -1,61 +1,54 @@
-import { useSelector } from 'react-redux';
-import PageWithTitle from '../../components/PageWithTitle';
-import { NotificationList } from '../../features/notification';
+import { useState } from "react";
+import { useQuery } from "react-query";
+import { useSelector } from "react-redux";
+import { getNotifications } from "../../api/notificationApi";
+import PageWithTitle from "../../components/PageWithTitle";
+import { NotificationList } from "../../features/notification";
 
-export const TYPE_NOTIFICATION = {
-	follow: 'follow',
-	clap: 'clap',
-	comment: 'comment',
-};
-
+const NotificationStatus = [
+  { id: 0, title: "All" },
+  { id: 1, title: "Unread" },
+  { id: 2, title: "Read" },
+];
 const NotificationsPage = () => {
-	const user = useSelector((state) => state.user.data.info);
-	const notificationList = [
-		{
-			id: '1',
-			link: `/user/${user.id}`,
-			sender: user,
-			receiver: user,
-			type: TYPE_NOTIFICATION.follow,
-			content: 'Nguyễn Minh Nhật đã follow bạn',
-			createdDate: new Date(),
-			status: 1,
-		},
-		{
-			id: '2',
-			link: `/user/${user.id}`,
-			sender: user,
-			receiver: user,
-			type: TYPE_NOTIFICATION.comment,
-			content: 'Nguyễn Minh Nhật đã follow bạn',
-			createdDate: new Date(),
-			status: 1,
-		},
-		{
-			id: '3',
-			link: `/user/${user.id}`,
-			sender: user,
-			receiver: user,
-			type: TYPE_NOTIFICATION.clap,
-			content: 'Nguyễn Minh Nhật đã follow bạn',
-			createdDate: new Date(),
-			status: 0,
-		},
-	];
+  const user = useSelector((state) => state.user.data.info);
+  const [notifications, setNotifications] = useState([]);
+  const [filter, setFilter] = useState(null);
 
-	return (
-		<PageWithTitle
-			title={'Notifications'}
-			tabItems={[
-				{ id: 1, title: 'All' },
-				{ id: 2, title: 'Unread' },
-			]}
-		>
-			<div>
-				<NotificationList notificationList={notificationList} />
-			</div>
-		</PageWithTitle>
-	);
+  useQuery(["notifications", filter], () => getNotifications(filter), {
+    onSuccess: (data) => {
+      setNotifications(data);
+    },
+  });
+  return (
+    <PageWithTitle
+      onTabChange={(id) => {
+        switch (id) {
+          case NotificationStatus[0].id:
+            setFilter(null);
+            break;
+
+          case NotificationStatus[1].id:
+            setFilter(false);
+            break;
+
+          case NotificationStatus[2].id:
+            setFilter(true);
+            break;
+
+          default:
+            setFilter(null);
+            break;
+        }
+      }}
+      title={"Notifications"}
+      tabItems={NotificationStatus}
+    >
+      <div>
+        <NotificationList notificationList={notifications} />
+      </div>
+    </PageWithTitle>
+  );
 };
 
 export default NotificationsPage;

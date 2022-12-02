@@ -2,8 +2,9 @@ import Autocomplete from '@mui/material/Autocomplete';
 import Chip from '@mui/material/Chip';
 import TextField from '@mui/material/TextField';
 import { useEffect, useState } from 'react';
+import { useMutation } from 'react-query';
+import { searchTopics } from '../../../../api/topicApi';
 import useDebounce from '../../../../hooks/useDebounce';
-import googleSearch from '../../../../utils/googleSearch';
 
 const InputTopic = ({ onChange, defaultValue = [] }) => {
 	const [value, setValue] = useState(defaultValue);
@@ -11,20 +12,18 @@ const InputTopic = ({ onChange, defaultValue = [] }) => {
 	const [searchResult, setSearchResult] = useState([]);
 	const debouncedValue = useDebounce(searchValue, 500);
 
-	const [loading, setLoading] = useState(false);
+	const searchMutation = useMutation(searchTopics, {
+		onSuccess: (data) => {
+			setSearchResult(data);
+		},
+	});
 
 	useEffect(() => {
 		if (!debouncedValue.trim()) {
 			setSearchResult([]);
 			return;
 		}
-		const getSearchValue = async () => {
-			setLoading(true);
-			const res = await googleSearch(debouncedValue);
-			setSearchResult(res);
-			setLoading(false);
-		};
-		getSearchValue();
+		searchMutation.mutate(debouncedValue);
 	}, [debouncedValue]);
 
 	return (
@@ -38,14 +37,15 @@ const InputTopic = ({ onChange, defaultValue = [] }) => {
 				onChange([...newValue]);
 			}}
 			options={searchResult}
-			isOptionEqualToValue={(option, value) => option === value}
+			getOptionLabel={(option) => option.name}
+			isOptionEqualToValue={(option, value) => option.name === value.name}
 			renderTags={(tagValue, getTagProps) =>
 				tagValue.map((option, index) => (
-					<Chip label={option} {...getTagProps({ index })} />
+					<Chip label={option.name} {...getTagProps({ index })} />
 				))
 			}
 			limitTags={5}
-			loading={loading}
+			loading={searchMutation.isLoading}
 			loadingText={'search...'}
 			renderInput={(params) => (
 				<TextField

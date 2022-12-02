@@ -8,6 +8,10 @@ import DotIcon from './DotIcon';
 import CommentIcon from './CommentIcon';
 import LoadingIcon from './LoadingIcon';
 import MagnifyingGlassIcon from './MagnifyingGlassIcon';
+import XMarkIcon from './XMarkIcon';
+import BookmarkIcon from './BookmarkIcon';
+import TrashIcon from './TrashIcon';
+import PlusIcon from './PlusIcon';
 export {
 	DeleteIcon,
 	EditIcon,
@@ -19,4 +23,8 @@ export {
 	CommentIcon,
 	LoadingIcon,
 	MagnifyingGlassIcon,
+	XMarkIcon,
+	BookmarkIcon,
+	TrashIcon,
+	PlusIcon,
 };
