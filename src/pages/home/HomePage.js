@@ -2,14 +2,23 @@ import { useQuery } from "react-query";
 import { getPosts } from "../../api/postApi";
 import { PostList } from "../../features/post";
 import Header from "./components/Header";
-import { getPostIdsBookmark } from "../../api/bookmarkApi";
+import { getPostIdsBookmark, getBookmarkByUserId } from "../../api/bookmarkApi";
+import { useSelector, useDispatch } from "react-redux";
+import { setBookmark } from "../../redux/slices/bookmarkSlice";
 
 const HomePage = () => {
+  const dispatch = useDispatch();
   const { data: posts } = useQuery("posts", getPosts);
-  const { data: postIdsBookmark } = useQuery(
-    "postIdsBookmark",
-    getPostIdsBookmark
-  );
+  // const { data: postIdsBookmark } = useQuery(
+  //   "postIdsBookmark",
+  //   getPostIdsBookmark
+  // );
+  useQuery("bookmark", getBookmarkByUserId, {
+    onSuccess: (data) => {
+      dispatch(setBookmark(data));
+    },
+  });
+  const postIdsBookmark = useSelector((state) => state.bookmark.postIds);
   return (
     <div className="h-screen overflow-x-auto ">
       <div className="sticky top-0 z-10 bg-white pt-6">

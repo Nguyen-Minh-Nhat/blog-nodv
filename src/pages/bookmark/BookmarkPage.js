@@ -2,7 +2,6 @@ import PageWithTitle from "../../components/PageWithTitle";
 import { PostList } from "../../features/post";
 import { useQuery, useQueryClient } from "react-query";
 import { getBookmarkByUserId } from "../../api/bookmarkApi";
-import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
 import { setBookmark } from "../../redux/slices/bookmarkSlice";
 
@@ -11,16 +10,14 @@ const BookmarkPage = () => {
   const dispatch = useDispatch();
 
   // const bookmark = queryClient.getQueryData("bookmark");
-  const bookmark = useSelector((state) => state.bookmark.data);
+  const bookmark = useSelector((state) => state.bookmark);
 
   useQuery("bookmark", getBookmarkByUserId, {
     onSuccess: (data) => {
       dispatch(setBookmark(data));
     },
-    onError: (err) => {
-      toast.error(err.message);
-    },
   });
+  // console.log("bookmark post", bookmark.posts);
 
   return (
     <PageWithTitle title="Bookmark">

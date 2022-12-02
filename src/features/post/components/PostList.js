@@ -4,7 +4,11 @@ import { deletePost, publishPost, unpublishPost } from "../../../api/postApi";
 import { toast } from "react-toastify";
 import { updatePostToBookmark } from "../../../api/bookmarkApi";
 import { useDispatch } from "react-redux";
-import { updatePostIds } from "../../../redux/slices/bookmarkSlice";
+import {
+  updatePostIds,
+  updatePosts,
+  updateBookmark,
+} from "../../../redux/slices/bookmarkSlice";
 
 export const PostList = ({ postList = [], postIdsBookmark = [] }) => {
   const queryClient = useQueryClient();
@@ -49,9 +53,8 @@ export const PostList = ({ postList = [], postIdsBookmark = [] }) => {
 
   const updateBookmarkMutation = useMutation(updatePostToBookmark, {
     onSuccess: (data) => {
-      console.log("data", data);
-      // dispatch()
-      queryClient.setQueryData(["postIdsBookmark"], data);
+      // console.log('data ', data);
+      dispatch(updateBookmark({ postIds: data, posts: postList }));
     },
   });
   return (
