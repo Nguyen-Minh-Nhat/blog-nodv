@@ -5,8 +5,6 @@ import ThumbnailSelectBox from './ThumbnailSelectBox';
 import { useSelector } from 'react-redux';
 
 const PostPublicEditor = ({ post, setPost }) => {
-	const user = useSelector((state) => state.user.data.info);
-	post.user = user;
 	const [thumbnailSelected, setThumbnailSelected] = useState(post?.images[0]);
 	// const [topics, setTopics] = useState(post.topics);
 	return (

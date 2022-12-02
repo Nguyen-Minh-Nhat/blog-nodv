@@ -3,7 +3,10 @@ import { Button, IconButton, Tooltip } from '@mui/material';
 import PostPublicEditor from '../PostPublicEditor';
 import PostPreview from '../PostPreview';
 import { EditIcon, EyeIcon, XMarkIcon } from '../../../../components/Icons';
+import { useSelector } from 'react-redux';
 const PostPublicPreview = ({ post, setPost, onSubmit, onClose }) => {
+	const user = useSelector((state) => state.user.data.info);
+	post.user = user;
 	const [isEdit, setIsEdit] = useState(false);
 	return (
 		<div className="w-[700px] rounded-lg bg-white">
