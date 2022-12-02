@@ -4,6 +4,7 @@ import { getAuthInfo } from "./api/authApi";
 import LoginModal from "./pages/auth/LoginModal";
 import { setUser } from "./redux/slices/userSlice";
 import AppRoutes from "./routes/AppRoutes";
+import SocketClient from "./web-socket/SocketClient";
 
 const App = () => {
   const { isLogin } = useSelector((state) => state.user.data);
@@ -16,9 +17,9 @@ const App = () => {
   });
 
   return (
-    <div className="h-screen w-screen overflow-hidden">
+    <div className="">
       <LoginModal />
-      {/* <SocketClient /> */}
+      {isLogin && <SocketClient />}
       <AppRoutes />
     </div>
   );

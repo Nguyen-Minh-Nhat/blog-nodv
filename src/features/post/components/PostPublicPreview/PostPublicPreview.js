@@ -2,7 +2,11 @@ import { useState } from "react";
 import { Button, IconButton, Tooltip } from "@mui/material";
 import PostPublicEditor from "../PostPublicEditor";
 import PostPreview from "../PostPreview";
+import { EditIcon, EyeIcon, XMarkIcon } from "../../../../components/Icons";
+import { useSelector } from "react-redux";
 const PostPublicPreview = ({ post, setPost, onSubmit, onClose }) => {
+  const user = useSelector((state) => state.user.data.info);
+  post.user = user;
   const [isEdit, setIsEdit] = useState(false);
   return (
     <div className="w-[700px] rounded-lg bg-white">
@@ -16,7 +20,7 @@ const PostPublicPreview = ({ post, setPost, onSubmit, onClose }) => {
                 className="h-10 w-10 bg-slate-50 hover:bg-slate-100"
                 onClick={() => setIsEdit(false)}
               >
-                <i className="fa-solid fa-eye"></i>
+                <EyeIcon />
               </IconButton>
             </Tooltip>
           ) : (
@@ -26,7 +30,7 @@ const PostPublicPreview = ({ post, setPost, onSubmit, onClose }) => {
                 className="h-10 w-10 bg-slate-50 hover:bg-slate-100"
                 onClick={() => setIsEdit(true)}
               >
-                <i className="fa-solid fa-edit"></i>
+                <EditIcon />
               </IconButton>
             </Tooltip>
           )}
@@ -35,6 +39,7 @@ const PostPublicPreview = ({ post, setPost, onSubmit, onClose }) => {
             className="btn rounded-full normal-case"
             variant="contained"
             onClick={onSubmit}
+            disableElevation
           >
             Public now
           </Button>
@@ -43,7 +48,7 @@ const PostPublicPreview = ({ post, setPost, onSubmit, onClose }) => {
             className="h-10 w-10 bg-slate-50 hover:bg-slate-100"
             onClick={onClose}
           >
-            <i className="fa-solid fa-xmark"></i>
+            <XMarkIcon />
           </IconButton>
         </div>
       </div>

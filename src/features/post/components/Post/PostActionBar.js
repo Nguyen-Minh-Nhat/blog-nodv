@@ -1,49 +1,19 @@
-import { useState } from "react";
-import { useMutation, useQueryClient } from "react-query";
 import { useSelector } from "react-redux";
-import { createNotification } from "../../../../api/notificationApi";
-import { likePost, unLikePost } from "../../../../api/postApi";
 import { CommentIcon, DotIcon } from "../../../../components/Icons";
 import IconWrapper from "../../../../components/IconWrapper";
 import LikeButton from "../../../../components/LikeButton";
 import Number from "../../../../components/Number";
 import AuthClick from "../../../auth/components/AuthClick";
 
-const PostActionBar = ({ post, onComment }) => {
+const PostActionBar = ({ post, onComment, onLike, onUnlike }) => {
   const userId = useSelector((state) => state.user?.data?.info?.id);
   const isLiked = post?.userLikeIds?.includes(userId);
-  const queryClient = useQueryClient();
-  const [notification, setNotification] = useState({
-    link: `/posts/${post.id}`,
-    receiverId: `${post.userId}`,
-    type: "LIKE",
-  });
-
-  const comments = useSelector((state) => state.comment?.list);
-
-  const likePostMutation = useMutation(likePost, {
-    onSuccess: (data) => {
-      queryClient.setQueryData(["post", post.id], data);
-    },
-  });
-
-  const unlikePostMutation = useMutation(unLikePost, {
-    onSuccess: (data) => {
-      queryClient.setQueryData(["post", post.id], data);
-    },
-  });
-  const createNotificationLikePostMutation = useMutation(createNotification, {
-    onSuccess: (data) => {
-      console.log(data.data);
-    },
-  });
 
   const handleLike = (isLike) => {
     if (isLike) {
-      likePostMutation.mutate(post.id);
-      createNotificationLikePostMutation.mutate(notification);
+      onLike(post.id);
     } else {
-      unlikePostMutation.mutate(post.id);
+      onUnlike(post.id);
     }
   };
   return (
@@ -61,7 +31,7 @@ const PostActionBar = ({ post, onComment }) => {
         <IconWrapper>
           <CommentIcon />
         </IconWrapper>
-        <Number>{comments.length > 0 ? comments.length : 0}</Number>
+        {/* <Number>{comments.length > 0 ? comments.length : 0}</Number> */}
       </ButtonAction>
 
       <DivideLine></DivideLine>

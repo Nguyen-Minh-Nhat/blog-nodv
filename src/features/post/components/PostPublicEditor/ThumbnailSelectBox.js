@@ -14,7 +14,7 @@ const ThumbnailSelectBox = ({ initial, images, onChange }) => {
 							}`}
 							onClick={() => onChange(img)}
 						>
-							<PostThumbnail imagePath={img} />
+							<PostThumbnail src={img} />
 						</div>
 					))}
 				</div>

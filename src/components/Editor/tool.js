@@ -14,6 +14,7 @@ import Quote from '@editorjs/quote';
 import SimpleImage from '@editorjs/simple-image';
 import Header from 'editorjs-header-with-alignment';
 import Paragraph from 'editorjs-paragraph-with-alignment';
+import Image from '@editorjs/image';
 
 const EDITOR_JS_TOOLS = {
 	paragraph: {
@@ -33,9 +34,6 @@ const EDITOR_JS_TOOLS = {
 	header: {
 		class: Header,
 		inlineToolbar: true,
-		config: {
-			placeholder: 'Title',
-		},
 	},
 	quote: { class: Quote, inlineToolbar: true },
 	marker: Marker,
@@ -43,6 +41,7 @@ const EDITOR_JS_TOOLS = {
 	delimiter: Delimiter,
 	inlineCode: InlineCode,
 	simpleImage: SimpleImage,
+	image: Image,
 };
 
 export default EDITOR_JS_TOOLS;

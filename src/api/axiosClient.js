@@ -3,6 +3,7 @@ import { setIsCallLogin } from "../redux/slices/authSlice";
 import store from "../redux/store";
 import jwt_decode from "jwt-decode";
 import { appRoutes } from "../routes/AppRoutes";
+import { logout } from "../redux/slices/userSlice";
 const baseURL = process.env.REACT_APP_API_URL;
 const axiosClient = axios.create({
   baseURL,
@@ -21,7 +22,7 @@ export const axiosClientPrivate = axios.create({
     "content-type": "application/json",
   },
   credentials: "include",
-  timeout: 60000,
+  timeout: 2000,
   withCredentials: true,
 });
 
@@ -36,6 +37,7 @@ axiosClientPrivate.interceptors.request.use(
       const today = new Date();
       if (decodeToken.exp < today.getTime() / 1000) {
         window.location.href = appRoutes.AUTH_LOGIN;
+        store.dispatch(logout);
         // try {
         // 	const res = await refreshToken();
         // 	store.dispatch(setAccessToken(res.data.access_token));

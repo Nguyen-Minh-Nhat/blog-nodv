@@ -1,4 +1,5 @@
 import { IconButton } from "@mui/material";
+import { BookmarkIcon } from "../../../components/Icons";
 import MenuTrigger from "../../../components/MenuTrigger/MenuTrigger";
 import PostMenu from "./PostPreview/PostPreviewMenu";
 
@@ -6,7 +7,7 @@ const PostAction = ({ post, ...menuActionProps }) => {
   return (
     <div className="flex gap-2">
       <IconButton size="small" className="h-8 w-8">
-        <i className="fa-light fa-bookmark"></i>
+        <BookmarkIcon />
       </IconButton>
       <IconButton size="small" className="h-8 w-8">
         <i className="fa-light fa-circle-minus"></i>

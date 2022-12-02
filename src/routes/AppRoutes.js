@@ -25,6 +25,7 @@ export const appRoutes = {
   BOOKMARK: "/bookmark",
   STORIES: "/stories",
   WRITE: "/write",
+  WRITE_EDIT: "/write/:id",
   SETTING: "/setting",
   SETTING_ACCOUNT: "/setting",
   SETTING_NOTIFICATION: "/setting/notification",
@@ -33,9 +34,7 @@ export const appRoutes = {
   AUTH_REDIRECT: "/oauth2/redirect",
   AUTH_LOGIN: "/oauth2/login",
   PROFILE: "/profile",
-  PROFILE_HOME: "/profile/home",
-  PROFILE_LIST: "/profile/lists",
-  PROFILE_ABOUT: "/profile/about",
+  COMPONENT: "/component",
 };
 
 export const routeConfig = [
@@ -80,6 +79,12 @@ export const routeConfig = [
     element: <WritePage />,
     protected: true,
     layout: layouts.DEFAULT,
+    children: [
+      {
+        path: appRoutes.WRITE_EDIT,
+        element: <WritePage />,
+      },
+    ],
   },
   {
     path: appRoutes.SETTING,
@@ -101,12 +106,7 @@ export const routeConfig = [
       },
     ],
   },
-  {
-    path: appRoutes.PROFILE,
-    element: <ProfilePage />,
-    protected: true,
-    layout: layouts.DEFAULT,
-  },
+
   {
     path: appRoutes.AUTH,
     layout: layouts.NONE,
