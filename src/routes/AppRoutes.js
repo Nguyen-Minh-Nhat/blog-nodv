@@ -4,7 +4,6 @@ import { Navigate, Outlet, useRoutes } from 'react-router-dom';
 import SuspenseProgress from '../components/SuspenseProgress/SuspenseProgress';
 import Layout, { layouts } from '../layouts/Layout';
 import RedirectLogin from '../pages/auth/RedirectLogin';
-import ComponentPage from '../pages/component-test';
 import AccountTab from '../pages/setting/tab/AccountTab';
 import NotificationsTab from '../pages/setting/tab/NotificationsTab';
 import PublishedTab from '../pages/setting/tab/PublishedTab';
@@ -108,9 +107,12 @@ export const routeConfig = [
 	},
 
 	{
-		path: appRoutes.COMPONENT,
+		path: appRoutes.AUTH,
 		layout: layouts.NONE,
-		element: <ComponentPage />,
+		children: [
+			{ path: appRoutes.AUTH_REDIRECT, element: <RedirectLogin /> },
+			{ path: appRoutes.AUTH_LOGIN, element: <LoginPage /> },
+		],
 	},
 ];
 
