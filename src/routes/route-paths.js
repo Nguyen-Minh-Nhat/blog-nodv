@@ -55,7 +55,7 @@ const setting = {
   element: <WritePage />,
   children: [
     { path: "/account", element: <AccountTab /> },
-    { path: "/notifications", element: <NotificationsTab /> },
+    { path: "/notification", element: <NotificationsTab /> },
     { path: "/published", element: <PublishedTab /> },
   ],
 };
@@ -101,7 +101,7 @@ export const routesWithComponents = [
     children: [
       { path: "", component: AccountTab },
       { path: "published", component: PublishedTab },
-      { path: "notifications", component: NotificationsTab },
+      { path: "notification", component: NotificationsTab },
     ],
   },
 ];

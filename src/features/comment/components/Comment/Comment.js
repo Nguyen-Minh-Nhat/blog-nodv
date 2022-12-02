@@ -11,9 +11,12 @@ import {
   removeComment,
   updateComment,
 } from "../../../../redux/slices/commentSlice";
-import uuid from "react-uuid";
 import { useMutation } from "react-query";
-import { createComment } from "../../../../api/commentApi";
+import {
+  createComment,
+  deleteComment,
+  updateCommentApi,
+} from "../../../../api/commentApi";
 
 const Comment = ({ comment, post }) => {
   const { id: userId } = useSelector((state) => state.user.data.info);
@@ -34,13 +37,22 @@ const Comment = ({ comment, post }) => {
   const handleCloseDialog = () => {
     setIsDelete(false);
   };
-
-  const handleDeleteComment = () => {
-    dispatch(removeComment(comment.id));
+  const deleteCommentById = useMutation(deleteComment, {
+    onSuccess: (data) => {
+      dispatch(removeComment(data));
+    },
+  });
+  const handleDeleteComment = (comment) => {
+    deleteCommentById.mutate(comment.id);
   };
 
+  const updateCommentById = useMutation(updateCommentApi, {
+    onSuccess: (data) => {
+      dispatch(updateComment(data));
+    },
+  });
   const handleUpdateComment = (comment) => {
-    dispatch(updateComment(comment));
+    updateCommentById.mutate(comment);
     setIsEdit(false);
   };
   const createNewReplyComment = useMutation(createComment, {
@@ -54,11 +66,10 @@ const Comment = ({ comment, post }) => {
     setIsShowReply(true);
   };
 
-  const handleConfirmDeleteComment = () => {
+  const handleConfirmDeleteComment = (comment) => {
     handleCloseDialog();
-    handleDeleteComment();
+    handleDeleteComment(comment);
   };
-
   return (
     <>
       <div className="pt-6 pb-4">
@@ -84,10 +95,13 @@ const Comment = ({ comment, post }) => {
             />
             <CommentBody comment={comment} />
             <CommentFooter
-              onComment={() => setIsReply((prev) => !prev)}
+              onComment={() => {
+                setIsReply((prev) => !prev);
+              }}
               onShowReply={() => setIsShowReply((prev) => !prev)}
               numReplyComments={replyComments?.length}
               isShowReply={isShowReply}
+              comment={comment}
             />
           </>
         )}
@@ -101,9 +115,7 @@ const Comment = ({ comment, post }) => {
               focus
               onCancel={() => setIsReply(false)}
               initialComment={{
-                id: uuid(),
                 replyId: comment.id,
-                createdDate: new Date(),
               }}
               onSubmit={handleReply}
               post={post}
@@ -118,9 +130,10 @@ const Comment = ({ comment, post }) => {
       <QuestionDialog
         open={isDelete}
         onCancel={handleCloseDialog}
-        onConfirm={handleConfirmDeleteComment}
+        onConfirm={() => handleConfirmDeleteComment(comment)}
         title="Delete"
         message="Deleted comment are gone forever.Are you sure?"
+        comment={comment}
       />
     </>
   );

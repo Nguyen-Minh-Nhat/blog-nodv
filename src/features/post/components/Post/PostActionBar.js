@@ -19,6 +19,8 @@ const PostActionBar = ({ post, onComment }) => {
     type: "LIKE",
   });
 
+  const comments = useSelector((state) => state.comment?.list);
+
   const likePostMutation = useMutation(likePost, {
     onSuccess: (data) => {
       queryClient.setQueryData(["post", post.id], data);
@@ -59,7 +61,7 @@ const PostActionBar = ({ post, onComment }) => {
         <IconWrapper>
           <CommentIcon />
         </IconWrapper>
-        <Number>{0}</Number>
+        <Number>{comments.length > 0 ? comments.length : 0}</Number>
       </ButtonAction>
 
       <DivideLine></DivideLine>

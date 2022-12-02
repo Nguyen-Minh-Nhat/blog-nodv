@@ -19,7 +19,6 @@ const CommentEditor = ({
   const [inputValue, setInputValue] = useState(
     initialComment?.content ? initialComment.content : ""
   );
-  const user = useSelector((state) => state.user.data.info);
   const handleFocus = () => {
     setIsFocused(true);
   };
@@ -29,11 +28,11 @@ const CommentEditor = ({
   };
 
   const handleSubmit = () => {
-    console.log(post.id);
     const comment = {
+      id: initialComment?.id,
       content: inputValue.trim(),
       replyId: initialComment?.replyId,
-      postId: post.id,
+      postId: post?.id,
     };
     setInputValue("");
     onSubmit(comment);

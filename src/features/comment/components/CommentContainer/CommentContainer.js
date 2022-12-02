@@ -12,7 +12,6 @@ const CommentContainer = ({ post, onClose }) => {
   const rootComments = useSelector(
     (state) => state.comment.commentsByParentId[null]
   );
-  console.log(rootComments);
 
   useQuery(["comments", post.id], () => getComment(post.id), {
     onSuccess: (data) => {
