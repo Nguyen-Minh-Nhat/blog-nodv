@@ -1,27 +1,20 @@
 import { Button } from '@mui/material';
 import { useState } from 'react';
+import { getDatabase, ref, set } from 'firebase/database';
 
 const ComponentPage = () => {
-	const [isActive, setIsActive] = useState(true);
+	const [isOn, setIsOn] = useState(true);
+	const db = getDatabase();
+	const handleToggleLight = () => {
+		setIsOn((prevIsOn) => !prevIsOn);
+		set(ref(db, 'light/'), {
+			isOn: isOn,
+		});
+	};
 	return (
-		<div className="container w-80 rounded bg-slate-400 shadow">
-			<ul className="items flex flex-col gap-1 p-4">
-				{[1, 2, 3].map((item) => (
-					<li
-						key={item}
-						className="item h-10 w-fit shrink-0 rounded-xl border bg-slate-50"
-					>
-						<i className="icon h-10 w-10">icon</i>
-						{isActive && <span className="w-16">item {item}</span>}
-					</li>
-				))}
-			</ul>
-
-			<Button
-				onClick={() => setIsActive((prev) => !prev)}
-				className="toggle-active"
-			>
-				Active sidebar
+		<div className="container rounded bg-slate-400 shadow">
+			<Button className="toggle-active" onClick={handleToggleLight}>
+				{isOn ? 'Turn Off' : 'Turn On'}
 			</Button>
 		</div>
 	);

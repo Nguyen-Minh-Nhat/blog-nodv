@@ -33,6 +33,7 @@ export const appRoutes = {
 	AUTH_REDIRECT: '/oauth2/redirect',
 	AUTH_LOGIN: '/oauth2/login',
 	PROFILE: '/profile',
+	COMPONENT: '/component',
 };
 
 export const routeConfig = [
@@ -104,6 +105,7 @@ export const routeConfig = [
 			},
 		],
 	},
+
 	{
 		path: appRoutes.AUTH,
 		layout: layouts.NONE,

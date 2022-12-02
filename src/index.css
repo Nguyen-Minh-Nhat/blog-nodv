@@ -55,7 +55,7 @@
 }
 
 .MuiPaper-root.MuiPaper-rounded {
-	border-radius: 12px;
+	/* border-radius: 12px; */
 }
 
 .custom .codex-editor__redactor {

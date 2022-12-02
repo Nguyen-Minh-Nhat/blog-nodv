@@ -10,7 +10,7 @@ const TopicList = ({ topics = [], limitDisplay = topics.length }) => {
 					<Chip
 						key={index}
 						size="small"
-						label={topics[index]}
+						label={topics[index].name}
 						variant="filled"
 						className="capitalize"
 						clickable
@@ -45,7 +45,7 @@ const TopicList = ({ topics = [], limitDisplay = topics.length }) => {
 								<Chip
 									key={index}
 									size="small"
-									label={topics[index + limitDisplay]}
+									label={topics[index + limitDisplay].name}
 									variant="filled"
 									className="capitalize"
 									clickable
