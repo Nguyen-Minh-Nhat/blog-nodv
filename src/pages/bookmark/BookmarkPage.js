@@ -1,31 +1,36 @@
 import PageWithTitle from "../../components/PageWithTitle";
 import { PostList } from "../../features/post";
 import { useQuery, useQueryClient } from "react-query";
-import { getPosts } from "../../api/postApi";
-// import { useSelector } from "react-redux";
-import { getBookmarksByUserId } from "../../api/bookmarkApi";
+import { getBookmarkByUserId } from "../../api/bookmarkApi";
 import { toast } from "react-toastify";
+import { useDispatch, useSelector } from "react-redux";
+import { setBookmark } from "../../redux/slices/bookmarkSlice";
 
 const BookmarkPage = () => {
-  // const { data } = useQuery("posts", getPosts, {}, []);
-  const queryClient = useQueryClient();
+  const queryClient = new useQueryClient();
+  const dispatch = useDispatch();
 
-  const res = useQuery("bookmarks", getBookmarksByUserId, {
+  // const bookmark = queryClient.getQueryData("bookmark");
+  const bookmark = useSelector((state) => state.bookmark.data);
+
+  useQuery("bookmark", getBookmarkByUserId, {
+    onSuccess: (data) => {
+      dispatch(setBookmark(data));
+    },
     onError: (err) => {
-      console.log("err re", err);
       toast.error(err.message);
     },
   });
-
-  const bookmark = queryClient.getQueryData("bookmarks");
-  console.log("book ", res);
 
   return (
     <PageWithTitle title="Bookmark">
       <div>
         <div className="flex justify-center">
           <div className="mx-4 max-w-[700px] basis-[700px]">
-            <PostList postList={bookmark?.posts} />
+            <PostList
+              postList={bookmark?.posts}
+              postIdsBookmark={bookmark?.postIds}
+            />
           </div>
         </div>
       </div>

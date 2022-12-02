@@ -1,28 +1,33 @@
-import { useQuery } from 'react-query';
-import { getPosts } from '../../api/postApi';
-import { PostList } from '../../features/post';
-import Header from './components/Header';
+import { useQuery } from "react-query";
+import { getPosts } from "../../api/postApi";
+import { PostList } from "../../features/post";
+import Header from "./components/Header";
+import { getPostIdsBookmark } from "../../api/bookmarkApi";
 
 const HomePage = () => {
-	const { data: posts } = useQuery('posts', getPosts);
-	return (
-		<div className="h-screen overflow-x-auto ">
-			<div className="sticky top-0 z-10 bg-white pt-6">
-				<Header />
-			</div>
-			<Main>
-				<PostList postList={posts} />
-			</Main>
-		</div>
-	);
+  const { data: posts } = useQuery("posts", getPosts);
+  const { data: postIdsBookmark } = useQuery(
+    "postIdsBookmark",
+    getPostIdsBookmark
+  );
+  return (
+    <div className="h-screen overflow-x-auto ">
+      <div className="sticky top-0 z-10 bg-white pt-6">
+        <Header />
+      </div>
+      <Main>
+        <PostList postList={posts} postIdsBookmark={postIdsBookmark} />
+      </Main>
+    </div>
+  );
 };
 
 const Main = ({ children }) => {
-	return (
-		<div className="flex justify-center">
-			<div className="mx-4 max-w-[700px] basis-[700px] pt-12">{children}</div>
-		</div>
-	);
+  return (
+    <div className="flex justify-center">
+      <div className="mx-4 max-w-[700px] basis-[700px] pt-12">{children}</div>
+    </div>
+  );
 };
 
 export default HomePage;
