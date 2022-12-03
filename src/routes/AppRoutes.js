@@ -87,6 +87,12 @@ export const routeConfig = [
     ],
   },
   {
+    path: appRoutes.PROFILE,
+    element: <ProfilePage />,
+    protected: true,
+    layout: layouts.DEFAULT,
+  },
+  {
     path: appRoutes.SETTING,
     element: <SettingPage />,
     protected: true,

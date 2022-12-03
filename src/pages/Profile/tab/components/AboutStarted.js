@@ -1,7 +1,7 @@
 import { Button, Typography } from "@mui/material";
 import React from "react";
 
-const AboutStarted = ({ setShowForm, setShowStarted }) => {
+const AboutStarted = ({ onClick }) => {
   return (
     <div className="flex justify-center pb-12">
       <div className="flex w-[60%] flex-col items-center justify-center">
@@ -19,10 +19,7 @@ const AboutStarted = ({ setShowForm, setShowStarted }) => {
           size="medium"
           color="success"
           disableElevation
-          onClick={() => {
-            setShowForm(true);
-            setShowStarted(false);
-          }}
+          onClick={onClick}
         >
           Get started
         </Button>
