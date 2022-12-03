@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { useQuery } from "react-query";
-import { useSelector } from "react-redux";
 import { getNotifications } from "../../api/notificationApi";
 import PageWithTitle from "../../components/PageWithTitle";
 import { NotificationList } from "../../features/notification";
@@ -11,13 +10,15 @@ const NotificationStatus = [
   { id: 2, title: "Read" },
 ];
 const NotificationsPage = () => {
-  const user = useSelector((state) => state.user.data.info);
   const [notifications, setNotifications] = useState([]);
   const [filter, setFilter] = useState(null);
 
   useQuery(["notifications", filter], () => getNotifications(filter), {
     onSuccess: (data) => {
       setNotifications(data);
+    },
+    onError: (err) => {
+      console.log("err re", err);
     },
   });
   return (

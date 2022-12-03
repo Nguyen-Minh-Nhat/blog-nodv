@@ -1,8 +1,10 @@
 import { useMutation, useQuery } from "react-query";
 import { useDispatch, useSelector } from "react-redux";
-import uuid from "react-uuid";
-import { addComment, setComments } from "../../../../redux/slices/commentSlice";
 import { createComment, getComment } from "../../../../api/commentApi";
+import { createNotification } from "../../../../api/notificationApi";
+import { NotificationType } from "../../../../config/dataType";
+import { addComment, setComments } from "../../../../redux/slices/commentSlice";
+import { generationNotificationByData } from "../../../../utils/generationNotification";
 import CommentEditor from "../CommentEditor";
 import CommentList from "../CommentList";
 import CommentContainerHeader from "./CommentContainerHeader";
@@ -23,8 +25,14 @@ const CommentContainer = ({ post, onClose }) => {
       dispatch(addComment(data));
     },
   });
+  const createNewNotificationComment = useMutation(createNotification);
   const handleCreateComment = (comment) => {
     createNewComment.mutate(comment);
+    const data = comment;
+    data.postUserId = post.userId;
+    createNewNotificationComment.mutate(
+      generationNotificationByData(comment, NotificationType.COMMENT)
+    );
   };
 
   const initialComment = {};
