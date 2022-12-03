@@ -12,6 +12,8 @@ const InputTopic = ({ onChange, defaultValue = [] }) => {
 	const [searchResult, setSearchResult] = useState([]);
 	const debouncedValue = useDebounce(searchValue, 500);
 
+	const [error, setError] = useState(null);
+
 	const searchMutation = useMutation(searchTopics, {
 		onSuccess: (data) => {
 			setSearchResult(data);
@@ -24,21 +26,48 @@ const InputTopic = ({ onChange, defaultValue = [] }) => {
 			return;
 		}
 		searchMutation.mutate(debouncedValue);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [debouncedValue]);
+
+	const checkDuplicateTopic = (topic) => {
+		return value.some(
+			(item) => item.name.toLowerCase() === topic.name.toLowerCase() // case insensitive
+		);
+	};
+
+	const handleEnter = (e) => {
+		if (e.key === 'Enter') {
+			const newTopic = {
+				name: e.target.value,
+			};
+			// if the topic is not already in the list, add it
+			if (!checkDuplicateTopic(newTopic) && value.length < 5) {
+				setValue([...value, newTopic]);
+				onChange([...value, newTopic]);
+				setError(null);
+			} else if (value.length >= 5) {
+				setError('You can only add up to 5 topics');
+			} else {
+				setError('This topic is already added');
+			}
+		}
+	};
 
 	return (
 		<Autocomplete
+			open={!!!error}
 			multiple
 			value={value}
 			onChange={(event, newValue, reason) => {
-				if (reason === 'selectOption' && newValue.length >= 5) return;
-
+				if (reason === 'selectOption' && newValue.length > 5) return;
+				if (reason === 'removeOption' && newValue.length < 5) setError(null);
 				setValue([...newValue]);
 				onChange([...newValue]);
 			}}
 			options={searchResult}
 			getOptionLabel={(option) => option.name}
 			isOptionEqualToValue={(option, value) => option.name === value.name}
+			getOptionDisabled={(option) => false}
 			renderTags={(tagValue, getTagProps) =>
 				tagValue.map((option, index) => (
 					<Chip label={option.name} {...getTagProps({ index })} />
@@ -53,7 +82,13 @@ const InputTopic = ({ onChange, defaultValue = [] }) => {
 					fullWidth
 					label="Topics"
 					placeholder="example: React"
-					onChange={(e) => setSearchValue(e.target.value)}
+					onChange={(e) => {
+						setError(null);
+						setSearchValue(e.target.value);
+					}}
+					onKeyDown={handleEnter}
+					helperText={error}
+					error={!!error}
 				/>
 			)}
 		/>
