@@ -61,6 +61,7 @@ axiosClientPrivate.interceptors.response.use(
     return response.data;
   },
   function (error) {
+    console.log("error from axios client", error);
     return Promise.reject(error.response.data);
   }
 );
