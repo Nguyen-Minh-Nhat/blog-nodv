@@ -1,54 +1,32 @@
-import React from "react";
-import { useState } from "react";
-import { useSelector } from "react-redux";
+import React, { useState } from "react";
 import AboutDescription from "./components/AboutDescription";
 import AboutForm from "./components/AboutForm";
 import AboutStarted from "./components/AboutStarted";
 
-const AboutTab = () => {
-  const ct = "hihhihii";
-  const initShowStarted = !ct;
-  const initShowDes = ct;
-  const user = useSelector((state) => state.user.data.info);
+const AboutTab = ({ user }) => {
   const [ShowForm, setShowForm] = useState(false);
-  const [ShowDes, setShowDes] = useState(initShowDes);
-  const [ShowStarted, setShowStarted] = useState(initShowStarted);
-
-  const [about, setAbout] = useState({
-    content: "",
-    imageList: [],
-  });
+  console.log(!user.bio);
+  const handleClick = () => {
+    setShowForm((prev) => !prev);
+  };
 
   return (
     <>
       <div>
-        {ShowForm && (
-          <AboutForm
-            setShowForm={setShowForm}
-            setShowDes={setShowDes}
-            setShowStarted={setShowStarted}
-            about={about}
-            setAbout={setAbout}
-          ></AboutForm>
-        )}
-        {ShowDes && (
-          <AboutDescription
-            setShowForm={setShowForm}
-            setShowDes={setShowDes}
-          ></AboutDescription>
-        )}
-        {ShowStarted && <AboutStarted setShowForm={setShowForm}></AboutStarted>}
-        {/* {ShowForm ? (
-          <AboutForm
-            setShowForm={setShowForm}
-            setShowDes={setShowDes}
-            showStart={<AboutStarted></AboutStarted>}
-          />
-        ) : ShowDes ? (
-          <AboutDescription setShowForm={setShowForm} setShowDes={setShowDes} />
-        ) : (
-          <AboutStarted setShowForm={setShowForm} />
-        )} */}
+        {(() => {
+          if (ShowForm) {
+            return <AboutForm onClick={handleClick} user={user}></AboutForm>;
+          } else {
+            return !user.bio ? (
+              <AboutStarted onClick={handleClick} />
+            ) : (
+              <AboutDescription
+                onClick={handleClick}
+                userBio={user.bio}
+              ></AboutDescription>
+            );
+          }
+        })()}
       </div>
       <div className="mt-8 border-b"></div>
       <div className="mt-[65px] mb-5 border-b border-black"></div>

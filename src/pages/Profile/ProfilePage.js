@@ -8,7 +8,7 @@ const ProfilePage = () => {
   const user = useSelector((state) => state.user.data.info);
   return (
     <PageWithTitle title={user.username}>
-      <AboutTab></AboutTab>
+      <AboutTab user={user}></AboutTab>
       <Outlet />
     </PageWithTitle>
   );

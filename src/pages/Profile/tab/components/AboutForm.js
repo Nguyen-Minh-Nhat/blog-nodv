@@ -1,54 +1,53 @@
 import { Button } from "@mui/material";
-import React from "react";
-import Editor from "../../../../components/Editor";
+import React, { useState } from "react";
+import { useMutation } from "react-query";
+import { useDispatch } from "react-redux";
+import { updateUserProfile } from "../../../../api/userApi";
+import { setUser } from "../../../../redux/slices/userSlice";
 
-const AboutForm = ({
-  setShowForm,
-  setShowDes,
-  setShowStarted,
-  about,
-  setAbout,
-}) => {
-  const handleClick = () => {
-    setShowDes(!!about.content);
-    setShowStarted(!about.content);
-    setShowForm(false);
+const AboutForm = ({ onClick, user }) => {
+  const [newBio, setNewBio] = useState(user.bio != null ? user.bio : "");
+  const dispatch = useDispatch();
+  console.log(newBio);
+  const updateUserBio = useMutation(updateUserProfile, {
+    onSuccess: (data) => {
+      console.log("done");
+      dispatch(setUser(data));
+      onClick();
+    },
+  });
+  const userUpdate = { ...user };
+
+  const handleUpdateUserBio = (user, newBio) => {
+    console.log("update ", user);
+    user.bio = newBio;
+    updateUserBio.mutate(user);
   };
-  const autoSave = () => {
-    let title = "";
-    let subtitle = "";
-    const imageList = [];
-
-    // rawContent.blocks.forEach((block) => {
-    //   if (block.type === "image") imageList.push(block.data.file.url);
-    // });
-    // setPost((prev) => ({
-    //   ...prev,
-    //   title,
-    //   subtitle,
-    //   thumbnail: imageList[0],
-    //   imageList,
-    // }));
+  const handleClick = (user, newBio) => {
+    handleUpdateUserBio(user, newBio);
   };
-
   return (
     <div>
-      <Editor defaultValue={{}} onChange={autoSave} />
+      <input
+        defaultValue={newBio}
+        className="h-[120px] w-full focus:outline-0"
+        onChange={(e) => setNewBio(e.target.value)}
+      />
       <div className="flex justify-end">
         <Button
           variant="outlined"
-          className="btn rounded-full normal-case"
+          className="btn rounded-full border-stone-900 normal-case text-stone-900"
           size="medium"
-          onClick={handleClick}
+          onClick={onClick}
         >
           Cancel
         </Button>
         <Button
           variant="contained"
-          className="btn ml-3 rounded-full normal-case"
+          className="btn ml-3 rounded-full bg-stone-900 normal-case"
           size="medium"
           disableElevation
-          onClick={handleClick}
+          onClick={() => handleClick(userUpdate, newBio)}
         >
           Save
         </Button>
