@@ -7,7 +7,13 @@ const userApi = {
 	searchUser: (q, page = 0, limit = 10) =>
 		axiosClientPrivate.get(`${url}/search?q=${q}&page=${page}&limit=${limit}`),
 	updateUserProfile: (data) => axiosClientPrivate.put(url, data),
+	followUser: (id) => axiosClientPrivate.patch(`${url}/follow/${id}`, {}),
 };
 
-export const { getAllUsers, getUserProfile, searchUser, updateUserProfile } =
-	userApi;
+export const {
+	getAllUsers,
+	getUserProfile,
+	searchUser,
+	updateUserProfile,
+	followUser,
+} = userApi;

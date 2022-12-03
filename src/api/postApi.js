@@ -1,41 +1,46 @@
-import axiosClient, { axiosClientPrivate } from "./axiosClient";
+import axiosClient, { axiosClientPrivate } from './axiosClient';
 
-const url = "/posts";
+const url = '/posts';
 
 const postApi = {
-  getPosts: () => axiosClient.get(url),
+	getPosts: () => axiosClient.get(url),
 
-  getPostById: (id) => axiosClient.get(`${url}/${id}`),
+	getPostById: (id) => axiosClient.get(`${url}/${id}`),
 
-  getOwnedPosts: (isPublish) =>
-    axiosClientPrivate.get(
-      `${url}/me${!!isPublish ? "?isPublish=" + isPublish : ""}`
-    ),
+	getOwnedPosts: (isPublish) =>
+		axiosClientPrivate.get(
+			`${url}/me${!!isPublish ? '?isPublish=' + isPublish : ''}`
+		),
 
-  createPost: (post) => axiosClientPrivate.post(url, post),
+	createPost: (post) => axiosClientPrivate.post(url, post),
 
-  deletePost: (id) => axiosClientPrivate.delete(`${url}/${id}`),
+	updatePost: (post) => {
+		return axiosClientPrivate.put(`${url}/${post.id}`, post);
+	},
 
-  publishPost: (id) => axiosClientPrivate.patch(`${url}/${id}/publish`, null),
+	deletePost: (id) => axiosClientPrivate.delete(`${url}/${id}`),
 
-  unpublishPost: (id) =>
-    axiosClientPrivate.patch(`${url}/${id}/unpublished`, null),
+	publishPost: (id) => axiosClientPrivate.patch(`${url}/${id}/publish`, null),
 
-  likePost: (id) => axiosClientPrivate.patch(`${url}/${id}/like`, null),
+	unpublishPost: (id) =>
+		axiosClientPrivate.patch(`${url}/${id}/unpublished`, null),
 
-  unLikePost: (id) => axiosClientPrivate.patch(`${url}/${id}/unlike`, null),
+	likePost: (id) => axiosClientPrivate.patch(`${url}/${id}/like`, null),
+
+	unLikePost: (id) => axiosClientPrivate.patch(`${url}/${id}/unlike`, null),
 };
 
 export const {
-  getPosts,
-  createPost,
-  getPostById,
-  getOwnedPosts,
-  deletePost,
-  publishPost,
-  unpublishPost,
-  likePost,
-  unLikePost,
+	getPosts,
+	createPost,
+	getPostById,
+	getOwnedPosts,
+	deletePost,
+	publishPost,
+	unpublishPost,
+	likePost,
+	unLikePost,
+	updatePost,
 } = postApi;
 
 export default postApi;
