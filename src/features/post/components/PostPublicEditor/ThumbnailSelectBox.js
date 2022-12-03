@@ -1,7 +1,6 @@
 import PostThumbnail from '../PostPreview/PostThumbnail';
 
 const ThumbnailSelectBox = ({ initial, images, onChange }) => {
-	console.log(images);
 	return (
 		<div className="flex items-center rounded border p-4">
 			{images.length > 0 ? (

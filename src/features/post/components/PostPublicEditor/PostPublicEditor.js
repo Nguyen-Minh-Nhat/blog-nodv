@@ -1,12 +1,11 @@
-import { useState } from 'react';
 import { Alert, TextField } from '@mui/material';
+import { useState } from 'react';
 import InputTopic from './InputTopics';
 import ThumbnailSelectBox from './ThumbnailSelectBox';
-import { useSelector } from 'react-redux';
 
 const PostPublicEditor = ({ post, setPost }) => {
 	const [thumbnailSelected, setThumbnailSelected] = useState(post?.images[0]);
-	// const [topics, setTopics] = useState(post.topics);
+	const [topics, setTopics] = useState(post.topics);
 	return (
 		<div className="">
 			<Alert severity="info" className="mb-8">
@@ -41,9 +40,8 @@ const PostPublicEditor = ({ post, setPost }) => {
 				/>
 				<div>
 					<InputTopic
-						// defaultValue={topics}
+						defaultValue={topics}
 						onChange={(topics) => {
-							// setTopics(topics);
 							setPost((prev) => ({ ...prev, topics: topics }));
 						}}
 					/>
