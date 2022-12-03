@@ -3,7 +3,8 @@ import axiosClient, { axiosClientPrivate } from './axiosClient';
 const url = '/posts';
 
 const postApi = {
-	getPosts: () => axiosClient.get(url),
+	getPosts: (page = 0, limit = 5) =>
+		axiosClient.get(url + `?page=${page}&limit=${limit}`),
 
 	getPostById: (id) => axiosClient.get(`${url}/${id}`),
 
