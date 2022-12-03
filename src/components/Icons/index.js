@@ -12,6 +12,7 @@ import XMarkIcon from './XMarkIcon';
 import BookmarkIcon from './BookmarkIcon';
 import TrashIcon from './TrashIcon';
 import PlusIcon from './PlusIcon';
+import CheckIcon from './CheckIcon';
 export {
 	DeleteIcon,
 	EditIcon,
@@ -27,4 +28,5 @@ export {
 	BookmarkIcon,
 	TrashIcon,
 	PlusIcon,
+	CheckIcon,
 };
