@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { setAccessToken } from "../../redux/slices/userSlice";
-import redirectImg from "../../assets/Images/redirect_rocket.gif";
+import redirectImg from "../../assets/images/redirect_rocket.gif";
 const RedirectLogin = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const dispatch = useDispatch();

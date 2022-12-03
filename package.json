@@ -29,6 +29,7 @@
 		"@testing-library/react": "^13.0.0",
 		"@testing-library/user-event": "^13.2.1",
 		"axios": "^0.27.2",
+		"cors": "^2.8.5",
 		"date-fns": "^2.29.3",
 		"editorjs-drag-drop": "^1.1.7",
 		"editorjs-header-with-alignment": "^1.0.1",
