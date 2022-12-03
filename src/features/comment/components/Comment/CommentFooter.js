@@ -1,10 +1,13 @@
 import { useMutation } from "react-query";
 import { useDispatch, useSelector } from "react-redux";
 import { likeComment, unlikeComment } from "../../../../api/commentApi";
+import { createNotification } from "../../../../api/notificationApi";
 import IconWrapper from "../../../../components/IconWrapper";
 import LikeButton from "../../../../components/LikeButton";
 import Number from "../../../../components/Number";
+import { NotificationType } from "../../../../config/dataType";
 import { updateComment } from "../../../../redux/slices/commentSlice";
+import { generationNotificationByData } from "../../../../utils/generationNotification";
 import AuthClick from "../../../auth/components/AuthClick";
 
 const CommentFooter = ({
@@ -23,6 +26,7 @@ const CommentFooter = ({
       dispatch(updateComment(data));
     },
   });
+  const createNotificationMutation = useMutation(createNotification);
   const unlikeCommentMutation = useMutation(unlikeComment, {
     onSuccess: (data) => {
       dispatch(updateComment(data));
@@ -32,6 +36,9 @@ const CommentFooter = ({
   const handleLike = (isLike) => {
     if (isLike) {
       likeCommentMutation.mutate(comment.id);
+      createNotificationMutation.mutate(
+        generationNotificationByData(comment, NotificationType.LIKECOMMENT)
+      );
     } else {
       unlikeCommentMutation.mutate(comment.id);
     }

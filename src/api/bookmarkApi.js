@@ -2,7 +2,7 @@ import axiosClient, { axiosClientPrivate } from "./axiosClient";
 
 const url = "/bookmarks";
 
-const bookmarkApi = {
+const bookmark = {
   // getPosts: () => axiosClient.get(url),
 
   // getPostById: (id) => axiosClient.get(`${url}/${id}`),
@@ -31,6 +31,6 @@ const bookmarkApi = {
   getBookmarksByUserId: () => axiosClientPrivate.get(`${url}/user`),
 };
 
-export const { getBookmarksByUserId } = bookmarkApi;
+export const { getBookmarksByUserId } = bookmark;
 
-export default bookmarkApi;
+export default bookmark;

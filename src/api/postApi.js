@@ -14,6 +14,10 @@ const postApi = {
 
   createPost: (post) => axiosClientPrivate.post(url, post),
 
+  updatePost: (post) => {
+    return axiosClientPrivate.put(`${url}/${post.id}`, post);
+  },
+
   deletePost: (id) => axiosClientPrivate.delete(`${url}/${id}`),
 
   publishPost: (id) => axiosClientPrivate.patch(`${url}/${id}/publish`, null),
@@ -29,6 +33,7 @@ const postApi = {
 export const {
   getPosts,
   createPost,
+  updatePost,
   getPostById,
   getOwnedPosts,
   deletePost,

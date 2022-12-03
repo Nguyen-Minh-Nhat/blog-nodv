@@ -17,13 +17,16 @@ import {
   deleteComment,
   updateCommentApi,
 } from "../../../../api/commentApi";
+import { createNotification } from "../../../../api/notificationApi";
+import { generationNotificationByData } from "../../../../utils/generationNotification";
+import { NotificationType } from "../../../../config/dataType";
 
 const Comment = ({ comment, post }) => {
   const { id: userId } = useSelector((state) => state.user.data.info);
   const replyComments = useSelector(
     (state) => state.comment.commentsByParentId[comment.id]
   );
-
+  const rootComments = useSelector((state) => state.comment.list);
   const [isReply, setIsReply] = useState(false);
   const [isShowReply, setIsShowReply] = useState(false);
   const [isDelete, setIsDelete] = useState(false);
@@ -60,8 +63,20 @@ const Comment = ({ comment, post }) => {
       dispatch(addComment(data));
     },
   });
+  const createNewNotificationReplyComment = useMutation(createNotification);
+  const getCommentUserId = (comment) => {
+    var parentComment = rootComments.find(
+      (commentParent) => comment.replyId === commentParent.id
+    );
+    return parentComment.userId;
+  };
   const handleReply = (comment) => {
     createNewReplyComment.mutate(comment);
+    let data = comment;
+    data.commentParentUserId = getCommentUserId(comment);
+    createNewNotificationReplyComment.mutate(
+      generationNotificationByData(data, NotificationType.REPLYCOMMENT)
+    );
     setIsReply(false);
     setIsShowReply(true);
   };
@@ -122,7 +137,7 @@ const Comment = ({ comment, post }) => {
             />
           )}
           {isShowReply && replyComments?.length > 0 && (
-            <CommentList comments={replyComments} />
+            <CommentList comments={replyComments} post={post} />
           )}
         </div>
       )}

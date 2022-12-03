@@ -1,9 +1,7 @@
 import { Avatar } from "@mui/material";
 import { formatRelative } from "date-fns";
 import { useMemo } from "react";
-import { useMutation } from "react-query";
 import { Link } from "react-router-dom";
-import { setNotificationRead } from "../../../../api/notificationApi";
 import { NotificationType } from "../../../../config/dataType";
 
 const Notification = ({ notification, setNotificationReadMutation }) => {
@@ -22,6 +20,14 @@ const Notification = ({ notification, setNotificationReadMutation }) => {
       case NotificationType.COMMENT:
         res.message = "comment on your post";
         res.icon = <i className="fa-solid fa-comment"></i>;
+        break;
+      case NotificationType.REPLYCOMMENT:
+        res.message = "replied to your comment on a post";
+        res.icon = <i className="fa-solid fa-comment"></i>;
+        break;
+      case NotificationType.LIKECOMMENT:
+        res.message = "clapped for your comment";
+        res.icon = <i className="fa-solid fa-hands-clapping"></i>;
         break;
 
       default:

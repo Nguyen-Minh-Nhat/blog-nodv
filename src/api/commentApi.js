@@ -16,7 +16,6 @@ export const {
   likeComment,
   unlikeComment,
   deleteComment,
-  deleteAllComment,
   updateCommentApi,
 } = commentApi;
 export default commentApi;
