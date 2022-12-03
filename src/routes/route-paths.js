@@ -21,59 +21,53 @@ const routes = {
 };
 
 const home = {
-	path: '/',
-	element: <HomePage />,
+  path: "/",
+  element: <HomePage />,
 };
 
 const post = {
-	path: '/post/:id',
-	element: <PostPage />,
-	children: {
-		id: {
-			path: '/:id',
-			element: <PostPage />,
-		},
-	},
+  path: "/post",
+  children: [{ path: "/:id", element: <PostPage /> }],
 };
 
 const notifications = {
-	path: '/notifications',
-	element: <NotificationsPage />,
+  path: "/notifications",
+  element: <NotificationsPage />,
 };
 
 const bookmark = {
-	path: '/bookmark',
-	element: <BookmarkPage />,
+  path: "/bookmark",
+  element: <BookmarkPage />,
 };
 
 const stories = {
-	path: '/stories',
-	element: <StoriesPage />,
+  path: "/stories",
+  element: <StoriesPage />,
 };
 
 const write = {
-	path: '/write',
-	element: <WritePage />,
+  path: "/write",
+  element: <WritePage />,
 };
 
 const setting = {
-	path: '/setting',
-	element: <WritePage />,
-	children: {
-		published: {
-			path: '/published',
-		},
-	},
+  path: "/setting",
+  element: <WritePage />,
+  children: [
+    { path: "/account", element: <AccountTab /> },
+    { path: "/notification", element: <NotificationsTab /> },
+    { path: "/published", element: <PublishedTab /> },
+  ],
 };
 
 const routesV2 = {
-	home,
-	post,
-	notifications,
-	bookmark,
-	stories,
-	write,
-	setting,
+  home,
+  post,
+  notifications,
+  bookmark,
+  stories,
+  write,
+  setting,
 };
 
 export const routesWithComponents = [
@@ -107,10 +101,9 @@ export const routesWithComponents = [
     children: [
       { path: "", component: AccountTab },
       { path: "published", component: PublishedTab },
-      { path: "notifications", component: NotificationsTab },
+      { path: "notification", component: NotificationsTab },
     ],
   },
 ];
 
 export default routes;
-

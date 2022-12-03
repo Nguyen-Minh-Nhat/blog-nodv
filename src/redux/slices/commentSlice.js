@@ -1,40 +1,41 @@
-import { createSlice } from '@reduxjs/toolkit';
-import commentsByParentId from '../../utils/commentsByParentId';
+import { createSlice } from "@reduxjs/toolkit";
+import commentsByParentId from "../../utils/commentsByParentId";
 const initialState = {
-	list: [],
-	commentsByParentId: {},
+  list: [],
+  commentsByParentId: {},
 };
 const commentSlice = createSlice({
-	name: 'comment',
-	initialState,
-	reducers: {
-		setComments: (state, action) => {
-			state.list = action.payload;
-			state.commentsByParentId = commentsByParentId(action.payload);
-		},
-		addComment: (state, action) => {
-			state.list.unshift(action.payload);
-			state.commentsByParentId = commentsByParentId(state.list);
-		},
+  name: "comment",
+  initialState,
+  reducers: {
+    setComments: (state, action) => {
+      console.log(action.payload);
+      state.list = action.payload;
+      state.commentsByParentId = commentsByParentId(action.payload);
+    },
+    addComment: (state, action) => {
+      state.list.unshift(action.payload);
+      state.commentsByParentId = commentsByParentId(state.list);
+    },
 
-		updateComment: (state, action) => {
-			state.list = state.list.map((comment) => {
-				if (comment.id === action.payload.id) return action.payload;
-				return comment;
-			});
-			state.commentsByParentId = commentsByParentId(state.list);
-		},
-		removeComment: (state, action) => {
-			state.list = state.list.filter(
-				(comment) => comment.id !== action.payload
-			);
-			state.commentsByParentId = commentsByParentId(state.list);
-		},
-	},
+    updateComment: (state, action) => {
+      state.list = state.list.map((comment) => {
+        if (comment.id === action.payload.id) return action.payload;
+        return comment;
+      });
+      state.commentsByParentId = commentsByParentId(state.list);
+    },
+    removeComment: (state, action) => {
+      state.list = state.list.filter(
+        (comment) => comment.id !== action.payload
+      );
+      state.commentsByParentId = commentsByParentId(state.list);
+    },
+  },
 });
 
 export const { setComments, addComment, removeComment, updateComment } =
-	commentSlice.actions;
+  commentSlice.actions;
 
 const commentReducer = commentSlice.reducer;
 export default commentReducer;

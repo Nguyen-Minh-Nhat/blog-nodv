@@ -1,4 +1,3 @@
-import { useSelect } from '@mui/base';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import SockJS from 'sockjs-client';
@@ -8,20 +7,24 @@ import { setSocket } from '../redux/slices/socketSlice';
 const SOCKET_URL = process.env.REACT_APP_API_URL + '/ws';
 
 const SocketClient = () => {
-	const user = { id: '12321312' };
+	const id = useSelector((state) => state.user.data?.info?.id);
 	const dispatch = useDispatch();
 
 	useEffect(() => {
 		const sock = new SockJS(SOCKET_URL);
 		const stomp = over(sock);
-		stomp.debug = false;
-		stomp.connect({}, () => onSuccessConnect(stomp), onError);
+		if (id) {
+			stomp.debug = false;
+			stomp.connect({}, () => onSuccessConnect(stomp), onError);
+		}
 
 		return () => {
-			stomp.disconnect();
+			if (id) {
+				stomp.disconnect();
+			}
 		};
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [user.id]);
+	}, [id]);
 
 	const onError = (err) => {
 		console.log(err);
@@ -30,8 +33,6 @@ const SocketClient = () => {
 	const onSuccessConnect = (stomp) => {
 		dispatch(setSocket(stomp));
 	};
-
-	const socket = useSelector((state) => state.socket.data);
 
 	return <></>;
 };

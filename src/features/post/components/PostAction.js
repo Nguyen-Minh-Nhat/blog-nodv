@@ -1,22 +1,37 @@
-import { IconButton } from '@mui/material';
-import MenuTrigger from '../../../components/MenuTrigger/MenuTrigger';
-import PostMenu from './PostPreview/PostPreviewMenu';
+import { IconButton } from "@mui/material";
+import MenuTrigger from "../../../components/MenuTrigger/MenuTrigger";
+import PostMenu from "./PostPreview/PostPreviewMenu";
 
-const PostAction = ({ post, ...menuActionProps }) => {
-	return (
-		<div className="flex gap-2">
-			<IconButton size="small" className="h-8 w-8">
-				<i className="fa-light fa-bookmark"></i>
-			</IconButton>
-			<IconButton size="small" className="h-8 w-8">
-				<i className="fa-light fa-circle-minus"></i>
-			</IconButton>
+const PostAction = ({
+  post,
+  isBookmarked,
+  onUpdateBookmark,
+  ...menuActionProps
+}) => {
+  const handleBookmark = () => {
+    onUpdateBookmark(post.id);
+  };
 
-			<MenuTrigger>
-				<PostMenu post={post} {...menuActionProps} />
-			</MenuTrigger>
-		</div>
-	);
+  return (
+    <div className="flex gap-2">
+      <div onClick={handleBookmark}>
+        <IconButton size="small" className="h-8 w-8">
+          <i
+            className={`${isBookmarked ? "fa-solid" : "fa-light"} fa-bookmark`}
+          ></i>
+        </IconButton>
+      </div>
+      <div>
+        <IconButton size="small" className="h-8 w-8">
+          <i className="fa-light fa-circle-minus"></i>
+        </IconButton>
+      </div>
+
+      <MenuTrigger>
+        <PostMenu post={post} {...menuActionProps} />
+      </MenuTrigger>
+    </div>
+  );
 };
 
 export default PostAction;

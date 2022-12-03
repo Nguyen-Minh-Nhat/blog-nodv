@@ -1,9 +1,10 @@
 import { Link } from 'react-router-dom';
+import { appRoutes } from '../../../../routes/AppRoutes';
 import PostPreviewFooter from './PostPreviewFooter';
 import PostThumbnail from './PostThumbnail';
 
-const PostPreviewBody = ({ post }) => {
-	const postLink = `/post/${post.id}`;
+const PostPreviewBody = ({ post, isBookmarked, ...menuActionProps }) => {
+	const postLink = `${appRoutes.POST}/${post.id}`;
 	return (
 		<div className="mt-3 flex">
 			<div className="flex-1">
@@ -11,7 +12,11 @@ const PostPreviewBody = ({ post }) => {
 					<Title>{post.title}</Title>
 					<Subtitle>{post.subtitle}</Subtitle>
 				</Link>
-				<PostPreviewFooter post={post} />
+				<PostPreviewFooter
+					post={post}
+					isBookmarked={isBookmarked}
+					{...menuActionProps}
+				/>
 			</div>
 			<Link to={postLink}>
 				<div className="ml-14 ">

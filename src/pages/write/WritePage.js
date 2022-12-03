@@ -1,9 +1,9 @@
 import { Button } from '@mui/material';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useMutation } from 'react-query';
-import { useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
-import { createPost } from '../../api/postApi';
+import { useNavigate, useParams } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import { createPost, getPostById, updatePost } from '../../api/postApi';
 import Editor from '../../components/Editor';
 import ModalTrigger from '../../components/ModalTrigger';
 import QuestionDialog from '../../components/QuestionDialog/QuestionDialog';
@@ -11,24 +11,57 @@ import PostPublicPreview from '../../features/post/components/PostPublicPreview'
 import usePrompt from '../../hooks/usePrompt';
 import { convertToPost } from '../../utils/editorJsUtils';
 import Header from './components/Header';
+
+const initialPost = {
+	title: '',
+	subtitle: '',
+	content: {
+		blocks: [
+			{
+				id: 'sheNwCUP5A',
+				type: 'header',
+				data: {
+					level: 1,
+				},
+			},
+		],
+	},
+	thumbnail: '',
+	topics: [],
+	createdDate: new Date(),
+};
+
 const WritePage = () => {
-	const user = useSelector((state) => state.user.data.info);
+	const { id } = useParams();
+	const navigate = useNavigate();
 	const [editorJsData, setEditorJsData] = useState(null);
 	const [showDialog, setShowDialog] = useState(false);
-	const [post, setPost] = useState({
-		title: '',
-		subtitle: '',
-		content: '',
-		user,
-		thumbnail: '',
-		topics: [],
-		createdDate: new Date(),
-	});
+	const [post, setPost] = useState(initialPost);
+	const [isLoading, setIsLoading] = useState(false);
+	const isEdit = !!id;
 
-	const navigate = useNavigate();
+	useEffect(() => {
+		const getPost = async () => {
+			setIsLoading(true);
+			const data = await getPostById(id);
+			setPost({ ...data, content: JSON.parse(data.content) });
+			setIsLoading(false);
+		};
+		if (id) {
+			getPost();
+		}
+	}, [id]);
+	// create post
 	const createPostMutation = useMutation(createPost, {
 		onSuccess: (data) => {
 			navigate(`/post/${data.id}`);
+		},
+	});
+
+	const updatePostMutation = useMutation(updatePost, {
+		onSuccess: (data) => {
+			navigate(`/post/${data.id}`);
+			toast.success('Post update successfully');
 		},
 	});
 
@@ -47,7 +80,7 @@ const WritePage = () => {
 		convertRawContentToPost(editorJsData);
 	};
 
-	const handlePublic = () => {
+	const handlePublish = () => {
 		setShowDialog(false);
 		post.content = editorJsData;
 		const postUpload = {
@@ -58,48 +91,48 @@ const WritePage = () => {
 			topics: post.topics,
 			timeRead: post.timeRead,
 		};
-		createPostMutation.mutate(postUpload);
+
+		if (isEdit) {
+			updatePostMutation.mutate({ id, ...postUpload });
+		} else {
+			createPostMutation.mutate(postUpload);
+		}
 	};
 
 	const autoSave = (editorJsData, timeRead) => {
+		console.log(editorJsData);
 		setEditorJsData(editorJsData);
 		setPost((prev) => ({ ...prev, timeRead }));
 		setShowDialog(true);
 	};
 
 	return (
-		<div className="h-screen overflow-y-scroll">
+		<div>
 			<div className="sticky top-0 z-[100] bg-white">
-				<Header
-					headerAction={
-						<div className="flex">
-							<Button color="success" className="btn rounded-full normal-case">
-								Save
-							</Button>
-							<ModalTrigger
-								button={
-									<Button
-										color="success"
-										variant="contained"
-										className="btn ml-2 rounded-full normal-case"
-										onClick={handleShowPublicPreview}
-										disabled={!editorJsData}
-									>
-										Public
-									</Button>
-								}
+				<Header>
+					<ModalTrigger
+						button={
+							<Button
+								color="success"
+								variant="contained"
+								className="btn ml-2 rounded-full normal-case"
+								onClick={handleShowPublicPreview}
+								disabled={!editorJsData}
+								disableElevation
 							>
-								<PostPublicPreview
-									post={post}
-									setPost={setPost}
-									onSubmit={handlePublic}
-								/>
-							</ModalTrigger>
-						</div>
-					}
-				/>
+								{isEdit ? 'Save' : 'Publish'}
+							</Button>
+						}
+					>
+						<PostPublicPreview
+							post={post}
+							setPost={setPost}
+							onSubmit={handlePublish}
+						/>
+					</ModalTrigger>
+				</Header>
 			</div>
-			<Editor onChange={autoSave} />
+			{!isLoading && <Editor onChange={autoSave} defaultValue={post.content} />}
 			<QuestionDialog
 				title="Warning"
 				message="There are some changes? Are you sure you want to navigate!!!!"

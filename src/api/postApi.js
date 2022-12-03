@@ -3,7 +3,8 @@ import axiosClient, { axiosClientPrivate } from './axiosClient';
 const url = '/posts';
 
 const postApi = {
-	getPosts: () => axiosClient.get(url),
+	getPosts: (page = 0, limit = 5) =>
+		axiosClient.get(url + `?page=${page}&limit=${limit}`),
 
 	getPostById: (id) => axiosClient.get(`${url}/${id}`),
 
@@ -13,6 +14,10 @@ const postApi = {
 		),
 
 	createPost: (post) => axiosClientPrivate.post(url, post),
+
+	updatePost: (post) => {
+		return axiosClientPrivate.put(`${url}/${post.id}`, post);
+	},
 
 	deletePost: (id) => axiosClientPrivate.delete(`${url}/${id}`),
 
@@ -36,6 +41,7 @@ export const {
 	unpublishPost,
 	likePost,
 	unLikePost,
+	updatePost,
 } = postApi;
 
 export default postApi;

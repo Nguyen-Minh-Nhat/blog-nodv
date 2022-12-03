@@ -1,11 +1,28 @@
 import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
-  bookmarks: null,
+  postIds: [],
+  posts: [],
 };
 const bookmarkSlice = createSlice({
   initialState,
   name: "bookmark",
   reducers: {
+    setBookmark: (state, action) => {
+      state.postIds = action.payload?.postIds;
+      state.posts = action.payload?.posts;
+    },
+    updatePostIds: (state, action) => {
+      state.postIds = action.payload;
+    },
+    updatePosts: (state, action) => {
+      state.posts = action.payload;
+    },
+    updateBookmark: (state, action) => {
+      state.postIds = action.payload?.postIds;
+      state.posts = action.payload.posts?.filter((post) =>
+        state.postIds.includes(post.id)
+      );
+    },
     // setPosts: (state, action) => {},
     // addPost: (state, action) => {},
     // updatePost: (state, action) => {},
@@ -19,7 +36,8 @@ const bookmarkSlice = createSlice({
   },
 });
 
-export const {} = bookmarkSlice.actions;
+export const { setBookmark, updatePostIds, updatePosts, updateBookmark } =
+  bookmarkSlice.actions;
 
 const postReducer = bookmarkSlice.reducer;
 export default postReducer;

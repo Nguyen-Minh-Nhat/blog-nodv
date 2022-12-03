@@ -6,6 +6,13 @@ import FlagIcon from './FlagIcon';
 import HandClappingIcon from './HandClappingIcon';
 import DotIcon from './DotIcon';
 import CommentIcon from './CommentIcon';
+import LoadingIcon from './LoadingIcon';
+import MagnifyingGlassIcon from './MagnifyingGlassIcon';
+import XMarkIcon from './XMarkIcon';
+import BookmarkIcon from './BookmarkIcon';
+import TrashIcon from './TrashIcon';
+import PlusIcon from './PlusIcon';
+import CheckIcon from './CheckIcon';
 export {
 	DeleteIcon,
 	EditIcon,
@@ -15,4 +22,11 @@ export {
 	HandClappingIcon,
 	DotIcon,
 	CommentIcon,
+	LoadingIcon,
+	MagnifyingGlassIcon,
+	XMarkIcon,
+	BookmarkIcon,
+	TrashIcon,
+	PlusIcon,
+	CheckIcon,
 };

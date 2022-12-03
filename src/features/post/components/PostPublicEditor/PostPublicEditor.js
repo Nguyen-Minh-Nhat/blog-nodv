@@ -1,5 +1,5 @@
-import { useState } from 'react';
 import { Alert, TextField } from '@mui/material';
+import { useState } from 'react';
 import InputTopic from './InputTopics';
 import ThumbnailSelectBox from './ThumbnailSelectBox';
 
@@ -42,7 +42,6 @@ const PostPublicEditor = ({ post, setPost }) => {
 					<InputTopic
 						defaultValue={topics}
 						onChange={(topics) => {
-							setTopics(topics);
 							setPost((prev) => ({ ...prev, topics: topics }));
 						}}
 					/>
