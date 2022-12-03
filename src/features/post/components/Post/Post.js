@@ -21,7 +21,7 @@ const Post = ({ post, onLike, onUnlike, ...menuActionProps }) => {
 			<PostBody post={post} />
 			<div>
 				<Drawer anchor="right" open={open} onClose={handleClose}>
-					<CommentContainer onClose={handleClose} />
+					<CommentContainer onClose={handleClose} post={post} />
 				</Drawer>
 			</div>
 			<div className="sticky bottom-4 z-10 flex w-full justify-center">

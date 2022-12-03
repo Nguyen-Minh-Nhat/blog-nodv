@@ -1,6 +1,5 @@
 import { Collapse } from "@mui/material";
 import { useState } from "react";
-import { useSelector } from "react-redux";
 import CommentEditorFooter from "./CommentEditorFooter";
 import CommentEditorHeader from "./CommentEditorHeader";
 import CommentEditorInput from "./CommentEditorInput";
@@ -28,7 +27,6 @@ const CommentEditor = ({
 
   const handleSubmit = () => {
     const comment = {
-      id: initialComment?.id,
       content: inputValue.trim(),
       replyId: initialComment?.replyId,
       postId: post?.id,

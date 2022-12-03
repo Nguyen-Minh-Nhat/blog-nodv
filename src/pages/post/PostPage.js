@@ -15,6 +15,8 @@ import { toast } from 'react-toastify';
 import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { createNotification } from '../../api/notificationApi';
+import { generationNotificationByData } from '../../utils/generationNotification';
+import { NotificationType } from '../../config/dataType';
 
 const PostPage = () => {
 	const { id } = useParams();
@@ -24,6 +26,7 @@ const PostPage = () => {
 	const queryClient = useQueryClient();
 
 	const post = queryClient.getQueryData(['post', id]);
+	const user = useSelector((state) => state.user.data.info);
 
 	useQuery(['post', id], () => getPostById(id), {
 		onError: (error) => {
@@ -32,13 +35,6 @@ const PostPage = () => {
 			}
 		},
 	});
-	const generationNotificationbyData = (data, TYPE) => {
-		return {
-			link: `/posts/${data.id}`,
-			receiverId: `${data.userId}`,
-			type: TYPE,
-		};
-	};
 
 	const updateLocalPost = (updatedPost) => {
 		queryClient.setQueryData(['post', id], (oldPost) => {
@@ -68,12 +64,17 @@ const PostPage = () => {
 			toast.success('Post was unpublished');
 		},
 	});
-
+	const createNotificationLikePostMutation = useMutation(createNotification, {
+		onSuccess: (data) => {
+			console.log(data);
+		},
+	});
 	const likePostMutation = useMutation(likePost, {
 		onSuccess: (data) => {
+			console.log(data);
 			queryClient.setQueryData(['post', post.id], data);
 			createNotificationLikePostMutation.mutate(
-				generationNotificationbyData(data, 'LIKE')
+				generationNotificationByData(data, NotificationType.LIKE)
 			);
 		},
 	});
@@ -81,11 +82,6 @@ const PostPage = () => {
 	const unlikePostMutation = useMutation(unLikePost, {
 		onSuccess: (data) => {
 			queryClient.setQueryData(['post', post.id], data);
-		},
-	});
-	const createNotificationLikePostMutation = useMutation(createNotification, {
-		onSuccess: (data) => {
-			console.log(data.data);
 		},
 	});
 
