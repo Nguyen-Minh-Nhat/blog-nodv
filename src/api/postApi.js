@@ -33,7 +33,6 @@ const postApi = {
 export const {
   getPosts,
   createPost,
-  updatePost,
   getPostById,
   getOwnedPosts,
   deletePost,
@@ -41,6 +40,7 @@ export const {
   unpublishPost,
   likePost,
   unLikePost,
+  updatePost,
 } = postApi;
 
 export default postApi;
