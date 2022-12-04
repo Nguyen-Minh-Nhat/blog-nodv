@@ -3,9 +3,8 @@ import axiosClient, { axiosClientPrivate } from './axiosClient';
 const url = '/posts';
 
 const postApi = {
-	getPosts: (page = 0, limit = 5) =>
-		axiosClient.get(url + `?page=${page}&limit=${limit}`),
-
+	getPosts: ({ page = 0, limit = 5, topic = 'all' }) =>
+		axiosClient.get(url + `?page=${page}&limit=${limit}&topic=${topic}`),
 	getPostById: (id) => axiosClient.get(`${url}/${id}`),
 
 	getOwnedPosts: (isPublish) =>

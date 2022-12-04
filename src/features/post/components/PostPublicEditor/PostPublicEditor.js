@@ -5,7 +5,7 @@ import ThumbnailSelectBox from './ThumbnailSelectBox';
 
 const PostPublicEditor = ({ post, setPost }) => {
 	const [thumbnailSelected, setThumbnailSelected] = useState(post?.images[0]);
-	const [topics, setTopics] = useState(post.topics);
+	const [topics, setTopics] = useState(post?.topics || []);
 	return (
 		<div className="">
 			<Alert severity="info" className="mb-8">
