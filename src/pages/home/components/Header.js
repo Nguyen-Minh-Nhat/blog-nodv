@@ -1,19 +1,17 @@
 import { Box, IconButton } from '@mui/material';
 import { useMemo } from 'react';
+import { useQuery } from 'react-query';
+import { useNavigate } from 'react-router-dom';
+import { getOwnTopics } from '../../../api/userApi';
 import { PlusIcon } from '../../../components/Icons';
 import Tab from '../../../components/Tab';
 
-const Header = ({
-	categories = [
-		{ id: 1, title: 'Following' },
-		{ id: 2, title: 'Technology' },
-		{ id: 3, title: 'Programming' },
-		{ id: 4, title: 'Art' },
-	],
-}) => {
+const Header = () => {
+	const { data: topics, isSuccess } = useQuery('topics', getOwnTopics);
 	const tabItems = useMemo(() => {
-		return [{ id: 0, title: 'For you' }, ...categories];
-	}, [categories]);
+		if (isSuccess) return [{ id: 0, title: 'For you', slug: '' }, ...topics];
+	}, [topics, isSuccess]);
+	const navigate = useNavigate();
 
 	return (
 		<div className="flex justify-center">
@@ -24,7 +22,15 @@ const Header = ({
 							<PlusIcon />
 						</IconButton>
 					</div>
-					<Tab tabItems={tabItems} />
+					{isSuccess && (
+						<Tab
+							tabItems={tabItems}
+							onChange={(value) => {
+								const slug = tabItems.find((item) => item.id === value)?.slug;
+								navigate(`/${slug}`);
+							}}
+						/>
+					)}
 				</Box>
 			</div>
 		</div>
