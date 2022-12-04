@@ -2,19 +2,22 @@ import { Button } from '@mui/material';
 import { useMemo, useState } from 'react';
 import { useMutation, useQuery } from 'react-query';
 import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import { getTopics } from '../../api/topicApi';
 import { addTopics } from '../../api/userApi';
 import { CheckIcon, PlusIcon } from '../../components/Icons';
 import Logo from '../../layouts/components/Logo';
 import { setUser } from '../../redux/slices/userSlice';
+import { appRoutes } from '../../routes/AppRoutes';
 
 const LIMIT = 30;
 const PickTopicPage = () => {
 	const { data: topics, isSuccess } = useQuery('topics', getTopics);
 	const user = useSelector((state) => state.user.data.info);
-	const [selectedTopics, setSelectedTopics] = useState(user.topics);
+	const [selectedTopics, setSelectedTopics] = useState(user?.topics || []);
 	const [page, setPage] = useState(0);
 	const dispatch = useDispatch();
+	const navigate = useNavigate();
 
 	const topicsToShow = useMemo(() => {
 		if (topics) {
@@ -26,6 +29,7 @@ const PickTopicPage = () => {
 	const addTopicsMutation = useMutation(addTopics, {
 		onSuccess: (data) => {
 			dispatch(setUser(data));
+			navigate(appRoutes.HOME);
 		},
 	});
 

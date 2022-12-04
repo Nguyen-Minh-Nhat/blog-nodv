@@ -2,7 +2,6 @@ import { Avatar } from '@mui/material';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { toast } from 'react-toastify';
 import { followUser, getAllUnFollow, unFollowUser } from '../../api/userApi';
 import ButtonFollow from '../ButtonFollow/ButtonFollow';
 
@@ -11,7 +10,6 @@ const WhoToFollow = () => {
 	const queryClient = useQueryClient();
 	const { data: users } = useQuery('follows', () => getAllUnFollow());
 
-	console.log(users);
 	const updateUsers = (updatedFollower) => {
 		queryClient.setQueryData('follows', (oldData) =>
 			oldData.map((follow) => {
