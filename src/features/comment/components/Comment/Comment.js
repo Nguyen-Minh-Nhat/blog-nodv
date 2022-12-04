@@ -18,7 +18,7 @@ import {
   updateCommentApi,
 } from "../../../../api/commentApi";
 import { createNotification } from "../../../../api/notificationApi";
-import { generationNotificationByData } from "../../../../utils/generationNotification";
+import { callApiCreateNotification } from "../../../../utils/generationNotification";
 import { NotificationType } from "../../../../config/dataType";
 
 const Comment = ({ comment, post }) => {
@@ -74,8 +74,11 @@ const Comment = ({ comment, post }) => {
     createNewReplyComment.mutate(comment);
     let data = comment;
     data.commentParentUserId = getCommentUserId(comment);
-    createNewNotificationReplyComment.mutate(
-      generationNotificationByData(data, NotificationType.REPLYCOMMENT)
+    callApiCreateNotification(
+      data,
+      NotificationType.REPLYCOMMENT,
+      createNewNotificationReplyComment,
+      userId
     );
     setIsReply(false);
     setIsShowReply(true);

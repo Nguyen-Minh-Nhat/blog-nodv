@@ -20,6 +20,7 @@ const LoginPage = lazy(() => import('../pages/auth/LoginPage'));
 
 export const appRoutes = {
 	HOME: '/',
+	HOME_TAB: '/:tab',
 	POST: '/posts',
 	POST_DETAIL: '/posts/:id',
 	NOTIFICATION: '/notification',
@@ -46,6 +47,14 @@ export const routeConfig = [
 		element: <HomePage />,
 		protected: false,
 		layout: layouts.DEFAULT,
+		children: [
+			{
+				path: appRoutes.HOME_TAB,
+				element: <HomePage />,
+				protected: false,
+				layout: layouts.DEFAULT,
+			},
+		],
 	},
 	{
 		path: appRoutes.POST,

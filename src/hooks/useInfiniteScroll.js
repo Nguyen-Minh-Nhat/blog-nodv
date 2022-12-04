@@ -4,6 +4,7 @@ import { useMutation } from 'react-query';
 const useInfiniteScroll = (apiCallBack, onSuccess = () => {}, limit = 10) => {
 	const [isHasMore, setIsHasMore] = useState(true);
 	const [page, setPage] = useState(0);
+
 	const fetchMoreMutation = useMutation(apiCallBack, {
 		onSuccess: (data) => {
 			onSuccess(data);
@@ -13,13 +14,15 @@ const useInfiniteScroll = (apiCallBack, onSuccess = () => {}, limit = 10) => {
 			}
 		},
 	});
-	const handleFetchMore = () => {
-		fetchMoreMutation.mutate(page + 1, limit);
+	const handleFetchMore = (params) => {
+		fetchMoreMutation.mutate({ ...params, limit, page: page + 1 });
 	};
 	return {
 		isHasMore,
 		page,
 		handleFetchMore,
+		setIsHasMore,
+		setPage,
 	};
 };
 
