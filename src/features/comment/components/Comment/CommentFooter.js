@@ -7,7 +7,7 @@ import LikeButton from "../../../../components/LikeButton";
 import Number from "../../../../components/Number";
 import { NotificationType } from "../../../../config/dataType";
 import { updateComment } from "../../../../redux/slices/commentSlice";
-import { generationNotificationByData } from "../../../../utils/generationNotification";
+import { callApiCreateNotification } from "../../../../utils/generationNotification";
 import AuthClick from "../../../auth/components/AuthClick";
 
 const CommentFooter = ({
@@ -36,8 +36,11 @@ const CommentFooter = ({
   const handleLike = (isLike) => {
     if (isLike) {
       likeCommentMutation.mutate(comment.id);
-      createNotificationMutation.mutate(
-        generationNotificationByData(comment, NotificationType.LIKECOMMENT)
+      callApiCreateNotification(
+        comment,
+        NotificationType.LIKECOMMENT,
+        createNotificationMutation,
+        userId
       );
     } else {
       unlikeCommentMutation.mutate(comment.id);
