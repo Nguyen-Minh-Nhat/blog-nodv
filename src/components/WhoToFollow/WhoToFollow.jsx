@@ -9,6 +9,7 @@ const WhoToFollow = () => {
   const queryClient = useQueryClient();
   const { data: users } = useQuery("follows", () => getAllUnFollow());
 
+  console.log(users);
   const updateUsers = (updatedFollower) => {
     queryClient.setQueryData("follows", (oldData) =>
       oldData.map((follow) => {
@@ -35,6 +36,7 @@ const WhoToFollow = () => {
 
   const handleFollow = (data, isFollow) => {
     if (isFollow) {
+      console.log(data);
       followUserMutation.mutate(data);
     } else {
       unFollowUserMutation.mutate(data);

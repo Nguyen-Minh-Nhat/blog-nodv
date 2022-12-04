@@ -11,7 +11,7 @@ const userApi = {
   unFollowUser: (id) => axiosClientPrivate.patch(`${url}unfollow/${id}`),
   getAllUnFollow: (page = 0, limit = 3) =>
     axiosClientPrivate.get(url + "getAllUnFollow"),
-	followUser: (id) => axiosClientPrivate.patch(`${url}/follow/${id}`, {}),
+  followUser: (id) => axiosClientPrivate.patch(`${url}follow/${id}`, {}),
 };
 
 export const {
