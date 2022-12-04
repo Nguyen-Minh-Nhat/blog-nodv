@@ -4,7 +4,7 @@ import { createComment, getComment } from "../../../../api/commentApi";
 import { createNotification } from "../../../../api/notificationApi";
 import { NotificationType } from "../../../../config/dataType";
 import { addComment, setComments } from "../../../../redux/slices/commentSlice";
-import { generationNotificationByData } from "../../../../utils/generationNotification";
+import { callApiCreateNotification } from "../../../../utils/generationNotification";
 import CommentEditor from "../CommentEditor";
 import CommentList from "../CommentList";
 import CommentContainerHeader from "./CommentContainerHeader";
@@ -14,7 +14,7 @@ const CommentContainer = ({ post, onClose }) => {
   const rootComments = useSelector(
     (state) => state.comment.commentsByParentId[null]
   );
-
+  const { id: userId } = useSelector((state) => state.user.data.info);
   useQuery(["comments", post.id], () => getComment(post.id), {
     onSuccess: (data) => {
       dispatch(setComments(data));
@@ -30,8 +30,11 @@ const CommentContainer = ({ post, onClose }) => {
     createNewComment.mutate(comment);
     const data = comment;
     data.postUserId = post.userId;
-    createNewNotificationComment.mutate(
-      generationNotificationByData(comment, NotificationType.COMMENT)
+    callApiCreateNotification(
+      comment,
+      NotificationType.COMMENT,
+      createNewNotificationComment,
+      userId
     );
   };
 
