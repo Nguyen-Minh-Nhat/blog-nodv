@@ -8,8 +8,12 @@ const userApi = {
     axiosClientPrivate.get(`${url}/search?q=${q}&page=${page}&limit=${limit}`),
   updateUserProfile: (data) => axiosClientPrivate.put(url, data),
   followUser: (id) => axiosClientPrivate.patch(`${url}/follow/${id}`, {}),
+  unFollowUser: (id) => axiosClientPrivate.patch(`${url}/unfollow/${id}`),
+  addTopics: (topics) => axiosClientPrivate.patch(`${url}/topics`, { topics }),
+  getOwnTopics: () => axiosClientPrivate.get(`${url}/topics`),
+  getAllUnFollow: (page = 0, limit = 3) =>
+    axiosClientPrivate.get(url + "/getAllUnFollow"),
   updateCountNotifications: ({ userId, isIncrease }) => {
-    console.log("isIncrease", isIncrease, userId);
     return axiosClientPrivate.patch(
       `${url}/${userId}${!!isIncrease ? "?isIncrease=" + isIncrease : ""}`
     );
@@ -22,5 +26,9 @@ export const {
   searchUser,
   updateUserProfile,
   followUser,
+  getAllUnFollow,
+  unFollowUser,
+  addTopics,
+  getOwnTopics,
   updateCountNotifications,
 } = userApi;

@@ -6,7 +6,7 @@ const RecommendTopic = () => {
   return (
     <>
       <div className="mt-5">
-        <h2 className="m-0 mb-5 block px-4 text-base font-medium leading-5">
+        <h2 className="m-0 mb-5 block text-base font-medium leading-5">
           Recommended Topic
         </h2>
         <Link to="/datdz">

@@ -3,12 +3,14 @@ import { useSelector } from 'react-redux';
 import { Navigate, Outlet, useRoutes } from 'react-router-dom';
 import SuspenseProgress from '../components/SuspenseProgress/SuspenseProgress';
 import Layout, { layouts } from '../layouts/Layout';
-import RedirectLogin from '../pages/auth/RedirectLogin';
-import ProfilePage from '../pages/Profile/ProfilePage';
-import AccountTab from '../pages/setting/tab/AccountTab';
-import NotificationsTab from '../pages/setting/tab/NotificationsTab';
-import PublishedTab from '../pages/setting/tab/PublishedTab';
-import PickTopicPage from '../pages/topic/PickTopicPage';
+const RedirectLogin = lazy(() => import('../pages/auth/RedirectLogin'));
+const ProfilePage = lazy(() => import('../pages/Profile/ProfilePage'));
+const AccountTab = lazy(() => import('../pages/setting/tab/AccountTab'));
+const NotificationsTab = lazy(() =>
+	import('../pages/setting/tab/NotificationsTab')
+);
+const PublishedTab = lazy(() => import('../pages/setting/tab/PublishedTab'));
+const PickTopicPage = lazy(() => import('../pages/topic/PickTopicPage'));
 const BookmarkPage = lazy(() => import('../pages/bookmark'));
 const HomePage = lazy(() => import('../pages/home/HomePage'));
 const NotificationsPage = lazy(() => import('../pages/notifications'));
@@ -20,6 +22,7 @@ const LoginPage = lazy(() => import('../pages/auth/LoginPage'));
 
 export const appRoutes = {
 	HOME: '/',
+	HOME_TAB: '/:tab',
 	POST: '/posts',
 	POST_DETAIL: '/posts/:id',
 	NOTIFICATION: '/notification',
@@ -46,6 +49,14 @@ export const routeConfig = [
 		element: <HomePage />,
 		protected: false,
 		layout: layouts.DEFAULT,
+		children: [
+			{
+				path: appRoutes.HOME_TAB,
+				element: <HomePage />,
+				protected: false,
+				layout: layouts.DEFAULT,
+			},
+		],
 	},
 	{
 		path: appRoutes.POST,
