@@ -12,6 +12,7 @@ import {
   unLikePost,
   unpublishPost,
 } from "../../api/postApi";
+import { updateCountNotifications } from "../../api/userApi";
 import { NotificationType } from "../../config/dataType";
 import Post from "../../features/post/components/Post";
 import { callApiCreateNotification } from "../../utils/generationNotification";
@@ -69,6 +70,9 @@ const PostPage = () => {
       console.log(data);
     },
   });
+  const updateUserIncreaseNumOfNotification = useMutation(
+    updateCountNotifications
+  );
   const likePostMutation = useMutation(likePost, {
     onSuccess: (data) => {
       queryClient.setQueryData(["post", post.id], data);
@@ -78,6 +82,11 @@ const PostPage = () => {
         createNotificationLikePostMutation,
         userId
       );
+      const Increase = {
+        isIncrease: true,
+        userId: data.userId,
+      };
+      updateUserIncreaseNumOfNotification.mutate(Increase);
     },
   });
 
