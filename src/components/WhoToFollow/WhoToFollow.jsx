@@ -2,7 +2,10 @@ import { Avatar } from '@mui/material';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { followUser, getAllUnFollow, unFollowUser } from '../../api/userApi';
+import { createNotification } from '../../api/notificationApi';
+import { followUser, getAllUnFollow, unFollowUser, updateCountNotifications } from '../../api/userApi';
+import { NotificationType } from '../../config/dataType';
+import { callApiCreateNotification } from '../../utils/generationNotification';
 import ButtonFollow from '../ButtonFollow/ButtonFollow';
 
 const WhoToFollow = () => {
@@ -21,6 +24,8 @@ const WhoToFollow = () => {
 		);
 	};
 
+	const createNotificationMutation = useMutation(createNotification);
+
 	const followUserMutation = useMutation(followUser, {
 		onSuccess: (data) => {
 			updateUsers(data);
@@ -33,11 +38,24 @@ const WhoToFollow = () => {
 			updateUsers(data);
 		},
 	});
-
+	const updateUserIncreaseNumOfNotification = useMutation(
+		updateCountNotifications
+	  );
+	
 	const handleFollow = (data, isFollow) => {
 		if (isFollow) {
-			console.log(data);
 			followUserMutation.mutate(data);
+			callApiCreateNotification(data,
+				NotificationType.FOLLOW,
+				createNotificationMutation,
+				userId
+			  );
+			  const Increase = {
+				isIncrease: true,
+				userId: data,
+			  };
+			  updateUserIncreaseNumOfNotification.mutate(Increase);
+			  
 		} else {
 			unFollowUserMutation.mutate(data);
 		}

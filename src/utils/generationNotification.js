@@ -25,8 +25,8 @@ export const callApiCreateNotification = (data, type, callApi, userId) => {
       if (userId !== data.commentParentUserId) callApi.mutate(notification);
       break;
     default:
-      notification.link = `/user/${data.id}`;
-      notification.receiverId = `${data.id}`;
+      notification.link = `/users/${userId}`;
+      notification.receiverId = `${data}`;
       if (userId !== data.id) callApi.mutate(notification);
   }
 
