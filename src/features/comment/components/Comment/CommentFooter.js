@@ -2,6 +2,7 @@ import { useMutation } from "react-query";
 import { useDispatch, useSelector } from "react-redux";
 import { likeComment, unlikeComment } from "../../../../api/commentApi";
 import { createNotification } from "../../../../api/notificationApi";
+import { updateCountNotifications } from "../../../../api/userApi";
 import IconWrapper from "../../../../components/IconWrapper";
 import LikeButton from "../../../../components/LikeButton";
 import Number from "../../../../components/Number";
@@ -32,6 +33,9 @@ const CommentFooter = ({
       dispatch(updateComment(data));
     },
   });
+  const updateUserIncreaseNumOfNotification = useMutation(
+    updateCountNotifications
+  );
 
   const handleLike = (isLike) => {
     if (isLike) {
@@ -42,6 +46,11 @@ const CommentFooter = ({
         createNotificationMutation,
         userId
       );
+      const Increase = {
+        isIncrease: true,
+        userId: comment.userId,
+      };
+      updateUserIncreaseNumOfNotification.mutate(Increase);
     } else {
       unlikeCommentMutation.mutate(comment.id);
     }
