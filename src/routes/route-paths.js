@@ -1,4 +1,7 @@
 import { lazy } from "react";
+import AboutTab from "../pages/Profile/tab/AboutTab";
+import HomeTab from "../pages/Profile/tab/HomeTab";
+import ListsTab from "../pages/Profile/tab/ListsTab";
 import AccountTab from "../pages/setting/tab/AccountTab";
 import NotificationsTab from "../pages/setting/tab/NotificationsTab";
 import PublishedTab from "../pages/setting/tab/PublishedTab";
@@ -9,6 +12,7 @@ const StoriesPage = lazy(() => import("../pages/stories/StoriesPage"));
 const PostPage = lazy(() => import("../pages/post/PostPage"));
 const WritePage = lazy(() => import("../pages/write/WritePage"));
 const SettingPage = lazy(() => import("../pages/setting/SettingPage"));
+const ProfilePage = lazy(() => import("../pages/profile/ProfilePage"));
 
 const routes = {
   home: "/",
@@ -18,6 +22,7 @@ const routes = {
   stories: "/stories",
   write: "/write",
   setting: "/setting",
+  profile: "/profile",
 };
 
 const home = {
@@ -59,6 +64,15 @@ const setting = {
     { path: "/published", element: <PublishedTab /> },
   ],
 };
+const profile = {
+  path: "/profile",
+  element: <ProfilePage />,
+  children: [
+    { path: "/home", element: <HomeTab /> },
+    { path: "/lists", element: <ListsTab /> },
+    { path: "/about", element: <AboutTab /> },
+  ],
+};
 
 const routesV2 = {
   home,
@@ -68,6 +82,7 @@ const routesV2 = {
   stories,
   write,
   setting,
+  profile,
 };
 
 export const routesWithComponents = [
@@ -102,6 +117,15 @@ export const routesWithComponents = [
       { path: "", component: AccountTab },
       { path: "published", component: PublishedTab },
       { path: "notification", component: NotificationsTab },
+    ],
+  },
+  {
+    path: routes.profile,
+    component: ProfilePage,
+    children: [
+      { path: "", component: HomeTab },
+      { path: "lists", component: ListsTab },
+      { path: "about", component: AboutTab },
     ],
   },
 ];

@@ -3,9 +3,11 @@ import React from "react";
 
 const AboutDescription = ({ onClick, userBio }) => {
   return (
-    <div>
+    <div className="flex justify-between">
       <div>{userBio}</div>
-      <Button onClick={onClick}>Edit</Button>
+      <Button className="justify-self-end" onClick={onClick}>
+        Edit
+      </Button>
     </div>
   );
 };
