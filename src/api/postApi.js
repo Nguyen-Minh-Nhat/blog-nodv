@@ -3,8 +3,19 @@ import axiosClient, { axiosClientPrivate } from './axiosClient';
 const url = '/posts';
 
 const postApi = {
-	getPosts: ({ page = 0, limit = 5, topic = 'all' }) =>
-		axiosClient.get(url + `?page=${page}&limit=${limit}&topic=${topic}`),
+	getPosts: ({ page = 0, limit = 5, topic, title }) =>
+		axiosClient.get(url, {
+			params: {
+				page,
+				limit,
+				topic,
+				title,
+			},
+		}),
+
+	getPostsTrending: (limit = 6) =>
+		axiosClient.get(`${url}/trending?limit=${limit}`),
+
 	getPostById: (id) => axiosClient.get(`${url}/${id}`),
 
 	getOwnedPosts: (isPublish) =>
@@ -41,6 +52,7 @@ export const {
 	likePost,
 	unLikePost,
 	updatePost,
+	getPostsTrending,
 } = postApi;
 
 export default postApi;
