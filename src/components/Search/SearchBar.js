@@ -1,7 +1,7 @@
 import { LoadingIcon, MagnifyingGlassIcon } from '../Icons';
 import IconWrapper from '../IconWrapper';
 
-const SearchBar = ({ onChange, onFocus, loading }) => {
+const SearchBar = ({ onChange, onFocus, loading, ...props }) => {
 	return (
 		<div className="flex h-10 w-full items-center rounded-full border p-1">
 			{loading ? (
@@ -20,6 +20,7 @@ const SearchBar = ({ onChange, onFocus, loading }) => {
 				className="w-full bg-transparent outline-none placeholder:font-thin"
 				onChange={onChange}
 				onFocus={onFocus}
+				{...props}
 			/>
 		</div>
 	);

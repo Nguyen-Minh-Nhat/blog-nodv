@@ -44,7 +44,7 @@ const WhoToFollow = () => {
 	};
 	return (
 		<>
-			<div>
+			<div className="mt-10">
 				<h2 className="m-0 block text-base font-medium leading-5">
 					Who To Follow
 				</h2>
@@ -52,10 +52,10 @@ const WhoToFollow = () => {
 				{users &&
 					users.map((item) => (
 						<div
-							className="relative mb-5 flex w-full items-center justify-between pt-4"
+							className="relative flex w-full items-center justify-between pt-4"
 							key={item.id}
 						>
-							<div className="container-left flex items-center">
+							<div className="flex items-center">
 								<Link to={item.email}>
 									<Avatar
 										src={item?.avatar}
