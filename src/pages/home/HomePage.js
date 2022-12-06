@@ -1,18 +1,15 @@
 import { useEffect } from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { useQuery, useQueryClient } from 'react-query';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
-import { getBookmarkByUserId } from '../../api/bookmarkApi';
 import { getPosts } from '../../api/postApi';
 import { PostList } from '../../features/post';
 import useInfiniteScroll from '../../hooks/useInfiniteScroll';
-import { setBookmark } from '../../redux/slices/bookmarkSlice';
 import Header from './components/Header';
 
 const LIMIT = 5;
 const HomePage = () => {
-	const dispatch = useDispatch();
 	const { tab } = useParams(); //get tab from url
 	const storeKey = ['posts', tab]; //key for react-query
 
@@ -42,14 +39,6 @@ const HomePage = () => {
 		setIsHasMore(true);
 	}, [tab]); // reset page and isHasMore when tab change
 
-	const postIdsBookmark = useSelector((state) => state.bookmark.postIds);
-
-	useQuery('bookmark', getBookmarkByUserId, {
-		onSuccess: (data) => {
-			dispatch(setBookmark(data));
-		},
-	});
-
 	return (
 		<InfiniteScroll
 			dataLength={posts?.length || 0}
@@ -65,11 +54,7 @@ const HomePage = () => {
 				<Header />
 			</div>
 			<Main>
-				<PostList
-					postList={posts}
-					postIdsBookmark={postIdsBookmark}
-					storeKey={storeKey}
-				/>
+				<PostList postList={posts} storeKey={storeKey} />
 			</Main>
 		</InfiniteScroll>
 	);
