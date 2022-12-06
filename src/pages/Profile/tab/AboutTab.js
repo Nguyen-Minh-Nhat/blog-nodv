@@ -1,9 +1,11 @@
 import React, { useState } from "react";
+import { useSelector } from "react-redux";
 import AboutDescription from "./components/AboutDescription";
 import AboutForm from "./components/AboutForm";
 import AboutStarted from "./components/AboutStarted";
 
-const AboutTab = ({ user }) => {
+const AboutTab = () => {
+  const user = useSelector((state) => state.user.data.info);
   const [ShowForm, setShowForm] = useState(false);
   console.log(!user.bio);
   const handleClick = () => {
@@ -27,14 +29,6 @@ const AboutTab = ({ user }) => {
             );
           }
         })()}
-      </div>
-      <div className="mt-8 border-b"></div>
-      <div className="mt-[65px] mb-5 border-b border-black"></div>
-      <div>
-        <h2 className="text-xl font-normal">
-          Get an email whenever {user.username} publishes.
-        </h2>
-        <p className="mt-2 pb-5 text-sm">You cannot subscribe to yourself</p>
       </div>
     </>
   );

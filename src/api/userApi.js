@@ -18,6 +18,8 @@ const userApi = {
       `${url}/${userId}${!!isIncrease ? "?isIncrease=" + isIncrease : ""}`
     );
   },
+  getAllUsersFollower: () => axiosClientPrivate.get(`${url}/follower`),
+  getAllUsersFollowing: () => axiosClientPrivate.get(`${url}/following`),
 };
 
 export const {
@@ -31,4 +33,6 @@ export const {
   addTopics,
   getOwnTopics,
   updateCountNotifications,
+  getAllUsersFollower,
+  getAllUsersFollowing,
 } = userApi;
