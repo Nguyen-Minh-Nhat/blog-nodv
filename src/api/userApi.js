@@ -13,6 +13,13 @@ const userApi = {
 	getOwnTopics: () => axiosClientPrivate.get(`${url}/topics`),
 	getAllUnFollow: (page = 0, limit = 3) =>
 		axiosClientPrivate.get(url + '/getAllUnFollow'),
+	updateCountNotifications: ({ userId, isIncrease }) => {
+		return axiosClientPrivate.patch(
+			`${url}/${userId}${!!isIncrease ? '?isIncrease=' + isIncrease : ''}`
+		);
+	},
+	getAllUsersFollower: () => axiosClientPrivate.get(`${url}/follower`),
+	getAllUsersFollowing: () => axiosClientPrivate.get(`${url}/following`),
 };
 
 export const {
