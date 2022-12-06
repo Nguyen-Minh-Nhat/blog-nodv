@@ -13,6 +13,9 @@ const bookmarkSlice = createSlice({
     },
     updatePostIds: (state, action) => {
       state.postIds = action.payload;
+      state.posts = state.posts?.filter((post) =>
+        state.postIds.includes(post.id)
+      );
     },
     updatePosts: (state, action) => {
       state.posts = action.payload;
@@ -23,16 +26,6 @@ const bookmarkSlice = createSlice({
         state.postIds.includes(post.id)
       );
     },
-    // setPosts: (state, action) => {},
-    // addPost: (state, action) => {},
-    // updatePost: (state, action) => {},
-    // removePosts: (state, action) => {},
-    // setPost: (state, action) => {
-    // 	state.data = action.payload;
-    // },
-    // updatePost: (state, action) => {
-    // 	state.data = action.payload;
-    // },
   },
 });
 

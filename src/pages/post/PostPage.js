@@ -1,8 +1,9 @@
 import { useEffect } from "react";
 import { useMutation, useQuery, useQueryClient } from "react-query";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
+import { updatePostToBookmark } from "../../api/bookmarkApi";
 import { createNotification } from "../../api/notificationApi";
 import {
   deletePost,
@@ -14,14 +15,17 @@ import {
 } from "../../api/postApi";
 import { NotificationType } from "../../config/dataType";
 import Post from "../../features/post/components/Post";
+import { updatePostIds } from "../../redux/slices/bookmarkSlice";
 import { callApiCreateNotification } from "../../utils/generationNotification";
 import Header from "./components/Header";
 import Main from "./components/Main";
 
 const PostPage = () => {
   const { id } = useParams();
+  const dispatch = useDispatch();
 
   const socket = useSelector((state) => state.socket.data);
+  const postIdsBookmark = useSelector((state) => state.bookmark.postIds);
 
   const queryClient = useQueryClient();
 
@@ -87,6 +91,13 @@ const PostPage = () => {
     },
   });
 
+  const updateBookmarkMutation = useMutation(updatePostToBookmark, {
+    onSuccess: (data) => {
+      console.log("data ", data);
+      dispatch(updatePostIds(data));
+    },
+  });
+
   const handleReceiveLikePostSocket = (payload) => {
     console.log(payload);
     const { userLikeIds } = JSON.parse(payload.body);
@@ -113,6 +124,8 @@ const PostPage = () => {
         {post && (
           <Post
             post={post}
+            isBookmarked={postIdsBookmark?.includes(post.id)}
+            onUpdateBookmark={updateBookmarkMutation.mutate}
             onPublish={publishPostMutation.mutate}
             onDelete={deletePostMutation.mutate}
             onUnpublish={unpublishPostMutation.mutate}

@@ -21,11 +21,11 @@ const PostAction = ({
           ></i>
         </IconButton>
       </div>
-      <div>
+      {/* <div>
         <IconButton size="small" className="h-8 w-8">
           <i className="fa-light fa-circle-minus"></i>
         </IconButton>
-      </div>
+      </div> */}
 
       <MenuTrigger>
         <PostMenu post={post} {...menuActionProps} />
