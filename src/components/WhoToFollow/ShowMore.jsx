@@ -1,18 +1,18 @@
 import { Avatar } from "@mui/material";
+import { useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { followUser, getUsersNotFollow, unFollowUser } from "../../api/userApi";
 import ButtonFollow from "../ButtonFollow/ButtonFollow";
-import ModalTrigger from "../ModalTrigger";
-import ShowMore from "./ShowMore";
 
-const WhoToFollow = () => {
+const ShowMore = () => {
   const userId = useSelector((state) => state.user?.data?.info?.id);
+  // const [size, setSize] = useState(5);
   const queryClient = useQueryClient();
-  const { data: users } = useQuery("follows", () => getUsersNotFollow(3));
+  const { data: getUsers } = useQuery("usersFL", () => getUsersNotFollow(20));
   const updateUsers = (updatedFollower) => {
-    queryClient.setQueryData("follows", (oldData) =>
+    queryClient.setQueryData("usersFL", (oldData) =>
       oldData.map((follow) => {
         if (follow.id === updatedFollower.id) {
           return updatedFollower;
@@ -43,34 +43,40 @@ const WhoToFollow = () => {
       unFollowUserMutation.mutate(data);
     }
   };
+
+  // getUsers = useQuery("usersFL", () => getUsersNotFollow(10));
+  // const handleShowMore = () => {
+  //   console.log(10);
+  //   setSize(10);
+  // };
   return (
     <>
-      <div>
-        <h2 className="m-0 block text-base font-medium leading-5">
+      <div className="h-[90vh] w-[41vw] overflow-y-scroll bg-white px-[16%] pt-20 opacity-90">
+        <h2 className="m-0 block pb-5 text-center text-2xl font-bold leading-5">
           Who To Follow
         </h2>
-        {users &&
-          users.map((item) => (
+        {getUsers &&
+          getUsers.map((item1) => (
             <div
               className="relative mb-5 flex w-full items-center justify-between pt-4"
-              key={item.id}
+              key={item1.id}
             >
               <div className="container-left flex items-center">
-                <Link to={item.email}>
+                <Link to={item1.email}>
                   <Avatar
-                    src={item?.avatar}
+                    src={item1?.avatar}
                     className="h-12 w-12"
-                    alt={item.username}
+                    alt={item1.username}
                   />
                 </Link>
-                <Link to={item.email}>
+                <Link to={item1.email}>
                   <div className="ml-4 mr-2 block">
                     <h2 className="break-all text-base font-bold">
-                      {item.username}
+                      {item1.username}
                     </h2>
                     <div className="mt-1 block  break-words">
                       <p className="A-font break-all text-sm font-normal line-clamp-2">
-                        {item?.bio}
+                        {item1?.bio}
                       </p>
                     </div>
                   </div>
@@ -78,29 +84,19 @@ const WhoToFollow = () => {
               </div>
               <div>
                 <ButtonFollow
-                  isFollowed={item?.followerId?.includes(userId)}
-                  textColorBefore={"text-black"}
-                  bgColorBefore={"border-rgb"}
-                  textColorAfter={"text-white"}
-                  bgColorAfter={"bg-black"}
-                  onClick={(state) => {
-                    handleFollow(item.id, state);
-                  }}
+                  isFollowed={false}
+                  textColorBefore={"text-white"}
+                  bgColorBefore={"bg-green-500"}
+                  textColorAfter={"text-green-500"}
+                  bgColorAfter={"rgb"}
+                  onClick={(state) => {}}
                 />
               </div>
             </div>
           ))}
-
-        <ModalTrigger
-          button={
-            <span className="absolute mt-5 cursor-pointer">Show more</span>
-          }
-        >
-          {<ShowMore />}
-        </ModalTrigger>
       </div>
     </>
   );
 };
 
-export default WhoToFollow;
+export default ShowMore;
