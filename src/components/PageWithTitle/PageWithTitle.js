@@ -13,7 +13,7 @@ const PageWithTitle = ({
 			<ReactStickyBox offsetTop={0} className="z-10">
 				<header className="flex justify-center bg-white pt-12">
 					<div className="mx-4 basis-[700px]">
-						<div className="mb-10 flex items-center justify-between">
+						<div className="mb-10 flex items-center justify-between overflow-hidden truncate">
 							<h2 className="text-5xl font-bold text-[#292929]">{title}</h2>
 							{rightComponent}
 						</div>
