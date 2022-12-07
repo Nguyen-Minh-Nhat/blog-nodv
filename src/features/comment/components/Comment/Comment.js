@@ -1,25 +1,22 @@
-import { memo, useEffect, useMemo, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import CommentEditor from "../CommentEditor";
-import CommentList from "../CommentList";
-import CommentBody from "./CommentBody";
-import CommentFooter from "./CommentFooter";
-import CommentHeader from "./CommentHeader";
-import QuestionDialog from "../../../../components/QuestionDialog";
-import {
-  addComment,
-  removeComment,
-} from "../../../../redux/slices/commentSlice";
+import { memo, useMemo, useState } from "react";
 import { useMutation } from "react-query";
+import { useDispatch, useSelector } from "react-redux";
 import {
   createComment,
   deleteComment,
   updateCommentApi,
 } from "../../../../api/commentApi";
 import { createNotification } from "../../../../api/notificationApi";
-import { callApiCreateNotification } from "../../../../utils/generationNotification";
-import { NotificationType } from "../../../../config/dataType";
 import { updateCountNotifications } from "../../../../api/userApi";
+import QuestionDialog from "../../../../components/QuestionDialog";
+import { NotificationType } from "../../../../config/dataType";
+import { addComment } from "../../../../redux/slices/commentSlice";
+import { callApiCreateNotification } from "../../../../utils/generationNotification";
+import CommentEditor from "../CommentEditor";
+import CommentList from "../CommentList";
+import CommentBody from "./CommentBody";
+import CommentFooter from "./CommentFooter";
+import CommentHeader from "./CommentHeader";
 
 const Comment = ({ comment, post }) => {
   const user = useSelector((state) => state.user.data.info);
@@ -40,11 +37,7 @@ const Comment = ({ comment, post }) => {
   const handleCloseDialog = () => {
     setIsDelete(false);
   };
-  const deleteCommentById = useMutation(deleteComment, {
-    onSuccess: (data) => {
-      dispatch(removeComment(data));
-    },
-  });
+  const deleteCommentById = useMutation(deleteComment);
   const handleDeleteComment = (comment) => {
     deleteCommentById.mutate(comment.id);
   };
