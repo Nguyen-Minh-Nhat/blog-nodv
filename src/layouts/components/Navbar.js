@@ -1,6 +1,6 @@
 import { Badge, Tooltip } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { useMutation } from "react-query";
 import { useDispatch, useSelector } from "react-redux";
 import { matchPath, useLocation } from "react-router";
@@ -12,6 +12,8 @@ import { appRoutes } from "../../routes/AppRoutes";
 const Navbar = () => {
   const { pathname } = useLocation();
   const userRedux = useSelector((state) => state.user.data.info);
+  const socket = useSelector((state) => state.socket.data);
+
   const user = {
     ...userRedux,
   };
@@ -26,18 +28,45 @@ const Navbar = () => {
     },
   });
 
-  const handleClickNotification = (user) => {
-    user.notificationsCount = 0;
-    const data = {
-      userId: user.id,
-      isIncrease: false,
-    };
-    updateUserCountNotification.mutate(data);
-  };
+  const handleClickNotification = useCallback(
+    (user) => {
+      user.notificationsCount = 0;
+      const data = {
+        userId: user.id,
+        isIncrease: false,
+      };
+      updateUserCountNotification.mutate(data);
+    },
+    [updateUserCountNotification]
+  );
+
   useEffect(() => {
     if (matchPath(appRoutes.NOTIFICATION, pathname))
       handleClickNotification(user);
-  }, [pathname]);
+  }, [pathname, handleClickNotification, user]);
+
+  const handleReceiveCountNotificationSocket = useCallback(
+    (payload) => {
+      const data = JSON.parse(payload.body);
+      setNumOfNotifications(data.notificationsCount);
+      dispatch(setUser(data));
+    },
+    [dispatch]
+  );
+
+  useEffect(() => {
+    const topic = `/topic/notifications/${user.id}/countNotifications`;
+    if (socket) {
+      console.log("subscribing navbar");
+      socket.subscribe(topic, handleReceiveCountNotificationSocket);
+    }
+    return () => {
+      if (socket) {
+        console.log("unsubscribing");
+        socket.unsubscribe(topic);
+      }
+    };
+  }, [socket, handleReceiveCountNotificationSocket, user]);
 
   const navbarItems = [
     {

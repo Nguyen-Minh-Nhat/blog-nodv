@@ -28,27 +28,44 @@ const CommentContainer = ({ post, onClose }) => {
       dispatch(setComments(data));
     },
   });
-  const createNewComment = useMutation(createComment);
+  const createNewComment = useMutation(createComment, {
+    onSuccess: (data) => {
+      dispatch(addComment(data));
+      let comment = { ...data, postUserId: post.userId };
+      callApiCreateNotification(
+        comment,
+        NotificationType.COMMENT,
+        createNewNotificationComment,
+        userId
+      );
+    },
+  });
 
   const updateUserIncreaseNumOfNotification = useMutation(
     updateCountNotifications
   );
-  const createNewNotificationComment = useMutation(createNotification);
+
+  const createNewNotificationComment = useMutation(createNotification, {
+    onSuccess: (data) => {
+      const increase = { isIncrease: true, userId: data.receiverId };
+      updateUserIncreaseNumOfNotification.mutate(increase);
+    },
+  });
   const handleCreateComment = (comment) => {
     createNewComment.mutate(comment);
-    const data = comment;
-    data.postUserId = post.userId;
-    callApiCreateNotification(
-      comment,
-      NotificationType.COMMENT,
-      createNewNotificationComment,
-      userId
-    );
-    const Increase = {
-      isIncrease: true,
-      userId: data.postUserId,
-    };
-    updateUserIncreaseNumOfNotification.mutate(Increase);
+    // const data = comment;
+    // data.postUserId = post.userId;
+    // callApiCreateNotification(
+    //   comment,
+    //   NotificationType.COMMENT,
+    //   createNewNotificationComment,
+    //   userId
+    // );
+    // const Increase = {
+    //   isIncrease: true,
+    //   userId: data.postUserId,
+    // };
+    // updateUserIncreaseNumOfNotification.mutate(Increase);
   };
   const initialComment = {};
   const updateLocalListComment = (updatedComment) => {
