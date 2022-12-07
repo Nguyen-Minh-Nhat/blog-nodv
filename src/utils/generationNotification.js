@@ -1,31 +1,32 @@
 import { NotificationType } from "../config/dataType";
+import { appRoutes } from "../routes/AppRoutes";
 
 export const callApiCreateNotification = (data, type, callApi, userId) => {
   let notification = { type: type };
   switch (type) {
     case NotificationType.LIKE:
-      notification.link = `/post/${data.id}`;
+      notification.link = `${appRoutes.POST}/${data.id}`;
       notification.receiverId = `${data.userId}`;
       if (userId !== data.userId) callApi.mutate(notification);
       break;
     case NotificationType.LIKECOMMENT:
-      notification.link = `/post/${data.postId}`;
+      notification.link = `${appRoutes.POST}/${data.postId}`;
       notification.receiverId = `${data.userId}`;
       if (userId !== data.userId) callApi.mutate(notification);
       break;
     case NotificationType.COMMENT:
-      notification.link = `/post/${data.postId}`;
+      notification.link = `${appRoutes.POST}/${data.postId}`;
       notification.receiverId = `${data.postUserId}`;
       if (userId !== data.postUserId) callApi.mutate(notification);
       break;
     case NotificationType.REPLYCOMMENT:
-      notification.link = `/post/${data.postId}`;
+      notification.link = `${appRoutes.POST}/${data.postId}`;
       notification.receiverId = `${data.commentParentUserId}`;
       if (userId !== data.commentParentUserId) callApi.mutate(notification);
       break;
     default:
-      notification.link = `/user/${data.id}`;
-      notification.receiverId = `${data.id}`;
+      notification.link = `/users/${userId}`;
+      notification.receiverId = `${data}`;
       if (userId !== data.id) callApi.mutate(notification);
   }
 

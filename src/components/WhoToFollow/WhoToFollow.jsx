@@ -1,39 +1,96 @@
-import React from 'react';
-import { useMutation, useQuery } from 'react-query';
-import { followUser, searchUser } from '../../api/userApi';
+import { Avatar } from '@mui/material';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
+import { useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
+import { createNotification } from '../../api/notificationApi';
+import { followUser, getAllUnFollow, unFollowUser, updateCountNotifications } from '../../api/userApi';
+import { NotificationType } from '../../config/dataType';
+import { callApiCreateNotification } from '../../utils/generationNotification';
 import ButtonFollow from '../ButtonFollow/ButtonFollow';
+import ShowMore from "./ShowMore";
+import ModalTrigger from "../ModalTrigger";
 
 const WhoToFollow = () => {
-	const { data: users } = useQuery('users', () => searchUser('nhật'));
-	const followMutation = useMutation(followUser);
-	const handleFollow = (id) => {
-		console.log(id);
-		followMutation.mutate(id);
-	};
+  const userId = useSelector((state) => state.user?.data?.info?.id);
+  const queryClient = useQueryClient();
+  const { data: users } = useQuery("follows", () => getUsersNotFollow(3));
+  const updateUsers = (updatedFollower) => {
+    queryClient.setQueryData("follows", (oldData) =>
+      oldData.map((follow) => {
+        if (follow.id === updatedFollower.id) {
+          return updatedFollower;
+        }
+        return follow;
+      })
+    );
+  };
 
+  const followUserMutation = useMutation(followUser, {
+    onSuccess: (data) => {
+      updateUsers(data);
+      console.log(queryClient.getQueryData("follows"));
+    },
+  });
+
+	const createNotificationMutation = useMutation(createNotification);
+
+	const followUserMutation = useMutation(followUser, {
+		onSuccess: (data) => {
+			updateUsers(data);
+			console.log(queryClient.getQueryData('follows'));
+		},
+	});
+
+	const unFollowUserMutation = useMutation(unFollowUser, {
+		onSuccess: (data) => {
+			updateUsers(data);
+		},
+	});
+	const updateUserIncreaseNumOfNotification = useMutation(
+		updateCountNotifications
+	  );
+	
+	const handleFollow = (data, isFollow) => {
+		if (isFollow) {
+			followUserMutation.mutate(data);
+			callApiCreateNotification(data,
+				NotificationType.FOLLOW,
+				createNotificationMutation,
+				userId
+			  );
+			  const Increase = {
+				isIncrease: true,
+				userId: data,
+			  };
+			  updateUserIncreaseNumOfNotification.mutate(Increase);
+			  
+		} else {
+			unFollowUserMutation.mutate(data);
+		}
+	};
 	return (
 		<>
-			<div>
-				<h2 className="m-0 mb-5 block px-4 text-base font-medium leading-5">
+			<div className="mt-10">
+				<h2 className="m-0 block text-base font-medium leading-5">
 					Who To Follow
 				</h2>
-				<div className="flex flex-col gap-4">
-					{users &&
-						users.map((item) => (
-							<div
-								className="relative flex w-full items-center justify-between pt-4"
-								key={item.id}
-							>
-								<div className="container-left">
-									{/* <Link to={item?.path}> */}
-									<img
-										src={item.avatar}
-										alt="TanDat"
-										className="t-0 absolute block h-12 w-12 rounded-full"
+
+				{users &&
+					users.map((item) => (
+						<div
+							className="relative flex w-full items-center justify-between pt-4"
+							key={item.id}
+						>
+							<div className="flex items-center">
+								<Link to={item.email}>
+									<Avatar
+										src={item?.avatar}
+										className="h-12 w-12"
+										alt={item.username}
 									/>
-									{/* </Link> */}
-									{/* <Link to={item?.path}> */}
-									<div className="ml-16 mr-8 block">
+								</Link>
+								<Link to={item.email}>
+									<div className="ml-4 mr-2 block">
 										<h2 className="break-all text-base font-bold">
 											{item.username}
 										</h2>
@@ -43,19 +100,26 @@ const WhoToFollow = () => {
 											</p>
 										</div>
 									</div>
-									{/* </Link> */}
-								</div>
-								<div>
-									<ButtonFollow
-										isFollowed={item?.followed}
-										onClick={() => handleFollow(item.id)}
-									/>
-								</div>
+								</Link>
 							</div>
-						))}
-				</div>
+							<div>
+								<ButtonFollow
+									isFollowed={item?.followerId?.includes(userId)}
+									onClick={(state) => {
+										handleFollow(item.id, state);
+									}}
+								/>
+							</div>
+						</div>
+					))}
 			</div>
-			<span className="cursor-pointer">See all</span>
+			 <ModalTrigger
+          button={
+            <span className="absolute mt-5 cursor-pointer">Show more</span>
+          }
+        >
+          {<ShowMore />}
+        </ModalTrigger>
 		</>
 	);
 };

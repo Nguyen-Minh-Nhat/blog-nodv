@@ -1,5 +1,3 @@
-import InfiniteScroll from "react-infinite-scroll-component";
-import { useQuery, useQueryClient } from "react-query";
 import { useDispatch, useSelector } from "react-redux";
 import { getBookmarkByUserId } from "../../api/bookmarkApi";
 import { getPosts } from "../../api/postApi";
@@ -7,24 +5,26 @@ import { PostList } from "../../features/post";
 import useInfiniteScroll from "../../hooks/useInfiniteScroll";
 import { setBookmark } from "../../redux/slices/bookmarkSlice";
 import Header from "./components/Header";
+import { useEffect } from "react";
+import InfiniteScroll from "react-infinite-scroll-component";
+import { useQuery, useQueryClient } from "react-query";
+import { useParams } from "react-router-dom";
 
-const LIMIT = 10;
+const LIMIT = 5;
 const HomePage = () => {
+  const { tab } = useParams(); //get tab from url
+  const storeKey = ["posts", tab]; //key for react-query
   const dispatch = useDispatch();
-  const { data: posts } = useQuery("posts", () => getPosts(), {
-    refetchOnWindowFocus: false,
-  });
-  const queryClient = useQueryClient();
 
-  const { isHasMore, handleFetchMore } = useInfiniteScroll(
-    getPosts,
-    (data) => {
-      queryClient.setQueryData("posts", (oldData) => {
-        return [...oldData, ...data];
-      });
-    },
-    LIMIT
-  );
+  const { data: posts } = useQuery(
+    storeKey,
+    () => getPosts({ topic: tab, limit: LIMIT }),
+    {
+      refetchOnWindowFocus: false,
+    }
+  ); //get posts from api by tab
+
+  const queryClient = useQueryClient();
 
   const postIdsBookmark = useSelector((state) => state.bookmark.postIds);
 
@@ -34,10 +34,26 @@ const HomePage = () => {
     },
   });
 
+  const { isHasMore, handleFetchMore, setIsHasMore, setPage } =
+    useInfiniteScroll(
+      getPosts,
+      (data) => {
+        queryClient.setQueryData(storeKey, (oldData) => {
+          return [...oldData, ...data];
+        });
+      },
+      LIMIT
+    ); // get more posts when scroll to bottom
+
+  useEffect(() => {
+    setPage(0);
+    setIsHasMore(true);
+  }, [tab]); // reset page and isHasMore when tab change
+
   return (
     <InfiniteScroll
       dataLength={posts?.length || 0}
-      next={handleFetchMore}
+      next={() => handleFetchMore({ topic: tab })}
       hasMore={isHasMore}
       endMessage={
         <div className="py-10">
@@ -49,7 +65,11 @@ const HomePage = () => {
         <Header />
       </div>
       <Main>
-        <PostList postList={posts} postIdsBookmark={postIdsBookmark} />
+        <PostList
+          postList={posts}
+          storeKey={storeKey}
+          postIdsBookmark={postIdsBookmark}
+        />
       </Main>
     </InfiniteScroll>
   );

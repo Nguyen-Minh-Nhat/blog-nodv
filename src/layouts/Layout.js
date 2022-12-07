@@ -1,6 +1,7 @@
-import { useState, useEffect, useMemo, Fragment } from 'react';
+import { Fragment, useEffect, useMemo, useState } from 'react';
+import { useSelector } from 'react-redux';
 import { matchPath, useLocation } from 'react-router-dom';
-import { routeConfig } from '../routes/AppRoutes';
+import { appRoutes, routeConfig } from '../routes/AppRoutes';
 import DefaultLayout from './DefaultLayout';
 import HeaderOnlyLayout from './HeaderOnly';
 
@@ -11,7 +12,8 @@ export const layouts = {
 };
 
 const Layout = ({ children }) => {
-	const [layout, setLayout] = useState(layouts.DEFAULT);
+	const { isLogin } = useSelector((state) => state.user.data);
+	const [layout, setLayout] = useState(layouts.HEADER_ONLY);
 	const { pathname } = useLocation();
 
 	const renderLayout = useMemo(() => {
@@ -39,9 +41,18 @@ const Layout = ({ children }) => {
 				pathname
 			);
 
-			if (isMatch) setLayout(item.layout);
+			if (isMatch) {
+				if (pathname === appRoutes.HOME && isLogin) {
+					console.log('set layout to default');
+					setLayout(layouts.DEFAULT);
+					return true;
+				}
+				console.log('item.layout: ', item.layout);
+				setLayout(item.layout);
+				return true;
+			}
 		});
-	}, [pathname]);
+	}, [isLogin, pathname]);
 
 	return <>{renderLayout}</>;
 };

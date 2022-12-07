@@ -1,8 +1,10 @@
 import { useEffect, useState } from 'react';
 import { useMutation } from 'react-query';
+import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import { Popover } from 'react-tiny-popover';
 import { searchUser } from '../../api/userApi';
 import useDebounce from '../../hooks/useDebounce';
+import { appRoutes } from '../../routes/AppRoutes';
 import ShadowWrapper from '../ShadowWrapper';
 
 import SearchBar from './SearchBar';
@@ -13,10 +15,23 @@ const Search = () => {
 	const [searchResult, setSearchResult] = useState([]);
 	const [showResult, setShowResult] = useState(false);
 	const debouncedValue = useDebounce(searchInput, TIMEOUT);
+	const navigate = useNavigate();
+	const { pathname } = useLocation();
+
+	const [disableSearch, setDisableSearch] = useState(false);
+
+	useEffect(() => {
+		if (pathname.includes(appRoutes.SEARCH)) {
+			setDisableSearch(true);
+		} else {
+			setDisableSearch(false);
+		}
+	}, [pathname]);
+
+	const [_, setSearchParams] = useSearchParams();
 
 	const searchUserMutation = useMutation(searchUser, {
 		onSuccess: (data) => {
-			console.log(data);
 			const searchResult = data || [];
 			setSearchResult(searchResult);
 		},
@@ -28,7 +43,7 @@ const Search = () => {
 	}, [searchResult]);
 
 	useEffect(() => {
-		if (!debouncedValue.trim()) {
+		if (!debouncedValue.trim() || disableSearch) {
 			setSearchResult([]);
 			setShowResult(false);
 			return;
@@ -40,6 +55,14 @@ const Search = () => {
 
 	const handleTypingInput = (e) => {
 		setSearchInput(e.target.value);
+	};
+
+	const handleEnter = (e) => {
+		if (e.key === 'Enter' && searchInput.trim()) {
+			if (!pathname.includes('search')) {
+				navigate(appRoutes.SEARCH_STORIES + '?query=' + searchInput);
+			} else setSearchParams({ query: searchInput });
+		}
 	};
 
 	return (
@@ -62,6 +85,7 @@ const Search = () => {
 						onFocus={() => {
 							if (searchResult.length > 0) setShowResult(true);
 						}}
+						onKeyPress={handleEnter}
 					/>
 				</div>
 			</Popover>

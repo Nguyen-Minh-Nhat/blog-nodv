@@ -9,7 +9,7 @@ const PostPreviewHeader = ({ post }) => {
 				src={post.user?.avatar}
 				alt={post.user?.username}
 			/>
-			<span className="text-sm">{post.user?.username}</span>
+			<span className="text-sm font-normal">{post.user?.username}</span>
 			<div className="flex gap-1 text-sm text-slate-600">
 				<div className="flex h-full opacity-50">
 					<i className="fa-solid fa-period"></i>

@@ -3,9 +3,11 @@ import { axiosClientPrivate } from "./axiosClient";
 const url = "/notifications";
 
 const notificationApi = {
-  getNotifications: (isRead) =>
+  getNotifications: (isRead, page = 0, limit = 10) =>
     axiosClientPrivate.get(
-      `${url}${isRead != null ? `?isRead=${isRead}` : ""}`
+      `${url}${
+        isRead != null ? `?isRead=${isRead}&` : "?"
+      }page=${page}&limit=${limit}`
     ),
   setIsRead: (id) => axiosClientPrivate.patch(`${url}/${id}`),
   createNotification: (notification) =>

@@ -13,6 +13,7 @@ import {
   unLikePost,
   unpublishPost,
 } from "../../api/postApi";
+import { updateCountNotifications } from "../../api/userApi";
 import { NotificationType } from "../../config/dataType";
 import Post from "../../features/post/components/Post";
 import { updatePostIds } from "../../redux/slices/bookmarkSlice";
@@ -30,7 +31,7 @@ const PostPage = () => {
   const queryClient = useQueryClient();
 
   const post = queryClient.getQueryData(["post", id]);
-  const userId = useSelector((state) => state.user.data.info.id);
+  const userId = useSelector((state) => state.user.data?.info?.id);
 
   useQuery(["post", id], () => getPostById(id), {
     onError: (error) => {
@@ -73,6 +74,9 @@ const PostPage = () => {
       console.log(data);
     },
   });
+  const updateUserIncreaseNumOfNotification = useMutation(
+    updateCountNotifications
+  );
   const likePostMutation = useMutation(likePost, {
     onSuccess: (data) => {
       queryClient.setQueryData(["post", post.id], data);
@@ -82,6 +86,11 @@ const PostPage = () => {
         createNotificationLikePostMutation,
         userId
       );
+      const Increase = {
+        isIncrease: true,
+        userId: data.userId,
+      };
+      updateUserIncreaseNumOfNotification.mutate(Increase);
     },
   });
 
@@ -93,13 +102,13 @@ const PostPage = () => {
 
   const updateBookmarkMutation = useMutation(updatePostToBookmark, {
     onSuccess: (data) => {
-      console.log("data ", data);
+      // console.log("data ", data);
       dispatch(updatePostIds(data));
     },
   });
 
   const handleReceiveLikePostSocket = (payload) => {
-    console.log(payload);
+    // console.log(payload);
     const { userLikeIds } = JSON.parse(payload.body);
     updateLocalPost({ userLikeIds: userLikeIds });
   };

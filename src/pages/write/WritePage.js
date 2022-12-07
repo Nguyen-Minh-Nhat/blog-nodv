@@ -9,6 +9,7 @@ import ModalTrigger from '../../components/ModalTrigger';
 import QuestionDialog from '../../components/QuestionDialog/QuestionDialog';
 import PostPublicPreview from '../../features/post/components/PostPublicPreview';
 import usePrompt from '../../hooks/usePrompt';
+import { appRoutes } from '../../routes/AppRoutes';
 import { convertToPost } from '../../utils/editorJsUtils';
 import Header from './components/Header';
 
@@ -60,7 +61,7 @@ const WritePage = () => {
 
 	const updatePostMutation = useMutation(updatePost, {
 		onSuccess: (data) => {
-			navigate(`/post/${data.id}`);
+			navigate(`${appRoutes.POST}/${data.id}`);
 			toast.success('Post update successfully');
 		},
 	});
