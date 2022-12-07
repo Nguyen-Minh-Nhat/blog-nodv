@@ -1,6 +1,6 @@
-import axiosClient, { axiosClientPrivate } from './axiosClient';
+import axiosClient, { axiosClientPrivate } from "./axiosClient";
 
-const url = '/topics';
+const url = "/topics";
 const topicApi = {
 	getTopics: () => {
 		return axiosClientPrivate.get(url);

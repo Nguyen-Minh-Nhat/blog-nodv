@@ -7,22 +7,30 @@ import { followUser, getAllUnFollow, unFollowUser, updateCountNotifications } fr
 import { NotificationType } from '../../config/dataType';
 import { callApiCreateNotification } from '../../utils/generationNotification';
 import ButtonFollow from '../ButtonFollow/ButtonFollow';
+import ShowMore from "./ShowMore";
+import ModalTrigger from "../ModalTrigger";
 
 const WhoToFollow = () => {
-	const userId = useSelector((state) => state.user?.data?.info?.id);
-	const queryClient = useQueryClient();
-	const { data: users } = useQuery('follows', () => getAllUnFollow());
+  const userId = useSelector((state) => state.user?.data?.info?.id);
+  const queryClient = useQueryClient();
+  const { data: users } = useQuery("follows", () => getUsersNotFollow(3));
+  const updateUsers = (updatedFollower) => {
+    queryClient.setQueryData("follows", (oldData) =>
+      oldData.map((follow) => {
+        if (follow.id === updatedFollower.id) {
+          return updatedFollower;
+        }
+        return follow;
+      })
+    );
+  };
 
-	const updateUsers = (updatedFollower) => {
-		queryClient.setQueryData('follows', (oldData) =>
-			oldData.map((follow) => {
-				if (follow.id === updatedFollower.id) {
-					return updatedFollower;
-				}
-				return follow;
-			})
-		);
-	};
+  const followUserMutation = useMutation(followUser, {
+    onSuccess: (data) => {
+      updateUsers(data);
+      console.log(queryClient.getQueryData("follows"));
+    },
+  });
 
 	const createNotificationMutation = useMutation(createNotification);
 
@@ -105,7 +113,13 @@ const WhoToFollow = () => {
 						</div>
 					))}
 			</div>
-			<span className="absolute mt-5 cursor-pointer">See all</span>
+			 <ModalTrigger
+          button={
+            <span className="absolute mt-5 cursor-pointer">Show more</span>
+          }
+        >
+          {<ShowMore />}
+        </ModalTrigger>
 		</>
 	);
 };
