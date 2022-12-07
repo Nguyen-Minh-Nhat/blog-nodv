@@ -1,16 +1,45 @@
 import { Button } from '@mui/material';
+import { useMemo } from 'react';
 import { useSelector } from 'react-redux';
-import Search from '../../components/Search';
-import TriggerLogin from '../../features/auth/components/TriggerLogin';
-import WhoToFollow from '../../components/WhoToFollow/WhoToFollow';
+import { useLocation } from 'react-router-dom';
 import RecommendTopic from '../../components/RecommendTopic/RecommendTopic';
-import { Route, Routes } from 'react-router-dom';
-import { appRoutes } from '../../routes/AppRoutes';
-import InformationUser from '../../components/ViewUser/InformationUser';
+import Search from '../../components/Search';
 import FollowingList from '../../components/UserList/FollowingList';
+import InformationUser from '../../components/ViewUser/InformationUser';
+import WhoToFollow from '../../components/WhoToFollow/WhoToFollow';
+import TriggerLogin from '../../features/auth/components/TriggerLogin';
 
 const SidebarRight = () => {
 	const { isLogin } = useSelector((state) => state.user.data);
+	const { pathname } = useLocation();
+
+	const renderSidebar = useMemo(() => {
+		if (pathname.includes('profile')) {
+			return (
+				<>
+					<InformationUser />
+					<FollowingList />
+				</>
+			);
+		}
+		if (pathname.includes('post')) {
+			return (
+				<>
+					<InformationUser />
+				</>
+			);
+		}
+		if (pathname.includes('setting')) {
+			return <></>;
+		}
+		return (
+			<>
+				<RecommendTopic />
+				<WhoToFollow />
+			</>
+		);
+	}, [pathname]);
+
 	return (
 		<div className="min-h-screen w-[394px] border-l px-8">
 			{!isLogin && (
@@ -29,27 +58,7 @@ const SidebarRight = () => {
 			)}
 			<div className="pt-10">
 				<Search />
-				<Routes>
-					<Route
-						path={appRoutes.PROFILE_USER}
-						element={
-							<>
-								<InformationUser />
-								<FollowingList />
-							</>
-						}
-					/>
-					<Route path={appRoutes.POST_DETAIL} element={<InformationUser />} />
-					<Route
-						path={appRoutes.HOME}
-						element={
-							<>
-								<RecommendTopic />
-								<WhoToFollow />
-							</>
-						}
-					/>
-				</Routes>
+				{renderSidebar}
 			</div>
 		</div>
 	);

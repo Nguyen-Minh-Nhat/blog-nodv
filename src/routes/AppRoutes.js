@@ -9,6 +9,9 @@ import TopicsTab from '../pages/search/components/TopicsTab';
 import ProtectedRoutes from './ProtectedRoutes';
 const RedirectLogin = lazy(() => import('../pages/auth/RedirectLogin'));
 const ProfilePage = lazy(() => import('../pages/Profile/ProfilePage'));
+const ProfileHomeTab = lazy(() => import('../pages/Profile/tab/HomeTab'));
+const ProfileListsTab = lazy(() => import('../pages/Profile/tab/ListsTab'));
+const ProfileAboutTab = lazy(() => import('../pages/Profile/tab/AboutTab'));
 const AccountTab = lazy(() => import('../pages/setting/tab/AccountTab'));
 const NotificationsTab = lazy(() =>
 	import('../pages/setting/tab/NotificationsTab')
@@ -45,6 +48,8 @@ export const appRoutes = {
 	AUTH_LOGIN: '/oauth2/login',
 	PROFILE: '/profile',
 	PROFILE_USER: '/profile/:email',
+	PROFILE_LISTS: '/profile/:email/lists',
+	PROFILE_ABOUT: '/profile/:email/about',
 	COMPONENT: '/component',
 	TOPIC: '/topic',
 	TOPIC_PICK: '/topic/pick',
@@ -141,6 +146,20 @@ export const routeConfig = [
 			{
 				path: appRoutes.PROFILE_USER,
 				element: <ProfilePage />,
+				children: [
+					{
+						path: '',
+						element: <ProfileHomeTab />,
+					},
+					{
+						path: appRoutes.PROFILE_LISTS,
+						element: <ProfileListsTab />,
+					},
+					{
+						path: appRoutes.PROFILE_ABOUT,
+						element: <ProfileAboutTab />,
+					},
+				],
 			},
 		],
 	},

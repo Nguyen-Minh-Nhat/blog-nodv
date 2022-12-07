@@ -17,6 +17,7 @@ const postApi = {
 		axiosClient.get(`${url}/trending?limit=${limit}`),
 
 	getPostById: (id) => axiosClient.get(`${url}/${id}`),
+	getPostsByUserId: (id) => axiosClient.get(`${url}/user/${id}`),
 
 	getOwnedPosts: (isPublish) =>
 		axiosClientPrivate.get(
@@ -53,6 +54,7 @@ export const {
 	unLikePost,
 	updatePost,
 	getPostsTrending,
+	getPostsByUserId,
 } = postApi;
 
 export default postApi;

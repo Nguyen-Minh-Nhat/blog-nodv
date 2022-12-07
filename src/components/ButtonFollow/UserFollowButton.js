@@ -1,4 +1,4 @@
-import { useMutation, useQueryClient } from 'react-query';
+import { useMutation } from 'react-query';
 import { createNotification } from '../../api/notificationApi';
 import {
 	followUser,
@@ -8,29 +8,18 @@ import {
 import { NotificationType } from '../../config/dataType';
 import { callApiCreateNotification } from '../../utils/generationNotification';
 import ButtonFollow from './ButtonFollow';
-const UserFollowButton = ({ id, userId, ...props }) => {
-	const queryClient = useQueryClient();
-	const updateUsers = (updatedFollower) => {
-		queryClient.setQueryData('follows', (oldData) =>
-			oldData.map((follow) => {
-				if (follow.id === updatedFollower.id) {
-					return updatedFollower;
-				}
-				return follow;
-			})
-		);
-	};
+const UserFollowButton = ({ id, userId, onUpdate, ...props }) => {
 	const createNotificationMutation = useMutation(createNotification);
 
 	const followUserMutation = useMutation(followUser, {
 		onSuccess: (data) => {
-			updateUsers(data);
+			onUpdate(data);
 		},
 	});
 
 	const unFollowUserMutation = useMutation(unFollowUser, {
 		onSuccess: (data) => {
-			updateUsers(data);
+			onUpdate(data);
 		},
 	});
 	const updateUserIncreaseNumOfNotification = useMutation(
