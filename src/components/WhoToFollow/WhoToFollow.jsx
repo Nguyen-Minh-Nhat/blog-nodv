@@ -2,6 +2,7 @@ import { Avatar } from "@mui/material";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import { getListPostHided } from "../../api/postApi";
 import { followUser, getUsersNotFollow, unFollowUser } from "../../api/userApi";
 import ButtonFollow from "../ButtonFollow/ButtonFollow";
 import ModalTrigger from "../ModalTrigger";
@@ -11,6 +12,11 @@ const WhoToFollow = () => {
   const userId = useSelector((state) => state.user?.data?.info?.id);
   const queryClient = useQueryClient();
   const { data: users } = useQuery("follows", () => getUsersNotFollow(3));
+  console.log(users);
+
+  const { data: test } = useQuery("test1", () => getListPostHided());
+
+  console.log(test);
   const updateUsers = (updatedFollower) => {
     queryClient.setQueryData("follows", (oldData) =>
       oldData.map((follow) => {

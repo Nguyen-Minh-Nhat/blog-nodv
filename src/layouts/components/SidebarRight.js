@@ -30,6 +30,7 @@ const SidebarRight = () => {
         <Search />
         <RecommendTopic />
         <WhoToFollow />
+        {/* <InformationUser /> */}
       </div>
     </div>
   );

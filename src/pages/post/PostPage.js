@@ -1,19 +1,24 @@
+import { useState } from "react";
 import { useEffect } from "react";
 import { useMutation, useQuery, useQueryClient } from "react-query";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import { createNotification } from "../../api/notificationApi";
 import {
   deletePost,
+  getListPostHided,
   getPostById,
+  getPosts,
   likePost,
   publishPost,
   unLikePost,
   unpublishPost,
 } from "../../api/postApi";
+import { getUsersNotFollow } from "../../api/userApi";
 import { NotificationType } from "../../config/dataType";
 import Post from "../../features/post/components/Post";
+import { setUser } from "../../redux/slices/userSlice";
 import { callApiCreateNotification } from "../../utils/generationNotification";
 import Header from "./components/Header";
 import Main from "./components/Main";
@@ -26,7 +31,12 @@ const PostPage = () => {
   const queryClient = useQueryClient();
 
   const post = queryClient.getQueryData(["post", id]);
+  console.log(post);
+
   const userId = useSelector((state) => state.user.data.info.id);
+  // const dispatch = useDispatch();
+
+  // const { data: test } = useQuery("test1", () => getListPostHided());
 
   useQuery(["post", id], () => getPostById(id), {
     onError: (error) => {
