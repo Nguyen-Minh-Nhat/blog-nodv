@@ -3,7 +3,12 @@ import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { createNotification } from '../../api/notificationApi';
-import { followUser, getAllUnFollow, unFollowUser, updateCountNotifications } from '../../api/userApi';
+import {
+	followUser,
+	getAllUnFollow,
+	unFollowUser,
+	updateCountNotifications,
+} from '../../api/userApi';
 import { NotificationType } from '../../config/dataType';
 import { callApiCreateNotification } from '../../utils/generationNotification';
 import ButtonFollow from '../ButtonFollow/ButtonFollow';
@@ -11,7 +16,9 @@ import ButtonFollow from '../ButtonFollow/ButtonFollow';
 const WhoToFollow = () => {
 	const userId = useSelector((state) => state.user?.data?.info?.id);
 	const queryClient = useQueryClient();
-	const { data: users } = useQuery('follows', () => getAllUnFollow());
+	const { data: users, isSuccess } = useQuery('follows', () =>
+		getAllUnFollow()
+	);
 
 	const updateUsers = (updatedFollower) => {
 		queryClient.setQueryData('follows', (oldData) =>
@@ -29,7 +36,6 @@ const WhoToFollow = () => {
 	const followUserMutation = useMutation(followUser, {
 		onSuccess: (data) => {
 			updateUsers(data);
-			console.log(queryClient.getQueryData('follows'));
 		},
 	});
 
@@ -40,22 +46,22 @@ const WhoToFollow = () => {
 	});
 	const updateUserIncreaseNumOfNotification = useMutation(
 		updateCountNotifications
-	  );
-	
+	);
+
 	const handleFollow = (data, isFollow) => {
 		if (isFollow) {
 			followUserMutation.mutate(data);
-			callApiCreateNotification(data,
+			callApiCreateNotification(
+				data,
 				NotificationType.FOLLOW,
 				createNotificationMutation,
 				userId
-			  );
-			  const Increase = {
+			);
+			const Increase = {
 				isIncrease: true,
 				userId: data,
-			  };
-			  updateUserIncreaseNumOfNotification.mutate(Increase);
-			  
+			};
+			updateUserIncreaseNumOfNotification.mutate(Increase);
 		} else {
 			unFollowUserMutation.mutate(data);
 		}
@@ -67,42 +73,16 @@ const WhoToFollow = () => {
 					Who To Follow
 				</h2>
 
-				{users &&
+				{isSuccess &&
 					users.map((item) => (
-						<div
-							className="relative flex w-full items-center justify-between pt-4"
-							key={item.id}
-						>
-							<div className="flex items-center">
-								<Link to={item.email}>
-									<Avatar
-										src={item?.avatar}
-										className="h-12 w-12"
-										alt={item.username}
-									/>
-								</Link>
-								<Link to={item.email}>
-									<div className="ml-4 mr-2 block">
-										<h2 className="break-all text-base font-bold">
-											{item.username}
-										</h2>
-										<div className="mt-1 block  break-words">
-											<p className=" color break-all text-sm font-normal line-clamp-2">
-												{item?.bio}
-											</p>
-										</div>
-									</div>
-								</Link>
-							</div>
-							<div>
-								<ButtonFollow
-									isFollowed={item?.followerId?.includes(userId)}
-									onClick={(state) => {
-										handleFollow(item.id, state);
-									}}
-								/>
-							</div>
-						</div>
+						<User user={item} key={item.id}>
+							<ButtonFollow
+								isFollowed={item?.followerId?.includes(userId)}
+								onClick={(state) => {
+									handleFollow(item.id, state);
+								}}
+							/>
+						</User>
 					))}
 			</div>
 			<span className="absolute mt-5 cursor-pointer">See all</span>
@@ -111,3 +91,34 @@ const WhoToFollow = () => {
 };
 
 export default WhoToFollow;
+
+const User = ({ user, children }) => {
+	const profileUrl = `/profile/${user.email}`;
+	return (
+		<div
+			className="relative flex w-full items-center justify-between pt-4"
+			key={user.id}
+		>
+			<div className="flex items-center">
+				<Link to={profileUrl}>
+					<Avatar
+						src={user?.avatar}
+						className="h-12 w-12"
+						alt={user.username}
+					/>
+				</Link>
+				<Link to={profileUrl}>
+					<div className="ml-4 mr-2 block">
+						<h2 className="break-all text-base font-bold">{user.username}</h2>
+						<div className="mt-1 block  break-words">
+							<p className=" color break-all text-sm font-normal line-clamp-2">
+								{user?.bio}
+							</p>
+						</div>
+					</div>
+				</Link>
+			</div>
+			<div>{children}</div>
+		</div>
+	);
+};

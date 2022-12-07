@@ -4,6 +4,8 @@ import Search from '../../components/Search';
 import TriggerLogin from '../../features/auth/components/TriggerLogin';
 import WhoToFollow from '../../components/WhoToFollow/WhoToFollow';
 import RecommendTopic from '../../components/RecommendTopic/RecommendTopic';
+import { Route, Routes } from 'react-router-dom';
+import { appRoutes } from '../../routes/AppRoutes';
 
 const SidebarRight = () => {
 	const { isLogin } = useSelector((state) => state.user.data);
@@ -25,9 +27,11 @@ const SidebarRight = () => {
 				</div>
 			)}
 			<div className="pt-10">
-				<Search />
-				<RecommendTopic />
-				<WhoToFollow />
+				<Routes>
+					<Route path="*" element={<Search />} />
+					<Route path={appRoutes.PROFILE_USER} element={<WhoToFollow />} />
+					<Route path="*" element={<RecommendTopic />} />
+				</Routes>
 			</div>
 		</div>
 	);

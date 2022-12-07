@@ -1,7 +1,6 @@
 import { useEffect } from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { useQuery, useQueryClient } from 'react-query';
-import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { getPosts } from '../../api/postApi';
 import { PostList } from '../../features/post';
@@ -44,11 +43,7 @@ const HomePage = () => {
 			dataLength={posts?.length || 0}
 			next={() => handleFetchMore({ topic: tab })}
 			hasMore={isHasMore}
-			endMessage={
-				<div className="py-10">
-					<p className="text-center font-thin">Yay! You have seen it all</p>
-				</div>
-			}
+			endMessage={EndMessage}
 		>
 			<div className="sticky top-0 z-10 bg-white pt-6">
 				<Header />
@@ -67,5 +62,11 @@ const Main = ({ children }) => {
 		</div>
 	);
 };
+
+const EndMessage = () => (
+	<div className="py-10">
+		<p className="text-center font-thin">Yay! You have seen it all</p>
+	</div>
+);
 
 export default HomePage;

@@ -1,10 +1,9 @@
-import PostPreview from './PostPreview';
 import { useMutation, useQueryClient } from 'react-query';
-import { deletePost, publishPost, unpublishPost } from '../../../api/postApi';
+import { useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
 import { updatePostToBookmark } from '../../../api/bookmarkApi';
-import { useDispatch } from 'react-redux';
-import { updateBookmark } from '../../../redux/slices/bookmarkSlice';
+import { deletePost, publishPost, unpublishPost } from '../../../api/postApi';
+import PostPreview from './PostPreview';
 
 export const PostList = ({ postList = [], storeKey = 'posts' }) => {
 	const queryClient = useQueryClient();
