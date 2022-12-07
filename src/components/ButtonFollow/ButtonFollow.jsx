@@ -4,10 +4,10 @@ import { useState } from 'react';
 
 const ButtonFollow = ({
 	isFollowed = false,
-	textColorBefore,
-	bgColorBefore,
-	textColorAfter,
-	bgColorAfter,
+	textColorBefore = 'text-black',
+	bgColorBefore = 'bg-white',
+	textColorAfter = 'text-white',
+	bgColorAfter = 'bg-black',
 	onClick = () => {},
 }) => {
 	const [followed, setFollowed] = useState(isFollowed);
