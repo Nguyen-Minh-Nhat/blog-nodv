@@ -9,7 +9,7 @@ const commentSlice = createSlice({
   initialState,
   reducers: {
     setComments: (state, action) => {
-      console.log(action.payload);
+      // console.log(action.payload);
       state.list = action.payload;
       state.commentsByParentId = commentsByParentId(action.payload);
     },
