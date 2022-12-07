@@ -27,6 +27,7 @@ const CommentContainer = ({ post, onClose }) => {
 
   useQuery(["comments", post.id], () => getComment(post.id), {
     onSuccess: (data) => {
+      console.log("vo day lay comment");
       dispatch(setComments(data));
     },
   });
@@ -58,7 +59,6 @@ const CommentContainer = ({ post, onClose }) => {
   };
   const initialComment = {};
   const updateLocalListComment = (updatedComment) => {
-    console.log("updaten e", updatedComment);
     dispatch(addComment(updatedComment));
   };
   const handleReceiveCommentSocket = (payload) => {
@@ -78,6 +78,7 @@ const CommentContainer = ({ post, onClose }) => {
   };
 
   const updateLocalLikeComment = (updatedComment) => {
+    console.log("updatecomment", updatedComment);
     dispatch(updateComment(updatedComment));
   };
   const handleUpdateLikeCommentSocket = (payload) => {

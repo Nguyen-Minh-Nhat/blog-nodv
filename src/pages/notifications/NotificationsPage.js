@@ -16,13 +16,16 @@ const NotificationsPage = () => {
   const socket = useSelector((state) => state.socket.data);
   const userId = useSelector((state) => state.user?.data?.info?.id);
 
-  const handleReceiveNotificationSocket = useCallback(
-    (payload) => {
-      const newNotification = JSON.parse(payload.body);
-      setNotifications([...notifications, newNotification]);
-    },
-    [notifications]
-  );
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const handleReceiveNotificationSocket = (payload) => {
+    const newNotification = JSON.parse(payload.body);
+    const newNotifications = [...notifications];
+    newNotifications.unshift(newNotification);
+
+    setNotifications(newNotifications);
+  };
+
+  console.log("notifications ", notifications);
 
   useEffect(() => {
     const topic = `/topic/notifications/${userId}/new`;
