@@ -1,6 +1,6 @@
 import { Badge, Tooltip } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState, useCallback, useMemo } from "react";
 import { useMutation } from "react-query";
 import { useDispatch, useSelector } from "react-redux";
 import { matchPath, useLocation } from "react-router";
@@ -14,9 +14,13 @@ const Navbar = () => {
   const userRedux = useSelector((state) => state.user.data.info);
   const socket = useSelector((state) => state.socket.data);
 
-  const user = {
-    ...userRedux,
-  };
+  const user = useMemo(
+    () => ({
+      ...userRedux,
+    }),
+    [userRedux]
+  );
+
   const dispatch = useDispatch();
   const [numOfNotifications, setNumOfNotifications] = useState(
     user?.notificationsCount !== undefined ? user.notificationsCount : 0
@@ -43,7 +47,8 @@ const Navbar = () => {
   useEffect(() => {
     if (matchPath(appRoutes.NOTIFICATION, pathname))
       handleClickNotification(user);
-  }, [pathname, handleClickNotification, user]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pathname]);
 
   const handleReceiveCountNotificationSocket = useCallback(
     (payload) => {
@@ -66,7 +71,8 @@ const Navbar = () => {
         socket.unsubscribe(topic);
       }
     };
-  }, [socket, handleReceiveCountNotificationSocket, user]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [socket]);
 
   const navbarItems = [
     {
