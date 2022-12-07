@@ -56,7 +56,7 @@ const Notification = ({ notification, setNotificationReadMutation }) => {
 
         <div className="flex flex-col">
           <span className="text-base">
-            {notification.sender?.username} {console.log(false ? "true" : " ")}
+            {notification.sender?.username}
             <span className="text-slate-500"> {type.message}</span>
           </span>
           <div className="flex items-center gap-2 text-sm text-slate-500">
