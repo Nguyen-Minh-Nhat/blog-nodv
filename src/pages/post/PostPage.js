@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { createNotification } from '../../api/notificationApi';
@@ -15,12 +15,15 @@ import {
 import { updateCountNotifications } from '../../api/userApi';
 import { NotificationType } from '../../config/dataType';
 import Post from '../../features/post/components/Post';
+import { setProfile } from '../../redux/slices/profileSlice';
 import { callApiCreateNotification } from '../../utils/generationNotification';
 import Header from './components/Header';
 import Main from './components/Main';
 
 const PostPage = () => {
 	const { id } = useParams();
+
+	const dispatch = useDispatch();
 
 	const socket = useSelector((state) => state.socket.data);
 
@@ -30,6 +33,9 @@ const PostPage = () => {
 	const userId = useSelector((state) => state.user.data?.info?.id);
 
 	useQuery(['post', id], () => getPostById(id), {
+		onSuccess: (data) => {
+			dispatch(setProfile(data.user));
+		},
 		onError: (error) => {
 			if (error.response.status === 404) {
 				window.location.href = '/404';

@@ -1,6 +1,7 @@
 import React from 'react';
 import { useQuery } from 'react-query';
 import { getRecommendTopics } from '../../api/topicApi';
+import PanelWrapper from '../PanelWrapper';
 import TopicList from '../Topic/TopicList';
 
 const RecommendTopic = () => {
@@ -13,12 +14,9 @@ const RecommendTopic = () => {
 	);
 	return (
 		<>
-			<div className="mt-10">
-				<h2 className="m-0 mb-5 block text-base font-medium leading-5">
-					Recommended Topics
-				</h2>
+			<PanelWrapper title="Recommend Topics">
 				{isSuccess && <TopicList topics={topics} />}
-			</div>
+			</PanelWrapper>
 		</>
 	);
 };
