@@ -20,9 +20,11 @@ import {
 import { createNotification } from "../../../../api/notificationApi";
 import { callApiCreateNotification } from "../../../../utils/generationNotification";
 import { NotificationType } from "../../../../config/dataType";
+import { updateCountNotifications } from "../../../../api/userApi";
+import { setUser } from "../../../../redux/slices/userSlice";
 
 const Comment = ({ comment, post }) => {
-  const { id: userId } = useSelector((state) => state.user.data.info);
+  const user = useSelector((state) => state.user.data.info);
   const replyComments = useSelector(
     (state) => state.comment.commentsByParentId[comment.id]
   );
@@ -34,8 +36,8 @@ const Comment = ({ comment, post }) => {
   const dispatch = useDispatch();
 
   const isUser = useMemo(() => {
-    return comment.userId === userId;
-  }, [comment.userId, userId]);
+    return comment.userId === user.id;
+  }, [comment.userId, user.id]);
 
   const handleCloseDialog = () => {
     setIsDelete(false);
@@ -63,6 +65,11 @@ const Comment = ({ comment, post }) => {
       dispatch(addComment(data));
     },
   });
+
+  const updateUserIncreaseNumOfNotification = useMutation(
+    updateCountNotifications
+  );
+
   const createNewNotificationReplyComment = useMutation(createNotification);
   const getCommentUserId = (comment) => {
     var parentComment = rootComments.find(
@@ -78,8 +85,13 @@ const Comment = ({ comment, post }) => {
       data,
       NotificationType.REPLYCOMMENT,
       createNewNotificationReplyComment,
-      userId
+      user.id
     );
+    const Increase = {
+      isIncrease: true,
+      userId: data.commentParentUserId,
+    };
+    updateUserIncreaseNumOfNotification.mutate(Increase);
     setIsReply(false);
     setIsShowReply(true);
   };

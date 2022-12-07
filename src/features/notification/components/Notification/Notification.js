@@ -6,7 +6,6 @@ import { NotificationType } from "../../../../config/dataType";
 
 const Notification = ({ notification, setNotificationReadMutation }) => {
   const type = useMemo(() => {
-    console.log(notification.isRead);
     let res = { message: "", icon: "" };
     switch (notification.type) {
       case NotificationType.FOLLOW:
@@ -57,7 +56,6 @@ const Notification = ({ notification, setNotificationReadMutation }) => {
 
         <div className="flex flex-col">
           <span className="text-base">
-            {console.log(notification)}
             {notification.sender?.username} {console.log(false ? "true" : " ")}
             <span className="text-slate-500"> {type.message}</span>
           </span>

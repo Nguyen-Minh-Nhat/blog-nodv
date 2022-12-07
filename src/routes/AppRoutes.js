@@ -1,8 +1,12 @@
 import React, { lazy, memo, useMemo } from 'react';
 import { useSelector } from 'react-redux';
-import { Navigate, Outlet, useRoutes } from 'react-router-dom';
+import { useRoutes } from 'react-router-dom';
 import SuspenseProgress from '../components/SuspenseProgress/SuspenseProgress';
 import Layout, { layouts } from '../layouts/Layout';
+import PeopleTab from '../pages/search/components/PeopleTab';
+import StoriesTab from '../pages/search/components/StoriesTab';
+import TopicsTab from '../pages/search/components/TopicsTab';
+import ProtectedRoutes from './ProtectedRoutes';
 const RedirectLogin = lazy(() => import('../pages/auth/RedirectLogin'));
 const ProfilePage = lazy(() => import('../pages/Profile/ProfilePage'));
 const AccountTab = lazy(() => import('../pages/setting/tab/AccountTab'));
@@ -19,6 +23,8 @@ const PostPage = lazy(() => import('../pages/post/PostPage'));
 const WritePage = lazy(() => import('../pages/write/WritePage'));
 const SettingPage = lazy(() => import('../pages/setting/SettingPage'));
 const LoginPage = lazy(() => import('../pages/auth/LoginPage'));
+const SearchPage = lazy(() => import('../pages/search/SearchPage'));
+const HomePageLogout = lazy(() => import('../pages/home/HomePageLogout'));
 
 export const appRoutes = {
 	HOME: '/',
@@ -41,23 +47,20 @@ export const appRoutes = {
 	COMPONENT: '/component',
 	TOPIC: '/topic',
 	TOPIC_PICK: '/topic/pick',
+	SEARCH: '/search',
+	SEARCH_STORIES: '/search/posts',
+	SEARCH_PEOPLE: '/search/users',
+	SEARCH_TOPICS: '/search/topics',
 };
 
 export const routeConfig = [
 	{
 		path: appRoutes.HOME,
-		element: <HomePage />,
+		element: <HomePageLogout />,
 		protected: false,
-		layout: layouts.DEFAULT,
-		children: [
-			{
-				path: appRoutes.HOME_TAB,
-				element: <HomePage />,
-				protected: false,
-				layout: layouts.DEFAULT,
-			},
-		],
+		layout: layouts.HEADER_ONLY,
 	},
+
 	{
 		path: appRoutes.POST,
 		element: <PostPage />,
@@ -146,28 +149,65 @@ export const routeConfig = [
 			},
 		],
 	},
+	{
+		path: appRoutes.SEARCH,
+		protected: false,
+		layout: layouts.DEFAULT,
+		element: <SearchPage />,
+		children: [
+			{
+				path: appRoutes.SEARCH_STORIES,
+				element: <StoriesTab />,
+			},
+			{
+				path: appRoutes.SEARCH_PEOPLE,
+				element: <PeopleTab />,
+			},
+			{
+				path: appRoutes.SEARCH_TOPICS,
+				element: <TopicsTab />,
+			},
+		],
+	},
 ];
 
-const ProtectedRoutes = () => {
-	const { isLogin } = useSelector((state) => state.user.data);
-	return isLogin ? <Outlet /> : <Navigate to={appRoutes.AUTH_LOGIN} replace />;
-};
-
 const AppRoutes = () => {
-	const protectedRoutes = useMemo(() => {
-		return {
+	const { isLogin } = useSelector((state) => state.user.data);
+	const routes = useMemo(() => {
+		const protectedRoutes = {
 			element: <ProtectedRoutes />,
-			children: routeConfig.filter((route) => !!route?.protected),
+			children: [],
 		};
-	}, []);
-
-	const publicRoutes = useMemo(() => {
-		return {
-			children: routeConfig.filter((route) => !route?.protected),
+		const publicRoutesRoutes = {
+			children: [],
 		};
-	}, []);
+		routeConfig.forEach((route) => {
+			if (route.protected) {
+				protectedRoutes.children.push(route);
+				return;
+			}
 
-	const routeElements = useRoutes([protectedRoutes, publicRoutes]);
+			if (route.path === appRoutes.HOME && isLogin) {
+				publicRoutesRoutes.children.push({
+					path: appRoutes.HOME,
+					element: <HomePage />,
+					protected: false,
+					layout: layouts.DEFAULT,
+					children: [
+						{
+							path: appRoutes.HOME_TAB,
+							element: <HomePage />,
+							protected: false,
+						},
+					],
+				});
+			} else publicRoutesRoutes.children.push(route);
+		});
+
+		return [protectedRoutes, publicRoutesRoutes];
+	}, [isLogin]);
+
+	const routeElements = useRoutes(routes);
 
 	return (
 		<Layout>

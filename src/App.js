@@ -2,6 +2,7 @@ import { useQuery } from 'react-query';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { getAuthInfo } from './api/authApi';
+import { getBookmarkByUserId } from './api/bookmarkApi';
 import LoginModal from './pages/auth/LoginModal';
 import { setUser } from './redux/slices/userSlice';
 import AppRoutes, { appRoutes } from './routes/AppRoutes';
@@ -20,6 +21,10 @@ const App = () => {
 			}
 			dispatch(setUser(data));
 		},
+	});
+
+	useQuery('bookmark', getBookmarkByUserId, {
+		enabled: isLogin,
 	});
 
 	return (
