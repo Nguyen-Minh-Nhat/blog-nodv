@@ -16,11 +16,9 @@ const CommentContainer = ({ post, onClose }) => {
   const socket = useSelector((state) => state.socket.data);
   const userId = useSelector((state) => state.user?.data?.info?.id);
 
-  const queryClient = useQueryClient();
   const rootComments = useSelector(
     (state) => state.comment.commentsByParentId[null]
   );
-  // console.log("root", rootComments);
   useQuery(["comments", post.id], () => getComment(post.id), {
     onSuccess: (data) => {
       dispatch(setComments(data));
