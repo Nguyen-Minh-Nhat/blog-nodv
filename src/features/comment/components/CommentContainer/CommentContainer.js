@@ -1,4 +1,5 @@
-import { useMutation, useQuery } from "react-query";
+import { useEffect } from "react";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 import { useDispatch, useSelector } from "react-redux";
 import { createComment, getComment } from "../../../../api/commentApi";
 import { createNotification } from "../../../../api/notificationApi";
@@ -12,10 +13,14 @@ import CommentContainerHeader from "./CommentContainerHeader";
 
 const CommentContainer = ({ post, onClose }) => {
   const dispatch = useDispatch();
+  const socket = useSelector((state) => state.socket.data);
+  const userId = useSelector((state) => state.user?.data?.info?.id);
+
+  const queryClient = useQueryClient();
   const rootComments = useSelector(
     (state) => state.comment.commentsByParentId[null]
   );
-  const { id: userId } = useSelector((state) => state.user.data.info);
+  // console.log("root", rootComments);
   useQuery(["comments", post.id], () => getComment(post.id), {
     onSuccess: (data) => {
       dispatch(setComments(data));
@@ -26,6 +31,7 @@ const CommentContainer = ({ post, onClose }) => {
       dispatch(addComment(data));
     },
   });
+
   const updateUserIncreaseNumOfNotification = useMutation(
     updateCountNotifications
   );
@@ -47,6 +53,30 @@ const CommentContainer = ({ post, onClose }) => {
     updateUserIncreaseNumOfNotification.mutate(Increase);
   };
   const initialComment = {};
+  const updateLocalListComment = (updatedComment) => {
+    if (updatedComment.userId !== userId) {
+      dispatch(addComment(updatedComment));
+    }
+  };
+  const handleReceiveCommentSocket = (payload) => {
+    console.log(payload);
+    const comment = JSON.parse(payload.body);
+    updateLocalListComment(comment);
+  };
+
+  useEffect(() => {
+    const topic = `/topic/posts/${post?.id}/comment`;
+    if (socket) {
+      console.log("subscribing");
+      socket.subscribe(topic, handleReceiveCommentSocket, { id: topic });
+    }
+    return () => {
+      if (socket) {
+        console.log("unsubscribing");
+        socket.unsubscribe(topic);
+      }
+    };
+  }, [post?.id, socket]);
 
   return (
     <div className="w-[414px]">
