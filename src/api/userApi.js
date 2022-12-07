@@ -1,23 +1,14 @@
-import axiosClient, { axiosClientPrivate } from "./axiosClient";
+import axiosClient, { axiosClientPrivate } from './axiosClient';
 
-const url = "/users";
+const url = '/users';
 const userApi = {
-  getAllUsers: () => axiosClientPrivate.get(url),
-  getUserProfile: (email) => axiosClient.get(`${url}${email}`),
-  searchUser: (q, page = 0, limit = 10) =>
-    axiosClientPrivate.get(`${url}/search?q=${q}&page=${page}&limit=${limit}`),
-  updateUserProfile: (data) => axiosClientPrivate.put(url, data),
-  followUser: (id) => axiosClientPrivate.patch(`${url}/follow/${id}`, {}),
-  unFollowUser: (id) => axiosClientPrivate.patch(`${url}/unFollow/${id}`),
-  addTopics: (topics) => axiosClientPrivate.patch(`${url}/topics`, { topics }),
-  getOwnTopics: () => axiosClientPrivate.get(`${url}/topics`),
 	getAllUsers: () => axiosClientPrivate.get(url),
 	getUserProfile: (email) => axiosClient.get(`${url}${email}`),
-	searchUser: (q, page = 0, limit = 5) =>
-		axiosClient.get(`${url}/search?q=${q}&page=${page}&limit=${limit}`),
+	searchUser: (q, page = 0, limit = 10) =>
+		axiosClientPrivate.get(`${url}/search?q=${q}&page=${page}&limit=${limit}`),
 	updateUserProfile: (data) => axiosClientPrivate.put(url, data),
 	followUser: (id) => axiosClientPrivate.patch(`${url}/follow/${id}`, {}),
-	unFollowUser: (id) => axiosClientPrivate.patch(`${url}/unfollow/${id}`),
+	unFollowUser: (id) => axiosClientPrivate.patch(`${url}/unFollow/${id}`),
 	addTopics: (topics) => axiosClientPrivate.patch(`${url}/topics`, { topics }),
 	getOwnTopics: () => axiosClientPrivate.get(`${url}/topics`),
 	getAllUnFollow: (page = 0, limit = 3) =>
@@ -29,10 +20,10 @@ const userApi = {
 	},
 	getAllUsersFollower: () => axiosClientPrivate.get(`${url}/follower`),
 	getAllUsersFollowing: () => axiosClientPrivate.get(`${url}/following`),
-    getUsersNotFollow: (limit) =>
-    axiosClientPrivate.get(url + `/getUsersNotFollowed?limit=${limit}`),
-  getMoreUsersNotFlow: (limit) =>
-    axiosClientPrivate.get(url + `/getUsersNotFollowed?limit=${limit}`),
+	getUsersNotFollow: (limit) =>
+		axiosClientPrivate.get(url + `/getUsersNotFollowed?limit=${limit}`),
+	getMoreUsersNotFlow: (limit) =>
+		axiosClientPrivate.get(url + `/getUsersNotFollowed?limit=${limit}`),
 };
 export const {
 	getAllUsers,
@@ -47,6 +38,6 @@ export const {
 	updateCountNotifications,
 	getAllUsersFollower,
 	getAllUsersFollowing,
-  getMoreUsersNotFlow,
-  getUsersNotFollow,
+	getMoreUsersNotFlow,
+	getUsersNotFollow,
 } = userApi;

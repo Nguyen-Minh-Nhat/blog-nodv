@@ -83,4 +83,10 @@ const Main = ({ children }) => {
   );
 };
 
+const EndMessage = () => (
+  <div className="py-10">
+    <p className="text-center font-thin">Yay! You have seen it all</p>
+  </div>
+);
+
 export default HomePage;

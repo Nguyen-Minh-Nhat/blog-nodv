@@ -44,6 +44,7 @@ export const appRoutes = {
 	AUTH_REDIRECT: '/oauth2/redirect',
 	AUTH_LOGIN: '/oauth2/login',
 	PROFILE: '/profile',
+	PROFILE_USER: '/profile/:email',
 	COMPONENT: '/component',
 	TOPIC: '/topic',
 	TOPIC_PICK: '/topic/pick',
@@ -134,9 +135,14 @@ export const routeConfig = [
 	},
 	{
 		path: appRoutes.PROFILE,
-		element: <ProfilePage />,
 		protected: true,
 		layout: layouts.DEFAULT,
+		children: [
+			{
+				path: appRoutes.PROFILE_USER,
+				element: <ProfilePage />,
+			},
+		],
 	},
 	{
 		path: appRoutes.TOPIC,

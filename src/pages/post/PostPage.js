@@ -17,6 +17,7 @@ import { updateCountNotifications } from "../../api/userApi";
 import { NotificationType } from "../../config/dataType";
 import Post from "../../features/post/components/Post";
 import { updatePostIds } from "../../redux/slices/bookmarkSlice";
+import { setProfile } from "../../redux/slices/profileSlice";
 import { callApiCreateNotification } from "../../utils/generationNotification";
 import Header from "./components/Header";
 import Main from "./components/Main";
@@ -34,6 +35,9 @@ const PostPage = () => {
   const userId = useSelector((state) => state.user.data?.info?.id);
 
   useQuery(["post", id], () => getPostById(id), {
+    onSuccess: (data) => {
+      dispatch(setProfile(data.user));
+    },
     onError: (error) => {
       if (error.response.status === 404) {
         window.location.href = "/404";
