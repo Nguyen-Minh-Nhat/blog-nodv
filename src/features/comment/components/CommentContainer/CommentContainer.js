@@ -5,7 +5,11 @@ import { createComment, getComment } from "../../../../api/commentApi";
 import { createNotification } from "../../../../api/notificationApi";
 import { updateCountNotifications } from "../../../../api/userApi";
 import { NotificationType } from "../../../../config/dataType";
-import { addComment, setComments } from "../../../../redux/slices/commentSlice";
+import {
+  addComment,
+  setComments,
+  updateComment,
+} from "../../../../redux/slices/commentSlice";
 import { callApiCreateNotification } from "../../../../utils/generationNotification";
 import CommentEditor from "../CommentEditor";
 import CommentList from "../CommentList";
@@ -65,26 +69,34 @@ const CommentContainer = ({ post, onClose }) => {
   };
   const initialComment = {};
   const updateLocalListComment = (updatedComment) => {
-    if (updatedComment.userId !== userId) {
-      dispatch(addComment(updatedComment));
-    }
+    dispatch(addComment(updatedComment));
   };
   const handleReceiveCommentSocket = (payload) => {
-    console.log(payload);
     const comment = JSON.parse(payload.body);
     updateLocalListComment(comment);
   };
-
+  const updateLocalComment = (updatedComment) => {
+    dispatch(updateComment(updatedComment));
+  };
+  const handleReceiveUpdateCommentSocket = (payload) => {
+    const comment = JSON.parse(payload.body);
+    updateLocalComment(comment);
+  };
   useEffect(() => {
     const topic = `/topic/posts/${post?.id}/comment`;
+    const update = `/topic/posts/${post?.id}/updatecomment`;
+    // const delete = `/topic/posts/${post?.id}/deletecomment`;
     if (socket) {
-      console.log("subscribing");
       socket.subscribe(topic, handleReceiveCommentSocket, { id: topic });
+      socket.subscribe(update, handleReceiveUpdateCommentSocket, {
+        id: update,
+      });
+      //socket.subscribe(delete, handleReceiveDeleteCommentSocket, { id: delete });
     }
     return () => {
       if (socket) {
-        console.log("unsubscribing");
         socket.unsubscribe(topic);
+        socket.unsubscribe(update);
       }
     };
   }, [post?.id, socket]);

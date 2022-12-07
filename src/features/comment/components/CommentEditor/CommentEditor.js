@@ -27,6 +27,7 @@ const CommentEditor = ({
 
   const handleSubmit = () => {
     const comment = {
+      id: initialComment?.id,
       content: inputValue.trim(),
       replyId: initialComment?.replyId,
       postId: post?.id,
