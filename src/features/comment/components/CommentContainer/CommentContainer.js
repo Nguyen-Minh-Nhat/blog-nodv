@@ -7,6 +7,7 @@ import { updateCountNotifications } from "../../../../api/userApi";
 import { NotificationType } from "../../../../config/dataType";
 import {
   addComment,
+  removeComment,
   setComments,
   updateComment,
 } from "../../../../redux/slices/commentSlice";
@@ -65,21 +66,48 @@ const CommentContainer = ({ post, onClose }) => {
     const comment = JSON.parse(payload.body);
     updateLocalComment(comment);
   };
+
+  const handleDeleteCommentSocket = (payload) => {
+    dispatch(removeComment(payload.body));
+  };
+
+  const updateLocalLikeComment = (updatedComment) => {
+    dispatch(updateComment(updatedComment));
+  };
+  const handleUpdateLikeCommentSocket = (payload) => {
+    const updatedComment = JSON.parse(payload.body);
+    updateLocalLikeComment(updatedComment);
+  };
+
   useEffect(() => {
     const topic = `/topic/posts/${post?.id}/comment`;
     const update = `/topic/posts/${post?.id}/updatecomment`;
-    // const delete = `/topic/posts/${post?.id}/deletecomment`;
+    const deleteComment = `/topic/deletecomment`;
+    const likeComment = `/topic/likecomment`;
+    const unlikeComment = `/topic/unlikecomment`;
+
     if (socket) {
       socket.subscribe(topic, handleReceiveCommentSocket, { id: topic });
       socket.subscribe(update, handleReceiveUpdateCommentSocket, {
         id: update,
       });
-      //socket.subscribe(delete, handleReceiveDeleteCommentSocket, { id: delete });
+      socket.subscribe(deleteComment, handleDeleteCommentSocket, {
+        id: deleteComment,
+      });
+      socket.subscribe(likeComment, handleUpdateLikeCommentSocket, {
+        id: likeComment,
+      });
+      socket.subscribe(unlikeComment, handleUpdateLikeCommentSocket, {
+        id: unlikeComment,
+      });
     }
     return () => {
       if (socket) {
         socket.unsubscribe(topic);
         socket.unsubscribe(update);
+        socket.unsubscribe(deleteComment);
+        socket.unsubscribe(likeComment);
+        socket.unsubscribe(unlikeComment);
       }
     };
   }, [post?.id, socket]);

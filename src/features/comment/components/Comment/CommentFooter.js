@@ -22,17 +22,23 @@ const CommentFooter = ({
   const isLiked = comment?.userlikeids?.includes(userId);
   const dispatch = useDispatch();
 
-  const likeCommentMutation = useMutation(likeComment, {
-    onSuccess: (data) => {
-      dispatch(updateComment(data));
-    },
-  });
+  const likeCommentMutation = useMutation(
+    likeComment
+    //   , {
+    //   onSuccess: (data) => {
+    //     dispatch(updateComment(data));
+    //   },
+    // }
+  );
   const createNotificationMutation = useMutation(createNotification);
-  const unlikeCommentMutation = useMutation(unlikeComment, {
-    onSuccess: (data) => {
-      dispatch(updateComment(data));
-    },
-  });
+  const unlikeCommentMutation = useMutation(
+    unlikeComment
+    //   , {
+    //   onSuccess: (data) => {
+    //     dispatch(updateComment(data));
+    //   },
+    // }
+  );
   const updateUserIncreaseNumOfNotification = useMutation(
     updateCountNotifications
   );
