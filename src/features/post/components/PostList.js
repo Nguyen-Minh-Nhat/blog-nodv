@@ -1,5 +1,4 @@
 import { useMutation, useQueryClient } from 'react-query';
-import { useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
 import { updatePostToBookmark } from '../../../api/bookmarkApi';
 import { deletePost, publishPost, unpublishPost } from '../../../api/postApi';
@@ -7,8 +6,6 @@ import PostPreview from './PostPreview';
 
 export const PostList = ({ postList = [], storeKey = 'posts' }) => {
 	const queryClient = useQueryClient();
-	const dispatch = useDispatch();
-
 	const postIdsBookmark = queryClient.getQueryData('bookmark')?.postIds;
 
 	const updateLocalPost = (updatedPost) => {
