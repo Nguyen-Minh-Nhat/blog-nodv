@@ -1,5 +1,6 @@
 import { useMutation, useQueryClient } from "react-query";
 import { toast } from "react-toastify";
+import post from "..";
 import { updatePostToBookmark } from "../../../api/bookmarkApi";
 import {
   deletePost,
@@ -16,6 +17,9 @@ export const PostList = ({
 }) => {
   const queryClient = useQueryClient();
   const postIdsBookmark = queryClient.getQueryData("bookmark")?.postIds;
+  // console.log(postIdsBookmark);
+  const postIdHide = queryClient.getQueryData("hide")?.postIds;
+  console.log(postIdHide);
 
   const updateLocalPost = (updatedPost) => {
     queryClient.setQueryData(storeKey, (oldData) =>
@@ -30,6 +34,7 @@ export const PostList = ({
   const deleteLocalPost = (postId) => {
     queryClient.setQueryData(storeKey, (oldData) => {
       const newPostList = oldData.filter((post) => post.id !== postId);
+      console.log(newPostList);
       return newPostList;
     });
   };
@@ -56,13 +61,14 @@ export const PostList = ({
 
   const updateBookmarkMutation = useMutation(updatePostToBookmark, {
     onSuccess: (data) => {
+      console.log("posIdBook", data);
       queryClient.setQueryData("bookmark", { postIds: data });
     },
   });
 
   const hidePostMutation = useMutation(hidePost, {
-    onSuccess: () => {
-      console.log("hide post");
+    onSuccess: (id) => {
+      deleteLocalPost(id.pop());
     },
   });
   return (
