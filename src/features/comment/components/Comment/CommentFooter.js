@@ -22,15 +22,26 @@ const CommentFooter = ({
   const isLiked = comment?.userlikeids?.includes(userId);
   const dispatch = useDispatch();
 
-  const likeCommentMutation = useMutation(
-    likeComment
-    //   , {
-    //   onSuccess: (data) => {
-    //     dispatch(updateComment(data));
-    //   },
-    // }
-  );
-  const createNotificationMutation = useMutation(createNotification);
+  const likeCommentMutation = useMutation(likeComment, {
+    onSuccess: (data) => {
+      // dispatch(updateComment(data));
+      callApiCreateNotification(
+        data,
+        NotificationType.LIKECOMMENT,
+        createNotificationMutation,
+        userId
+      );
+    },
+  });
+  const createNotificationMutation = useMutation(createNotification, {
+    onSuccess: () => {
+      const Increase = {
+        isIncrease: true,
+        userId: comment.userId,
+      };
+      updateUserIncreaseNumOfNotification.mutate(Increase);
+    },
+  });
   const unlikeCommentMutation = useMutation(
     unlikeComment
     //   , {
@@ -46,17 +57,6 @@ const CommentFooter = ({
   const handleLike = (isLike) => {
     if (isLike) {
       likeCommentMutation.mutate(comment.id);
-      callApiCreateNotification(
-        comment,
-        NotificationType.LIKECOMMENT,
-        createNotificationMutation,
-        userId
-      );
-      const Increase = {
-        isIncrease: true,
-        userId: comment.userId,
-      };
-      updateUserIncreaseNumOfNotification.mutate(Increase);
     } else {
       unlikeCommentMutation.mutate(comment.id);
     }

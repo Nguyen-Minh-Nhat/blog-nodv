@@ -23,6 +23,7 @@ const Comment = ({ comment, post }) => {
   const replyComments = useSelector(
     (state) => state.comment.commentsByParentId[comment.id]
   );
+
   const rootComments = useSelector((state) => state.comment.list);
   const [isReply, setIsReply] = useState(false);
   const [isShowReply, setIsShowReply] = useState(false);
@@ -50,7 +51,14 @@ const Comment = ({ comment, post }) => {
 
   const createNewReplyComment = useMutation(createComment, {
     onSuccess: (data) => {
-      dispatch(addComment(data));
+      // dispatch(addComment(data));
+      let comment = { ...data, commentParentUserId: getCommentUserId(data) };
+      callApiCreateNotification(
+        comment,
+        NotificationType.REPLYCOMMENT,
+        createNewNotificationReplyComment,
+        user.id
+      );
     },
   });
 
@@ -58,7 +66,15 @@ const Comment = ({ comment, post }) => {
     updateCountNotifications
   );
 
-  const createNewNotificationReplyComment = useMutation(createNotification);
+  const createNewNotificationReplyComment = useMutation(createNotification, {
+    onSuccess: (data) => {
+      const Increase = {
+        isIncrease: true,
+        userId: data.receiverId,
+      };
+      updateUserIncreaseNumOfNotification.mutate(Increase);
+    },
+  });
   const getCommentUserId = (comment) => {
     var parentComment = rootComments.find(
       (commentParent) => comment.replyId === commentParent.id
@@ -67,19 +83,19 @@ const Comment = ({ comment, post }) => {
   };
   const handleReply = (comment) => {
     createNewReplyComment.mutate(comment);
-    let data = comment;
-    data.commentParentUserId = getCommentUserId(comment);
-    callApiCreateNotification(
-      data,
-      NotificationType.REPLYCOMMENT,
-      createNewNotificationReplyComment,
-      user.id
-    );
-    const Increase = {
-      isIncrease: true,
-      userId: data.commentParentUserId,
-    };
-    updateUserIncreaseNumOfNotification.mutate(Increase);
+    // let data = comment;
+    // data.commentParentUserId = getCommentUserId(comment);
+    // callApiCreateNotification(
+    //   data,
+    //   NotificationType.REPLYCOMMENT,
+    //   createNewNotificationReplyComment,
+    //   user.id
+    // );
+    // const Increase = {
+    //   isIncrease: true,
+    //   userId: data.commentParentUserId,
+    // };
+    // updateUserIncreaseNumOfNotification.mutate(Increase);
     setIsReply(false);
     setIsShowReply(true);
   };

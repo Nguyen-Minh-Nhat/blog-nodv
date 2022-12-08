@@ -24,14 +24,16 @@ const CommentContainer = ({ post, onClose }) => {
   const rootComments = useSelector(
     (state) => state.comment.commentsByParentId[null]
   );
+
   useQuery(["comments", post.id], () => getComment(post.id), {
     onSuccess: (data) => {
+      console.log("vo day lay comment");
       dispatch(setComments(data));
     },
   });
   const createNewComment = useMutation(createComment, {
     onSuccess: (data) => {
-      dispatch(addComment(data));
+      // dispatch(addComment(data));
       let comment = { ...data, postUserId: post.userId };
       callApiCreateNotification(
         comment,
@@ -54,19 +56,6 @@ const CommentContainer = ({ post, onClose }) => {
   });
   const handleCreateComment = (comment) => {
     createNewComment.mutate(comment);
-    // const data = comment;
-    // data.postUserId = post.userId;
-    // callApiCreateNotification(
-    //   comment,
-    //   NotificationType.COMMENT,
-    //   createNewNotificationComment,
-    //   userId
-    // );
-    // const Increase = {
-    //   isIncrease: true,
-    //   userId: data.postUserId,
-    // };
-    // updateUserIncreaseNumOfNotification.mutate(Increase);
   };
   const initialComment = {};
   const updateLocalListComment = (updatedComment) => {
@@ -89,6 +78,7 @@ const CommentContainer = ({ post, onClose }) => {
   };
 
   const updateLocalLikeComment = (updatedComment) => {
+    console.log("updatecomment", updatedComment);
     dispatch(updateComment(updatedComment));
   };
   const handleUpdateLikeCommentSocket = (payload) => {
