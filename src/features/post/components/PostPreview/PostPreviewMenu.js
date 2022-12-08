@@ -2,7 +2,6 @@ import { ListItemIcon, MenuItem, MenuList } from "@mui/material";
 import { useMemo } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { hidePost } from "../../../../api/postApi";
 
 import {
   DeleteIcon,
@@ -71,11 +70,11 @@ const PostMenu = ({
     isUser,
     navigate,
     onDelete,
-    onHidePost,
     onPublish,
     onUnpublish,
     post.id,
     post.isPublish,
+    onHidePost,
   ]);
   return (
     <div className="flex min-w-[180px] flex-col justify-end bg-white">

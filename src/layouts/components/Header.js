@@ -4,14 +4,11 @@ import Logo from './Logo';
 
 const Header = () => {
 	return (
-		<div className="flex h-16 items-center justify-between border-b px-16">
+		<div className="flex h-16 items-center justify-between bg-white">
 			<div className="flex items-center justify-center gap-2">
 				<div className="w-20">
 					<Logo />
 				</div>
-				<span className="text- mb-1 text-xl font-bold text-slate-500">
-					NOVD
-				</span>
 			</div>
 			<TriggerLogin>
 				<Button

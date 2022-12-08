@@ -1,4 +1,5 @@
 import { IconButton } from "@mui/material";
+import { useQueryClient } from "react-query";
 import MenuTrigger from "../../../components/MenuTrigger/MenuTrigger";
 import PostMenu from "./PostPreview/PostPreviewMenu";
 
@@ -22,9 +23,9 @@ const PostAction = ({
         </IconButton>
       </div>
       <div>
-        <IconButton size="small" className="h-8 w-8">
+        {/* <IconButton size="small" className="h-8 w-8">
           <i className="fa-light fa-circle-minus"></i>
-        </IconButton>
+        </IconButton> */}
       </div>
 
       <MenuTrigger>

@@ -1,44 +1,43 @@
-import { useState } from "react";
 import { useEffect } from "react";
 import { useMutation, useQuery, useQueryClient } from "react-query";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
+import { updatePostToBookmark } from "../../api/bookmarkApi";
 import { createNotification } from "../../api/notificationApi";
 import {
   deletePost,
-  getListPostHided,
   getPostById,
-  getPosts,
   likePost,
   publishPost,
   unLikePost,
   unpublishPost,
 } from "../../api/postApi";
-import { getUsersNotFollow } from "../../api/userApi";
+import { updateCountNotifications } from "../../api/userApi";
 import { NotificationType } from "../../config/dataType";
 import Post from "../../features/post/components/Post";
-import { setUser } from "../../redux/slices/userSlice";
+import { updatePostIds } from "../../redux/slices/bookmarkSlice";
+import { setProfile } from "../../redux/slices/profileSlice";
 import { callApiCreateNotification } from "../../utils/generationNotification";
 import Header from "./components/Header";
 import Main from "./components/Main";
 
 const PostPage = () => {
   const { id } = useParams();
+  const dispatch = useDispatch();
 
   const socket = useSelector((state) => state.socket.data);
+  const postIdsBookmark = useSelector((state) => state.bookmark.postIds);
 
   const queryClient = useQueryClient();
 
   const post = queryClient.getQueryData(["post", id]);
-  console.log(post);
-
-  const userId = useSelector((state) => state.user.data.info.id);
-  // const dispatch = useDispatch();
-
-  // const { data: test } = useQuery("test1", () => getListPostHided());
+  const userId = useSelector((state) => state.user.data?.info?.id);
 
   useQuery(["post", id], () => getPostById(id), {
+    onSuccess: (data) => {
+      dispatch(setProfile(data.user));
+    },
     onError: (error) => {
       if (error.response.status === 404) {
         window.location.href = "/404";
@@ -79,6 +78,9 @@ const PostPage = () => {
       console.log(data);
     },
   });
+  const updateUserIncreaseNumOfNotification = useMutation(
+    updateCountNotifications
+  );
   const likePostMutation = useMutation(likePost, {
     onSuccess: (data) => {
       queryClient.setQueryData(["post", post.id], data);
@@ -88,6 +90,11 @@ const PostPage = () => {
         createNotificationLikePostMutation,
         userId
       );
+      const Increase = {
+        isIncrease: true,
+        userId: data.userId,
+      };
+      updateUserIncreaseNumOfNotification.mutate(Increase);
     },
   });
 
@@ -97,8 +104,15 @@ const PostPage = () => {
     },
   });
 
+  const updateBookmarkMutation = useMutation(updatePostToBookmark, {
+    onSuccess: (data) => {
+      // console.log("data ", data);
+      dispatch(updatePostIds(data));
+    },
+  });
+
   const handleReceiveLikePostSocket = (payload) => {
-    console.log(payload);
+    // console.log(payload);
     const { userLikeIds } = JSON.parse(payload.body);
     updateLocalPost({ userLikeIds: userLikeIds });
   };
@@ -123,6 +137,8 @@ const PostPage = () => {
         {post && (
           <Post
             post={post}
+            isBookmarked={postIdsBookmark?.includes(post.id)}
+            onUpdateBookmark={updateBookmarkMutation.mutate}
             onPublish={publishPostMutation.mutate}
             onDelete={deletePostMutation.mutate}
             onUnpublish={unpublishPostMutation.mutate}

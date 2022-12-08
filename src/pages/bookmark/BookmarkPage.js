@@ -17,7 +17,7 @@ const BookmarkPage = () => {
       dispatch(setBookmark(data));
     },
   });
-  console.log("bookmark post", bookmark.posts);
+  // console.log("bookmark post", bookmark.posts);
 
   return (
     <PageWithTitle title="Bookmark">

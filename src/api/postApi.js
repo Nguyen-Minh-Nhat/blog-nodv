@@ -1,11 +1,23 @@
 import axiosClient, { axiosClientPrivate } from "./axiosClient";
 
 const url = "/posts";
-const test = "/blackLists";
+
 const postApi = {
-  getPosts: ({ page = 0, limit = 5, topic = "all" }) =>
-    axiosClient.get(url + `?page=${page}&limit=${limit}&topic=${topic}`),
+  getPosts: ({ page = 0, limit = 5, topic, title }) =>
+    axiosClient.get(url, {
+      params: {
+        page,
+        limit,
+        topic,
+        title,
+      },
+    }),
+
+  getPostsTrending: (limit = 6) =>
+    axiosClient.get(`${url}/trending?limit=${limit}`),
+
   getPostById: (id) => axiosClient.get(`${url}/${id}`),
+  getPostsByUserId: (id) => axiosClient.get(`${url}/user/${id}`),
 
   getOwnedPosts: (isPublish) =>
     axiosClientPrivate.get(
@@ -31,7 +43,7 @@ const postApi = {
 
   hidePost: (id) => axiosClientPrivate.patch(`/blackLists/${id}`, null),
 
-  getListPostHided: () => axiosClientPrivate.get(test + "/list"),
+  getListPostHided: () => axiosClientPrivate.get("/blackLists/list"),
 };
 
 export const {
@@ -45,6 +57,8 @@ export const {
   likePost,
   unLikePost,
   updatePost,
+  getPostsTrending,
+  getPostsByUserId,
   hidePost,
   getListPostHided,
 } = postApi;

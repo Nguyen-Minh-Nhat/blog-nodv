@@ -1,31 +1,29 @@
 import { memo, useMemo, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import CommentEditor from "../CommentEditor";
-import CommentList from "../CommentList";
-import CommentBody from "./CommentBody";
-import CommentFooter from "./CommentFooter";
-import CommentHeader from "./CommentHeader";
-import QuestionDialog from "../../../../components/QuestionDialog";
-import {
-  addComment,
-  removeComment,
-  updateComment,
-} from "../../../../redux/slices/commentSlice";
 import { useMutation } from "react-query";
+import { useDispatch, useSelector } from "react-redux";
 import {
   createComment,
   deleteComment,
   updateCommentApi,
 } from "../../../../api/commentApi";
 import { createNotification } from "../../../../api/notificationApi";
-import { callApiCreateNotification } from "../../../../utils/generationNotification";
+import { updateCountNotifications } from "../../../../api/userApi";
+import QuestionDialog from "../../../../components/QuestionDialog";
 import { NotificationType } from "../../../../config/dataType";
+import { addComment } from "../../../../redux/slices/commentSlice";
+import { callApiCreateNotification } from "../../../../utils/generationNotification";
+import CommentEditor from "../CommentEditor";
+import CommentList from "../CommentList";
+import CommentBody from "./CommentBody";
+import CommentFooter from "./CommentFooter";
+import CommentHeader from "./CommentHeader";
 
 const Comment = ({ comment, post }) => {
-  const { id: userId } = useSelector((state) => state.user.data.info);
+  const user = useSelector((state) => state.user.data.info);
   const replyComments = useSelector(
     (state) => state.comment.commentsByParentId[comment.id]
   );
+
   const rootComments = useSelector((state) => state.comment.list);
   const [isReply, setIsReply] = useState(false);
   const [isShowReply, setIsShowReply] = useState(false);
@@ -34,36 +32,49 @@ const Comment = ({ comment, post }) => {
   const dispatch = useDispatch();
 
   const isUser = useMemo(() => {
-    return comment.userId === userId;
-  }, [comment.userId, userId]);
+    return comment.userId === user.id;
+  }, [comment.userId, user.id]);
 
   const handleCloseDialog = () => {
     setIsDelete(false);
   };
-  const deleteCommentById = useMutation(deleteComment, {
-    onSuccess: (data) => {
-      dispatch(removeComment(data));
-    },
-  });
+  const deleteCommentById = useMutation(deleteComment);
   const handleDeleteComment = (comment) => {
     deleteCommentById.mutate(comment.id);
   };
 
-  const updateCommentById = useMutation(updateCommentApi, {
-    onSuccess: (data) => {
-      dispatch(updateComment(data));
-    },
-  });
+  const updateCommentById = useMutation(updateCommentApi);
   const handleUpdateComment = (comment) => {
     updateCommentById.mutate(comment);
     setIsEdit(false);
   };
+
   const createNewReplyComment = useMutation(createComment, {
     onSuccess: (data) => {
-      dispatch(addComment(data));
+      // dispatch(addComment(data));
+      let comment = { ...data, commentParentUserId: getCommentUserId(data) };
+      callApiCreateNotification(
+        comment,
+        NotificationType.REPLYCOMMENT,
+        createNewNotificationReplyComment,
+        user.id
+      );
     },
   });
-  const createNewNotificationReplyComment = useMutation(createNotification);
+
+  const updateUserIncreaseNumOfNotification = useMutation(
+    updateCountNotifications
+  );
+
+  const createNewNotificationReplyComment = useMutation(createNotification, {
+    onSuccess: (data) => {
+      const Increase = {
+        isIncrease: true,
+        userId: data.receiverId,
+      };
+      updateUserIncreaseNumOfNotification.mutate(Increase);
+    },
+  });
   const getCommentUserId = (comment) => {
     var parentComment = rootComments.find(
       (commentParent) => comment.replyId === commentParent.id
@@ -72,14 +83,19 @@ const Comment = ({ comment, post }) => {
   };
   const handleReply = (comment) => {
     createNewReplyComment.mutate(comment);
-    let data = comment;
-    data.commentParentUserId = getCommentUserId(comment);
-    callApiCreateNotification(
-      data,
-      NotificationType.REPLYCOMMENT,
-      createNewNotificationReplyComment,
-      userId
-    );
+    // let data = comment;
+    // data.commentParentUserId = getCommentUserId(comment);
+    // callApiCreateNotification(
+    //   data,
+    //   NotificationType.REPLYCOMMENT,
+    //   createNewNotificationReplyComment,
+    //   user.id
+    // );
+    // const Increase = {
+    //   isIncrease: true,
+    //   userId: data.commentParentUserId,
+    // };
+    // updateUserIncreaseNumOfNotification.mutate(Increase);
     setIsReply(false);
     setIsShowReply(true);
   };

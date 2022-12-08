@@ -2,6 +2,7 @@ import { useMutation } from "react-query";
 import { useDispatch, useSelector } from "react-redux";
 import { likeComment, unlikeComment } from "../../../../api/commentApi";
 import { createNotification } from "../../../../api/notificationApi";
+import { updateCountNotifications } from "../../../../api/userApi";
 import IconWrapper from "../../../../components/IconWrapper";
 import LikeButton from "../../../../components/LikeButton";
 import Number from "../../../../components/Number";
@@ -23,25 +24,39 @@ const CommentFooter = ({
 
   const likeCommentMutation = useMutation(likeComment, {
     onSuccess: (data) => {
-      dispatch(updateComment(data));
-    },
-  });
-  const createNotificationMutation = useMutation(createNotification);
-  const unlikeCommentMutation = useMutation(unlikeComment, {
-    onSuccess: (data) => {
-      dispatch(updateComment(data));
-    },
-  });
-
-  const handleLike = (isLike) => {
-    if (isLike) {
-      likeCommentMutation.mutate(comment.id);
+      // dispatch(updateComment(data));
       callApiCreateNotification(
-        comment,
+        data,
         NotificationType.LIKECOMMENT,
         createNotificationMutation,
         userId
       );
+    },
+  });
+  const createNotificationMutation = useMutation(createNotification, {
+    onSuccess: () => {
+      const Increase = {
+        isIncrease: true,
+        userId: comment.userId,
+      };
+      updateUserIncreaseNumOfNotification.mutate(Increase);
+    },
+  });
+  const unlikeCommentMutation = useMutation(
+    unlikeComment
+    //   , {
+    //   onSuccess: (data) => {
+    //     dispatch(updateComment(data));
+    //   },
+    // }
+  );
+  const updateUserIncreaseNumOfNotification = useMutation(
+    updateCountNotifications
+  );
+
+  const handleLike = (isLike) => {
+    if (isLike) {
+      likeCommentMutation.mutate(comment.id);
     } else {
       unlikeCommentMutation.mutate(comment.id);
     }

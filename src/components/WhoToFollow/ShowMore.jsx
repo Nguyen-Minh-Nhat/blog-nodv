@@ -43,6 +43,7 @@ const ShowMore = () => {
       unFollowUserMutation.mutate(data);
     }
   };
+
   // getUsers = useQuery("usersFL", () => getUsersNotFollow(10));
   // const handleShowMore = () => {
   //   console.log(10);
@@ -83,14 +84,12 @@ const ShowMore = () => {
               </div>
               <div>
                 <ButtonFollow
-                  isFollowed={item1?.followerId?.includes(userId)}
+                  isFollowed={false}
                   textColorBefore={"text-white"}
                   bgColorBefore={"bg-green-500"}
                   textColorAfter={"text-green-500"}
                   bgColorAfter={"rgb"}
-                  onClick={(state) => {
-                    handleFollow(item1.id, state);
-                  }}
+                  onClick={(state) => {}}
                 />
               </div>
             </div>

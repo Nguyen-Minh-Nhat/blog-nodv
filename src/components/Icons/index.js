@@ -13,6 +13,7 @@ import BookmarkIcon from './BookmarkIcon';
 import TrashIcon from './TrashIcon';
 import PlusIcon from './PlusIcon';
 import CheckIcon from './CheckIcon';
+import TrendingIcon from './TrendingIcon';
 export {
 	DeleteIcon,
 	EditIcon,
@@ -29,4 +30,5 @@ export {
 	TrashIcon,
 	PlusIcon,
 	CheckIcon,
+	TrendingIcon,
 };

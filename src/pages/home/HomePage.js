@@ -1,21 +1,21 @@
-import { useState } from "react";
-import { useEffect } from "react";
-import InfiniteScroll from "react-infinite-scroll-component";
-import { useQuery, useQueryClient } from "react-query";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
 import { getBookmarkByUserId } from "../../api/bookmarkApi";
 import { getListPostHided, getPosts } from "../../api/postApi";
-import post, { PostList } from "../../features/post";
+import { PostList } from "../../features/post";
 import useInfiniteScroll from "../../hooks/useInfiniteScroll";
 import { setBookmark } from "../../redux/slices/bookmarkSlice";
 import Header from "./components/Header";
+import { useEffect } from "react";
+import InfiniteScroll from "react-infinite-scroll-component";
+import { useQuery, useQueryClient } from "react-query";
+import { useParams } from "react-router-dom";
+import { useState } from "react";
 
 const LIMIT = 5;
 const HomePage = () => {
-  const dispatch = useDispatch();
   const { tab } = useParams(); //get tab from url
   const storeKey = ["posts", tab]; //key for react-query
+  const dispatch = useDispatch();
 
   const { data: posts } = useQuery(
     storeKey,
@@ -26,6 +26,14 @@ const HomePage = () => {
   ); //get posts from api by tab
 
   const queryClient = useQueryClient();
+
+  const postIdsBookmark = useSelector((state) => state.bookmark.postIds);
+
+  useQuery("bookmark", getBookmarkByUserId, {
+    onSuccess: (data) => {
+      dispatch(setBookmark(data));
+    },
+  });
 
   const { isHasMore, handleFetchMore, setIsHasMore, setPage } =
     useInfiniteScroll(
@@ -42,15 +50,6 @@ const HomePage = () => {
     setPage(0);
     setIsHasMore(true);
   }, [tab]); // reset page and isHasMore when tab change
-
-  const postIdsBookmark = useSelector((state) => state.bookmark.postIds);
-
-  useQuery("bookmark", getBookmarkByUserId, {
-    onSuccess: (data) => {
-      dispatch(setBookmark(data));
-    },
-  });
-
   const [hidePost, setHidePost] = useState([]);
   useQuery("hidePost", () => getListPostHided(), {
     onSuccess: (data) => {
@@ -60,7 +59,6 @@ const HomePage = () => {
       console.log("err re", err);
     },
   });
-
   return (
     <InfiniteScroll
       dataLength={posts?.length || 0}
@@ -78,8 +76,8 @@ const HomePage = () => {
       <Main>
         <PostList
           postList={posts}
-          postIdsBookmark={postIdsBookmark}
           storeKey={storeKey}
+          postIdsBookmark={postIdsBookmark}
           postIdsHide={hidePost}
         />
       </Main>
@@ -94,5 +92,11 @@ const Main = ({ children }) => {
     </div>
   );
 };
+
+const EndMessage = () => (
+  <div className="py-10">
+    <p className="text-center font-thin">Yay! You have seen it all</p>
+  </div>
+);
 
 export default HomePage;

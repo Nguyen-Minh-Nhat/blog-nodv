@@ -1,26 +1,22 @@
-import PostPreview from "./PostPreview";
 import { useMutation, useQueryClient } from "react-query";
+import { toast } from "react-toastify";
+import { updatePostToBookmark } from "../../../api/bookmarkApi";
 import {
   deletePost,
   hidePost,
   publishPost,
   unpublishPost,
 } from "../../../api/postApi";
-import { toast } from "react-toastify";
-import { updatePostToBookmark } from "../../../api/bookmarkApi";
-import { useDispatch } from "react-redux";
-import { updateBookmark } from "../../../redux/slices/bookmarkSlice";
-import { useState } from "react";
+import PostPreview from "./PostPreview";
 
 export const PostList = ({
   postList = [],
-  postIdsBookmark = [],
-  postIdsHide = [],
   storeKey = "posts",
+  postIdsHide = [],
 }) => {
   const queryClient = useQueryClient();
-  const dispatch = useDispatch();
-  //   const [hidePost, setHidePost] = useState(false);
+  const postIdsBookmark = queryClient.getQueryData("bookmark")?.postIds;
+
   const updateLocalPost = (updatedPost) => {
     queryClient.setQueryData(storeKey, (oldData) =>
       oldData.map((post) => {
@@ -60,8 +56,7 @@ export const PostList = ({
 
   const updateBookmarkMutation = useMutation(updatePostToBookmark, {
     onSuccess: (data) => {
-      // console.log('data ', data);
-      dispatch(updateBookmark({ postIds: data, posts: postList }));
+      queryClient.setQueryData("bookmark", { postIds: data });
     },
   });
 
@@ -70,7 +65,6 @@ export const PostList = ({
       console.log("hide post");
     },
   });
-
   return (
     <div className="flex flex-col">
       {postList?.length ? (
@@ -89,7 +83,6 @@ export const PostList = ({
               onPublish={publishPostMutation.mutate}
               onUnpublish={unpublishPostMutation.mutate}
               onHidePost={hidePostMutation.mutate}
-              //   isHidedPost={hidePost}
             />
           </div>
         ))
