@@ -8,7 +8,7 @@ const userApi = {
 		axiosClientPrivate.get(`${url}/search?q=${q}&page=${page}&limit=${limit}`),
 	updateUserProfile: (data) => axiosClientPrivate.put(url, data),
 	followUser: (id) => axiosClientPrivate.patch(`${url}/follow/${id}`, {}),
-	unFollowUser: (id) => axiosClientPrivate.patch(`${url}/unfollow/${id}`),
+	unFollowUser: (id) => axiosClientPrivate.patch(`${url}/unFollow/${id}`),
 	addTopics: (topics) => axiosClientPrivate.patch(`${url}/topics`, { topics }),
 	getOwnTopics: () => axiosClientPrivate.get(`${url}/topics`),
 	getAllUnFollow: (page = 0, limit = 3) =>
