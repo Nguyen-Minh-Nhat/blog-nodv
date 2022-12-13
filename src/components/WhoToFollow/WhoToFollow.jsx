@@ -1,5 +1,5 @@
 import { useQuery } from 'react-query';
-import { getAllUnFollow, getUsersNotFollow } from '../../api/userApi';
+import { getUsersNotFollow } from '../../api/userApi';
 import ModalTrigger from '../ModalTrigger';
 import PanelWrapper from '../PanelWrapper';
 import UserList from '../UserList';
