@@ -55,7 +55,7 @@ const WritePage = () => {
 	// create post
 	const createPostMutation = useMutation(createPost, {
 		onSuccess: (data) => {
-			navigate(`/post/${data.id}`);
+			navigate(`${appRoutes.POST}/${data.id}`);
 		},
 	});
 

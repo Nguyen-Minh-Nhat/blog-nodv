@@ -1,7 +1,9 @@
 import { useQuery } from 'react-query';
 import { getAllUnFollow } from '../../api/userApi';
+import ModalTrigger from '../ModalTrigger';
 import PanelWrapper from '../PanelWrapper';
 import UserList from '../UserList';
+import ShowMore from './ShowMore';
 
 const WhoToFollow = () => {
 	const { data: users, isSuccess } = useQuery('follows', () =>
@@ -13,7 +15,11 @@ const WhoToFollow = () => {
 			<PanelWrapper title={'Who to follow'}>
 				{isSuccess && <UserList users={users} />}
 			</PanelWrapper>
-			<span className="absolute mt-5 cursor-pointer">See all</span>
+			<ModalTrigger
+				button={<span className="absolute mt-5 cursor-pointer">Show more</span>}
+			>
+				{<ShowMore />}
+			</ModalTrigger>
 		</>
 	);
 };

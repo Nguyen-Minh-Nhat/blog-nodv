@@ -50,10 +50,10 @@ const PostMenu = ({ post, onDelete, onPublish, onUnpublish, onEdit }) => {
 					icon: <EyeIcon />,
 					label: 'Hide this post',
 				},
-				{
-					icon: <FlagIcon />,
-					label: 'Report this post',
-				},
+				// {
+				// 	icon: <FlagIcon />,
+				// 	label: 'Report this post',
+				// },
 			];
 		}
 
