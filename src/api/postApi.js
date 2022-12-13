@@ -16,8 +16,8 @@ const postApi = {
   getPostsTrending: (limit = 6) =>
     axiosClient.get(`${url}/trending?limit=${limit}`),
 
-  getPostById: (id) => axiosClient.get(`${url}/${id}`),
-  getPostsByUserId: (id) => axiosClient.get(`${url}/user/${id}`),
+	getPostById: (id) => axiosClient.get(`${url}/${id}`),
+	getPostsByUserId: (id) => axiosClient.get(`${url}/user/${id}`),
 
   getOwnedPosts: (isPublish) =>
     axiosClientPrivate.get(
