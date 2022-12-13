@@ -1,11 +1,11 @@
 import { useQuery } from 'react-query';
-import { getAllUnFollow } from '../../api/userApi';
+import { getAllUnFollow, getUsersNotFollow } from '../../api/userApi';
 import PanelWrapper from '../PanelWrapper';
 import UserList from '../UserList';
 
 const WhoToFollow = () => {
 	const { data: users, isSuccess } = useQuery('follows', () =>
-		getAllUnFollow()
+	getUsersNotFollow(3)
 	);
 
 	return (

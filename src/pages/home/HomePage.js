@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import { getBookmarkByUserId } from "../../api/bookmarkApi";
-import { getPosts } from "../../api/postApi";
+import { getListPostHided, getPosts } from "../../api/postApi";
 import { PostList } from "../../features/post";
 import useInfiniteScroll from "../../hooks/useInfiniteScroll";
 import { setBookmark } from "../../redux/slices/bookmarkSlice";
@@ -9,6 +9,7 @@ import { useEffect } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { useQuery, useQueryClient } from "react-query";
 import { useParams } from "react-router-dom";
+import { useState } from "react";
 
 const LIMIT = 5;
 const HomePage = () => {
@@ -49,7 +50,15 @@ const HomePage = () => {
     setPage(0);
     setIsHasMore(true);
   }, [tab]); // reset page and isHasMore when tab change
-
+  const [hidePost, setHidePost] = useState([]);
+  useQuery("hidePost", () => getListPostHided(), {
+    onSuccess: (data) => {
+      setHidePost(data);
+    },
+    onError: (err) => {
+      console.log("err re", err);
+    },
+  });
   return (
     <InfiniteScroll
       dataLength={posts?.length || 0}
@@ -69,6 +78,7 @@ const HomePage = () => {
           postList={posts}
           storeKey={storeKey}
           postIdsBookmark={postIdsBookmark}
+          postIdsHide={hidePost}
         />
       </Main>
     </InfiniteScroll>
