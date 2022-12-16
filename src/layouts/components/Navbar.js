@@ -1,6 +1,6 @@
 import { Badge, Tooltip } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
-import React, { useEffect, useState, useCallback, useMemo } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { useMutation } from "react-query";
 import { useDispatch, useSelector } from "react-redux";
 import { matchPath, useLocation } from "react-router";
@@ -11,30 +11,17 @@ import { appRoutes } from "../../routes/AppRoutes";
 
 const Navbar = () => {
   const { pathname } = useLocation();
-  const userRedux = useSelector((state) => state.user.data.info);
+  const user = useSelector((state) => state.user.data.info);
   const socket = useSelector((state) => state.socket.data);
-
-  const user = useMemo(
-    () => ({
-      ...userRedux,
-    }),
-    [userRedux]
-  );
-
   const dispatch = useDispatch();
-  const [numOfNotifications, setNumOfNotifications] = useState(
-    user?.notificationsCount !== undefined ? user.notificationsCount : 0
-  );
   const updateUserCountNotification = useMutation(updateCountNotifications, {
     onSuccess: (data) => {
-      setNumOfNotifications(data.notificationsCount);
       dispatch(setUser(data));
     },
   });
 
   const handleClickNotification = useCallback(
     (user) => {
-      user.notificationsCount = 0;
       const data = {
         userId: user.id,
         isIncrease: false,
@@ -53,21 +40,18 @@ const Navbar = () => {
   const handleReceiveCountNotificationSocket = useCallback(
     (payload) => {
       const data = JSON.parse(payload.body);
-      setNumOfNotifications(data.notificationsCount);
       dispatch(setUser(data));
     },
     [dispatch]
   );
 
   useEffect(() => {
-    const topic = `/topic/notifications/${user.id}/countNotifications`;
+    const topic = `/topic/notifications/${user?.id}/countNotifications`;
     if (socket) {
-      console.log("subscribing navbar");
       socket.subscribe(topic, handleReceiveCountNotificationSocket);
     }
     return () => {
       if (socket) {
-        console.log("unsubscribing");
         socket.unsubscribe(topic);
       }
     };
@@ -84,7 +68,12 @@ const Navbar = () => {
     {
       title: "Notifications",
       icon: (
-        <Badge badgeContent={numOfNotifications} color="success">
+        <Badge
+          badgeContent={
+            user?.notificationsCount !== undefined ? user.notificationsCount : 0
+          }
+          color="success"
+        >
           <i className="fa-light fa-bell"></i>
         </Badge>
       ),
