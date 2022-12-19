@@ -8,12 +8,12 @@ const DefaultLayout = ({ children }) => {
 	return (
 		<div className="flex h-full items-start">
 			{isLogin && (
-				<StickyBox className="h-full">
+				<StickyBox className="hidden h-full sm:block">
 					<SidebarLeft />
 				</StickyBox>
 			)}
-			<div className="flex-1">{children}</div>
-			<StickyBox>
+			<div className="flex-1 sm:w-full">{children}</div>
+			<StickyBox className="hidden lg:block">
 				<SidebarRight />
 			</StickyBox>
 		</div>
