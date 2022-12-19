@@ -1,6 +1,6 @@
-const PostThumbnail = ({ src }) => {
+const PostThumbnail = ({ src, size = 'h-28 w-28' }) => {
 	return (
-		<div className="h-28 w-28 overflow-hidden rounded-xl">
+		<div className={`${size} overflow-hidden rounded-xl`}>
 			{src ? (
 				<img src={src} alt="post img" className="h-full w-full object-cover" />
 			) : (

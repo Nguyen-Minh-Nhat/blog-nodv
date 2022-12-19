@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { updatePostToBookmark } from '../../api/bookmarkApi';
@@ -8,6 +8,7 @@ import { createNotification } from '../../api/notificationApi';
 import {
 	deletePost,
 	getPostById,
+	getPostsRecommend,
 	likePost,
 	publishPost,
 	unLikePost,
@@ -19,7 +20,6 @@ import Post from '../../features/post/components/Post';
 import { updatePostIds } from '../../redux/slices/bookmarkSlice';
 import { setProfile } from '../../redux/slices/profileSlice';
 import { callApiCreateNotification } from '../../utils/generationNotification';
-import Header from './components/Header';
 import Main from './components/Main';
 
 const PostPage = () => {
@@ -32,6 +32,7 @@ const PostPage = () => {
 	const queryClient = useQueryClient();
 
 	const post = queryClient.getQueryData(['post', id]);
+
 	const userId = useSelector((state) => state.user.data?.info?.id);
 
 	useQuery(['post', id], () => getPostById(id), {
