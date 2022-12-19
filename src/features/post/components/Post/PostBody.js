@@ -1,7 +1,6 @@
 import React from 'react';
 import EditorReadOnly from '../../../../components/Editor/EditorReadOnly';
 import Topic from '../../../../components/Topic';
-import TopicList from '../PostPreview/TopicList';
 
 const PostBody = ({ post }) => {
 	return (

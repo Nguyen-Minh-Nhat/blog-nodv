@@ -20,13 +20,22 @@ const Navbar = () => {
 		},
 	});
 
-	const handleClickNotification = () => {
-		const data = {
-			userId: user.id,
-			isIncrease: false,
-		};
-		updateUserCountNotification.mutate(data);
-	};
+	const handleClickNotification = useCallback(
+		(user) => {
+			const data = {
+				userId: user.id,
+				isIncrease: false,
+			};
+			updateUserCountNotification.mutate(data);
+		},
+		[updateUserCountNotification]
+	);
+
+	useEffect(() => {
+		if (matchPath(appRoutes.NOTIFICATION, pathname))
+			handleClickNotification(user);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [pathname]);
 
 	const handleReceiveCountNotificationSocket = useCallback(
 		(payload) => {
@@ -95,13 +104,9 @@ const Navbar = () => {
 		<div className="flex w-full flex-col gap-8 text-center">
 			{navbarItems.map((item) => {
 				const isActive = matchPath(item.path, pathname);
+
 				return (
-					<NavLink
-						key={item.title}
-						to={item.path}
-						className="active"
-						onClick={item?.onclick}
-					>
+					<NavLink key={item.title} to={item.path} className="active">
 						<Tooltip title={item.title} placement="right" arrow>
 							<IconButton className={`h-10 w-10 text-xl text-black`}>
 								{isActive ? item.iconActive : item.icon}
