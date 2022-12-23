@@ -1,9 +1,11 @@
 import PageWithTitle from "../../components/PageWithTitle";
 import { PostList } from "../../features/post";
-import { useQuery, useQueryClient } from "react-query";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 import { getBookmarkByUserId } from "../../api/bookmarkApi";
 import { useDispatch, useSelector } from "react-redux";
 import { setBookmark } from "../../redux/slices/bookmarkSlice";
+import { hidePost } from "../../api/postApi";
+import { toast } from "react-toastify";
 
 const BookmarkPage = () => {
   const queryClient = new useQueryClient();
@@ -18,6 +20,14 @@ const BookmarkPage = () => {
     },
   });
   // console.log("bookmark post", bookmark.posts);
+  // const hidePostMutation = useMutation(hidePost, {
+  //   onSuccess: (id) => {
+  //     toast.success("Post hided successfully");
+  //     setTimeout(() => {
+  //       window.location.href = "/";
+  //     }, 1500);
+  //   },
+  // });
 
   return (
     <PageWithTitle title="Bookmark">
@@ -27,6 +37,7 @@ const BookmarkPage = () => {
             <PostList
               postList={bookmark?.posts}
               postIdsBookmark={bookmark?.postIds}
+              // onHidePost={hidePostMutation.mutate}
             />
           </div>
         </div>
