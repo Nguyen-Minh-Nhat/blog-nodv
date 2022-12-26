@@ -29,11 +29,12 @@ const HomePage = () => {
 
   const postIdsBookmark = useSelector((state) => state.bookmark.postIds);
 
-  useQuery("bookmark", getBookmarkByUserId, {
-    onSuccess: (data) => {
-      dispatch(setBookmark(data));
-    },
-  });
+  // useQuery("bookmark", getBookmarkByUserId, {
+  //   onSuccess: (data) => {
+  //     console.log("o home page nha");
+  //     dispatch(setBookmark(data));
+  //   },
+  // });
 
   const { isHasMore, handleFetchMore, setIsHasMore, setPage } =
     useInfiniteScroll(
