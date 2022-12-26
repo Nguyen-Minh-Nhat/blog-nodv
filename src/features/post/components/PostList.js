@@ -9,17 +9,19 @@ import {
   unpublishPost,
 } from "../../../api/postApi";
 import PostPreview from "./PostPreview";
+import { useSelector, useDispatch } from "react-redux";
+import { updatePostByIdToBookmark } from "../../../redux/slices/bookmarkSlice";
 
 export const PostList = ({
   postList = [],
   storeKey = "posts",
   postIdsHide = [],
+  postIdsBookmark = [],
 }) => {
   const queryClient = useQueryClient();
-  const postIdsBookmark = queryClient.getQueryData("bookmark")?.postIds;
-  // console.log(postIdsBookmark);
   const postIdHide = queryClient.getQueryData("hide")?.postIds;
-  console.log(postIdHide);
+
+  const dispatch = useDispatch();
 
   const updateLocalPost = (updatedPost) => {
     queryClient.setQueryData(storeKey, (oldData) =>
@@ -61,8 +63,7 @@ export const PostList = ({
 
   const updateBookmarkMutation = useMutation(updatePostToBookmark, {
     onSuccess: (data) => {
-      console.log("posIdBook", data);
-      queryClient.setQueryData("bookmark", { postIds: data });
+      dispatch(updatePostByIdToBookmark(data));
     },
   });
 
