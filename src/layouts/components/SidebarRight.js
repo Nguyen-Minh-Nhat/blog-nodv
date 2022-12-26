@@ -8,6 +8,7 @@ import FollowingList from '../../components/UserList/FollowingList';
 import InformationUser from '../../components/ViewUser/InformationUser';
 import WhoToFollow from '../../components/WhoToFollow/WhoToFollow';
 import TriggerLogin from '../../features/auth/components/TriggerLogin';
+import PostRecommend from '../../features/post/components/PostRecommend';
 
 const SidebarRight = () => {
 	const { isLogin } = useSelector((state) => state.user.data);
@@ -22,10 +23,11 @@ const SidebarRight = () => {
 				</>
 			);
 		}
-		if (pathname.includes('post')) {
+		if (pathname.includes('posts')) {
 			return (
 				<>
 					<InformationUser />
+					<PostRecommend />
 				</>
 			);
 		}

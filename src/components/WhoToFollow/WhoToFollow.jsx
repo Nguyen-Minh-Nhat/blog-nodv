@@ -9,7 +9,6 @@ const WhoToFollow = () => {
 	const { data: users, isSuccess } = useQuery('follows', () =>
 		getUsersNotFollow(3)
 	);
-
 	return (
 		<>
 			<PanelWrapper title={'Who to follow'}>
