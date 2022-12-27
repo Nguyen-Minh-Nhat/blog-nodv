@@ -36,8 +36,8 @@ axiosClientPrivate.interceptors.request.use(
 			const decodeToken = jwt_decode(accessToken);
 			const today = new Date();
 			if (decodeToken.exp < today.getTime() / 1000) {
+				store.dispatch(logout());
 				window.location.href = appRoutes.AUTH_LOGIN;
-				store.dispatch(logout);
 			}
 		}
 
