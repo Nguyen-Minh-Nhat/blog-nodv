@@ -78,7 +78,6 @@ const CommentContainer = ({ post, onClose }) => {
   };
 
   const updateLocalLikeComment = (updatedComment) => {
-    console.log("updatecomment", updatedComment);
     dispatch(updateComment(updatedComment));
   };
   const handleUpdateLikeCommentSocket = (payload) => {
