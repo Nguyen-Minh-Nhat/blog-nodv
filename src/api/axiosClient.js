@@ -38,14 +38,6 @@ axiosClientPrivate.interceptors.request.use(
 			if (decodeToken.exp < today.getTime() / 1000) {
 				window.location.href = appRoutes.AUTH_LOGIN;
 				store.dispatch(logout);
-				// try {
-				// 	const res = await refreshToken();
-				// 	store.dispatch(setAccessToken(res.data.access_token));
-				// 	config.headers['Authorization'] = res.data.access_token;
-				// } catch (error) {
-				// 	store.dispatch(logout());
-				// 	toast.error('expire login');
-				// }
 			}
 		}
 
@@ -61,7 +53,18 @@ axiosClientPrivate.interceptors.response.use(
 		return response.data;
 	},
 	function (error) {
-		console.log('error from axios client', error);
+		return Promise.reject(error.response.data);
+	}
+);
+
+axiosClient.interceptors.request.use(
+	async (config) => {
+		const accessToken = store.getState()?.user?.data?.accessToken;
+		if (accessToken)
+			config.headers['Authorization'] = `Bearer ${accessToken}`;
+		return config;
+	},
+	(error) => {
 		return Promise.reject(error.response.data);
 	}
 );
@@ -71,6 +74,9 @@ axiosClient.interceptors.response.use(
 		return response.data;
 	},
 	function (error) {
+		if (error.response.data.status === 404) {
+			window.location.href = '/404';
+		}
 		return Promise.reject(error.response.data);
 	}
 );

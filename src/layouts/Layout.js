@@ -43,11 +43,10 @@ const Layout = ({ children }) => {
 
 			if (isMatch) {
 				if (pathname === appRoutes.HOME && isLogin) {
-					console.log('set layout to default');
 					setLayout(layouts.DEFAULT);
 					return true;
 				}
-				console.log('item.layout: ', item.layout);
+
 				setLayout(item.layout);
 				return true;
 			}

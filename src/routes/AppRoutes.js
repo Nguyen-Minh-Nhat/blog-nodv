@@ -28,6 +28,7 @@ const SettingPage = lazy(() => import('../pages/setting/SettingPage'));
 const LoginPage = lazy(() => import('../pages/auth/LoginPage'));
 const SearchPage = lazy(() => import('../pages/search/SearchPage'));
 const HomePageLogout = lazy(() => import('../pages/home/HomePageLogout'));
+const NotFoundPage = lazy(() => import('../pages/notFound/NotFoundPage'));
 
 export const appRoutes = {
 	HOME: '/',
@@ -57,6 +58,7 @@ export const appRoutes = {
 	SEARCH_STORIES: '/search/posts',
 	SEARCH_PEOPLE: '/search/users',
 	SEARCH_TOPICS: '/search/topics',
+	NOT_FOUND: '404',
 };
 
 export const routeConfig = [
@@ -193,6 +195,12 @@ export const routeConfig = [
 				element: <TopicsTab />,
 			},
 		],
+	},
+	{
+		path: appRoutes.NOT_FOUND,
+		element: <NotFoundPage />,
+		protected: false,
+		layout: layouts.NONE,
 	},
 ];
 
