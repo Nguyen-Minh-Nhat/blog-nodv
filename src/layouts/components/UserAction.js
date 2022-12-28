@@ -26,7 +26,11 @@ const UserAction = () => {
 				padding={10}
 				containerStyle={{ marginLeft: '10px', zIndex: 9999 }}
 				onClickOutside={() => setIsMenuOpen(false)}
-				content={<UserMenu user={user} onLogout={handleLogout} />}
+				content={
+					<div onClick={() => setIsMenuOpen(false)}>
+						<UserMenu user={user} onLogout={handleLogout} />
+					</div>
+				}
 			>
 				<Avatar
 					sx={{ width: 36, height: 36 }}
