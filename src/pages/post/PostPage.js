@@ -83,7 +83,6 @@ const PostPage = () => {
 
   const likePostMutation = useMutation(likePost, {
     onSuccess: (data) => {
-      console.log(data);
       queryClient.setQueryData(["post", post.id], data);
       callApiCreateNotification(
         data,
