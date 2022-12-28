@@ -40,7 +40,7 @@ const App = () => {
   return (
     <div className="">
       <LoginModal />
-      {/* {isLogin && <SocketClient />} */}
+      {isLogin && <SocketClient />}
       <AppRoutes />
       {/* <Routes>
 				<Route path="/component-test" element={<ComponentPage />} />
