@@ -8,7 +8,7 @@ import {
 import { NotificationType } from "../../config/dataType";
 import { callApiCreateNotification } from "../../utils/generationNotification";
 import ButtonFollow from "./ButtonFollow";
-const UserFollowButton = ({ id, userId, onUpdate, ...props }) => {
+const UserFollowButton = ({ id, userEmail, onUpdate = () => {}, ...props }) => {
   const createNotificationMutation = useMutation(createNotification, {
     onSuccess: (data) => {
       const Increase = {
@@ -21,14 +21,13 @@ const UserFollowButton = ({ id, userId, onUpdate, ...props }) => {
 
   const followUserMutation = useMutation(followUser, {
     onSuccess: (data) => {
-      onUpdate(data);
-      //   console.log("data ", data);
       callApiCreateNotification(
         data,
         NotificationType.FOLLOW,
         createNotificationMutation,
-        userId
+        userEmail
       );
+      onUpdate(data);
     },
   });
 

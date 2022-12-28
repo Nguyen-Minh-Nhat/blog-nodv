@@ -25,9 +25,9 @@ export const callApiCreateNotification = (data, type, callApi, userId) => {
       if (userId !== data.commentParentUserId) callApi.mutate(notification);
       break;
     case NotificationType.FOLLOW:
-      notification.link = `${appRoutes.PROFILE}/${data.id}`;
+      notification.link = `${appRoutes.PROFILE}/${userId}`; //email
       notification.receiverId = `${data.id}`;
-      if (userId !== data.id) callApi.mutate(notification);
+      if (userId !== data.email) callApi.mutate(notification);
       break;
     default:
       notification.link = `/users/${userId}`;
