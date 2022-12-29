@@ -33,7 +33,6 @@ const PostPage = () => {
   const queryClient = useQueryClient();
 
   const post = queryClient.getQueryData(["post", id]);
-
   const userId = useSelector((state) => state.user.data?.info?.id);
 
   useQuery(["post", id], () => getPostById(id), {
@@ -45,6 +44,7 @@ const PostPage = () => {
         window.location.href = "/404";
       }
     },
+    retry: 0,
   });
 
   const updateLocalPost = (updatedPost) => {
@@ -75,14 +75,18 @@ const PostPage = () => {
       toast.success("Post was unpublished");
     },
   });
-  const createNotificationLikePostMutation = useMutation(createNotification, {
-    onSuccess: (data) => {
-      console.log(data);
-    },
-  });
   const updateUserIncreaseNumOfNotification = useMutation(
     updateCountNotifications
   );
+  const createNotificationLikePostMutation = useMutation(createNotification, {
+    onSuccess: (data) => {
+      const Increase = {
+        isIncrease: true,
+        userId: data.receiverId,
+      };
+      updateUserIncreaseNumOfNotification.mutate(Increase);
+    },
+  });
   const likePostMutation = useMutation(likePost, {
     onSuccess: (data) => {
       queryClient.setQueryData(["post", post.id], data);
@@ -92,11 +96,6 @@ const PostPage = () => {
         createNotificationLikePostMutation,
         userId
       );
-      const Increase = {
-        isIncrease: true,
-        userId: data.userId,
-      };
-      updateUserIncreaseNumOfNotification.mutate(Increase);
     },
   });
 
@@ -109,7 +108,7 @@ const PostPage = () => {
   const updateBookmarkMutation = useMutation(updatePostToBookmark, {
     onSuccess: (data) => {
       // console.log("data ", data);
-      dispatch(updatePostIds(data));
+      dispatch(updatePostByIdToBookmark(data));
     },
   });
 
@@ -140,7 +139,6 @@ const PostPage = () => {
       }, 1500);
     },
   });
-
   return (
     <div className="flex flex-col">
       <Main>

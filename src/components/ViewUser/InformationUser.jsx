@@ -7,9 +7,9 @@ import { setProfile } from "../../redux/slices/profileSlice";
 import { appRoutes } from "../../routes/AppRoutes";
 import UserFollowButton from "../ButtonFollow/UserFollowButton";
 const InformationUser = () => {
-  const userId = useSelector((state) => state.user?.data.info?.id);
-  const profile = useSelector((state) => state.profile?.data);
-  const profileUrl = `/profile/${profile?.email}`;
+	const user = useSelector((state) => state.user?.data.info);
+	const profile = useSelector((state) => state.profile?.data);
+	const profileUrl = `/profile/${profile?.email}`;
 
   const dispatch = useDispatch();
 
@@ -42,34 +42,33 @@ const InformationUser = () => {
           </p>
 
           <div className=" mt-4  block"></div>
-
-          <div className="mb-10 flex ">
-            {userId !== profile?.id ? (
-              <>
-                <UserFollowButton
-                  id={profile?.id}
-                  userId={userId}
-                  isFollowed={profile?.followerId?.includes(userId)}
-                  textColorBefore={"text-white"}
-                  bgColorBefore={"bg-green-500"}
-                  textColorAfter={"text-green-500"}
-                  bgColorAfter={"rgb"}
-                  onUpdate={handleUpdate}
-                />
-                <button className="ml-2 block">
-                  <MarkEmailReadSharpIcon className="color h-9 w-9 rounded-full bg-green-500 fill-white p-1.5" />
-                </button>
-              </>
-            ) : (
-              <Link to={appRoutes.SETTING_ACCOUNT}>
-                <span className="text-green-600">Edit profile</span>
-              </Link>
-            )}
-          </div>
-        </>
-      )}
-    </div>
-  );
+					<div className="mb-10 flex ">
+						{user.id !== profile?.id ? (
+							<>
+								<UserFollowButton
+									id={profile?.id}
+									userEmail={user.email}
+									isFollowed={profile?.followerId?.includes(user.id)}
+									textColorBefore={'text-white'}
+									bgColorBefore={'bg-green-500'}
+									textColorAfter={'text-green-500'}
+									bgColorAfter={'rgb'}
+									onUpdate={handleUpdate}
+								/>
+								<button className="ml-2 block">
+									<MarkEmailReadSharpIcon className="color h-9 w-9 rounded-full bg-green-500 fill-white p-1.5" />
+								</button>
+							</>
+						) : (
+							<Link to={appRoutes.SETTING_ACCOUNT}>
+								<span className="text-green-600">Edit profile</span>
+							</Link>
+						)}
+					</div>
+				</>
+			)}
+		</div>
+	);
 };
 
 export default InformationUser;

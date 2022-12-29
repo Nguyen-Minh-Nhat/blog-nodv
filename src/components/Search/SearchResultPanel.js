@@ -3,7 +3,7 @@ import { appRoutes } from '../../routes/AppRoutes';
 import AccountQuickView from '../Account/AccountQuickView';
 const SearchResultPanel = ({ searchResult = [] }) => {
 	return (
-		<div className="w-80 rounded-lg bg-white py-3 px-3">
+		<div className="flex w-80 flex-col rounded-lg bg-white py-3 px-3">
 			{searchResult.map((user) => (
 				<Link
 					to={`${appRoutes.PROFILE}/${user.email}`}

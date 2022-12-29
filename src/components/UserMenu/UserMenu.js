@@ -37,7 +37,9 @@ const UserMenu = ({ user, onLogout }) => {
 							label="View Profile"
 							variant="outlined"
 							className="w-full"
-							onClick={() => navigate(`${appRoutes.PROFILE}/${user?.email}`)}
+							onClick={() =>
+								navigate(`${appRoutes.PROFILE}/${user?.email}`)
+							}
 						/>
 					</div>
 				</div>

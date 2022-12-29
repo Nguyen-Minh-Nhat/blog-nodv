@@ -1,21 +1,27 @@
 import { Avatar } from '@mui/material';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useQuery } from 'react-query';
-import { useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { getPostsRecommend } from '../../../../api/postApi';
 import PanelWrapper from '../../../../components/PanelWrapper';
+import { appRoutes } from '../../../../routes/AppRoutes';
 import PostThumbnail from '../PostPreview/PostThumbnail';
 
 const PostRecommend = () => {
 	const { pathname } = useLocation();
 
 	const id = pathname.split('/')[2];
+	const [showMore, setShowMore] = useState(false);
 
-	const { data: posts, isSuccess } = useQuery('postsRecommend', () =>
+	useEffect(() => {
+		return () => {
+			setShowMore(false);
+		};
+	}, [pathname]);
+
+	const { data: posts, isSuccess } = useQuery(['postsRecommend', id], () =>
 		getPostsRecommend(id)
 	);
-
-	const [showMore, setShowMore] = useState(false);
 
 	const postsRender = useMemo(() => {
 		if (isSuccess) {
@@ -30,7 +36,7 @@ const PostRecommend = () => {
 			{isSuccess && <PostList posts={postsRender.data} />}
 			{showMore && (
 				<div className="mt-6">
-					<PostList posts={postsRender.dataShowMore} />
+					<PostList posts={postsRender?.dataShowMore} />
 				</div>
 			)}
 			{postsRender?.dataShowMore.length > 0 && (
@@ -41,7 +47,7 @@ const PostRecommend = () => {
 					{showMore ? (
 						'Show less'
 					) : (
-						<span> Show more ({postsRender.dataShowMore.length})</span>
+						<span> Show more ({postsRender?.dataShowMore.length})</span>
 					)}
 				</div>
 			)}
@@ -49,7 +55,7 @@ const PostRecommend = () => {
 	);
 };
 
-const PostList = ({ posts }) => {
+const PostList = ({ posts = [] }) => {
 	return (
 		<div>
 			{posts.map((post) => (
@@ -66,21 +72,26 @@ const Post = ({ post }) => {
 		<div className="flex gap-4">
 			<div className="flex-1">
 				<User user={post.user} />
-				<div>
+				<Link to={`${appRoutes.POST}/${post.id}`}>
 					<span className="font-bold line-clamp-2">{post.title}</span>
-				</div>
+				</Link>
 			</div>
-			<PostThumbnail size="h-16 w-16" />
+			<Link to={`${appRoutes.POST}/${post.id}`}>
+				<PostThumbnail size="h-16 w-16" />
+			</Link>
 		</div>
 	);
 };
 
 const User = ({ user }) => {
 	return (
-		<div className="flex items-center gap-2">
+		<Link
+			to={`${appRoutes.PROFILE}/${user.email}`}
+			className="flex items-center gap-2"
+		>
 			<Avatar src={user.avatar} className="h-8 w-8" />
 			<span className="text-sm">{user.username}</span>
-		</div>
+		</Link>
 	);
 };
 

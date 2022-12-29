@@ -1,9 +1,9 @@
-import { useState, useEffect, useCallback } from "react";
+import { useEffect, useState } from "react";
 import { useQuery } from "react-query";
+import { useSelector } from "react-redux";
 import { getNotifications } from "../../api/notificationApi";
 import PageWithTitle from "../../components/PageWithTitle";
 import { NotificationList } from "../../features/notification";
-import { useSelector } from "react-redux";
 
 const NotificationStatus = [
   { id: 0, title: "All" },
@@ -73,9 +73,15 @@ const NotificationsPage = () => {
       title={"Notifications"}
       tabItems={NotificationStatus}
     >
-      <div>
-        <NotificationList notificationList={notifications} />
-      </div>
+      {notifications?.length ? (
+        <div>
+          <NotificationList notificationList={notifications} />
+        </div>
+      ) : (
+        <div className="text-center text-gray-500">
+          you don't have any notifications right now
+        </div>
+      )}
     </PageWithTitle>
   );
 };

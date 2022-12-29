@@ -13,19 +13,15 @@ const BookmarkPage = () => {
 
   // const bookmark = queryClient.getQueryData("bookmark");
   const bookmark = useSelector((state) => state.bookmark);
+  const { isLogin } = useSelector((state) => state.user.data);
 
-  useQuery("bookmark", getBookmarkByUserId, {
-    onSuccess: (data) => {
-      dispatch(setBookmark(data));
-    },
-  });
-  // console.log("bookmark post", bookmark.posts);
-  // const hidePostMutation = useMutation(hidePost, {
-  //   onSuccess: (id) => {
-  //     toast.success("Post hided successfully");
-  //     setTimeout(() => {
-  //       window.location.href = "/";
-  //     }, 1500);
+
+  // useQuery(["bookmark"], getBookmarkByUserId, {
+  //   onSuccess: (data) => {
+  //     console.log("bookmakr page ", data);
+  //     // if (!bookmark.postIds.length) {
+  //     dispatch(setBookmark(data));
+  //     // }
   //   },
   // });
 
