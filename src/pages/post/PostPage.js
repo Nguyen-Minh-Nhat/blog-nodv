@@ -8,6 +8,8 @@ import { createNotification } from "../../api/notificationApi";
 import {
   deletePost,
   getPostById,
+  getPostsRecommend,
+  hidePost,
   likePost,
   publishPost,
   unLikePost,
@@ -16,7 +18,7 @@ import {
 import { updateCountNotifications } from "../../api/userApi";
 import { NotificationType } from "../../config/dataType";
 import Post from "../../features/post/components/Post";
-import { updatePostByIdToBookmark } from "../../redux/slices/bookmarkSlice";
+import { updatePostIds } from "../../redux/slices/bookmarkSlice";
 import { setProfile } from "../../redux/slices/profileSlice";
 import { callApiCreateNotification } from "../../utils/generationNotification";
 import Main from "./components/Main";
@@ -36,6 +38,11 @@ const PostPage = () => {
   useQuery(["post", id], () => getPostById(id), {
     onSuccess: (data) => {
       dispatch(setProfile(data.user));
+    },
+    onError: (error) => {
+      if (error.response.status === 404) {
+        window.location.href = "/404";
+      }
     },
     retry: 0,
   });
@@ -80,7 +87,6 @@ const PostPage = () => {
       updateUserIncreaseNumOfNotification.mutate(Increase);
     },
   });
-
   const likePostMutation = useMutation(likePost, {
     onSuccess: (data) => {
       queryClient.setQueryData(["post", post.id], data);
@@ -123,9 +129,16 @@ const PostPage = () => {
         socket.unsubscribe(topic);
       }
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [post?.id, socket]);
 
+  const hidePostMutation = useMutation(hidePost, {
+    onSuccess: (id) => {
+      toast.success("Post hided successfully");
+      setTimeout(() => {
+        window.location.href = "/";
+      }, 1500);
+    },
+  });
   return (
     <div className="flex flex-col">
       <Main>
@@ -139,6 +152,7 @@ const PostPage = () => {
             onUnpublish={unpublishPostMutation.mutate}
             onLike={likePostMutation.mutate}
             onUnlike={unlikePostMutation.mutate}
+            onHidePost={hidePostMutation.mutate}
           />
         )}
       </Main>
