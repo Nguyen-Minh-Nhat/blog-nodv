@@ -7,7 +7,7 @@ import { setProfile } from '../../redux/slices/profileSlice';
 import { appRoutes } from '../../routes/AppRoutes';
 import UserFollowButton from '../ButtonFollow/UserFollowButton';
 const InformationUser = () => {
-	const userId = useSelector((state) => state.user?.data.info?.id);
+	const user = useSelector((state) => state.user?.data.info);
 	const profile = useSelector((state) => state.profile?.data);
 	const profileUrl = `/profile/${profile?.email}`;
 
@@ -44,12 +44,12 @@ const InformationUser = () => {
 					<div className=" mt-4  block"></div>
 
 					<div className="mb-10 flex ">
-						{userId !== profile?.id ? (
+						{user.id !== profile?.id ? (
 							<>
 								<UserFollowButton
 									id={profile?.id}
-									userId={userId}
-									isFollowed={profile?.followerId?.includes(userId)}
+									userEmail={user.email}
+									isFollowed={profile?.followerId?.includes(user.id)}
 									textColorBefore={'text-white'}
 									bgColorBefore={'bg-green-500'}
 									textColorAfter={'text-green-500'}

@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useMutation, useQuery, useQueryClient } from "react-query";
+import { useMutation, useQuery } from "react-query";
 import { useDispatch, useSelector } from "react-redux";
 import { createComment, getComment } from "../../../../api/commentApi";
 import { createNotification } from "../../../../api/notificationApi";
@@ -27,13 +27,12 @@ const CommentContainer = ({ post, onClose }) => {
 
   useQuery(["comments", post.id], () => getComment(post.id), {
     onSuccess: (data) => {
-      console.log("vo day lay comment");
       dispatch(setComments(data));
     },
   });
   const createNewComment = useMutation(createComment, {
     onSuccess: (data) => {
-      // dispatch(addComment(data));
+      //     dispatch(addComment(data));
       let comment = { ...data, postUserId: post.userId };
       callApiCreateNotification(
         comment,
