@@ -18,7 +18,7 @@ import {
 import { updateCountNotifications } from "../../api/userApi";
 import { NotificationType } from "../../config/dataType";
 import Post from "../../features/post/components/Post";
-import { updatePostIds } from "../../redux/slices/bookmarkSlice";
+import { updatePostByIdToBookmark } from "../../redux/slices/bookmarkSlice";
 import { setProfile } from "../../redux/slices/profileSlice";
 import { callApiCreateNotification } from "../../utils/generationNotification";
 import Main from "./components/Main";
