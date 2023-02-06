@@ -43,12 +43,12 @@ const InformationUser = () => {
 
           <div className=" mt-4  block"></div>
 					<div className="mb-10 flex ">
-						{user.id !== profile?.id ? (
+						{user?.id !== profile?.id ? (
 							<>
 								<UserFollowButton
 									id={profile?.id}
-									userEmail={user.email}
-									isFollowed={profile?.followerId?.includes(user.id)}
+									userEmail={user?.email}
+									isFollowed={profile?.followerId?.includes(user?.id)}
 									textColorBefore={'text-white'}
 									bgColorBefore={'bg-green-500'}
 									textColorAfter={'text-green-500'}
