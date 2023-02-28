@@ -75,7 +75,7 @@ const PostPage = () => {
 		},
 	});
 	const updateUserIncreaseNumOfNotification = useMutation(
-		updateCountNotifications
+		updateCountNotifications,
 	);
 	const createNotificationLikePostMutation = useMutation(createNotification, {
 		onSuccess: (data) => {
@@ -93,7 +93,7 @@ const PostPage = () => {
 				data,
 				NotificationType.LIKE,
 				createNotificationLikePostMutation,
-				userId
+				userId,
 			);
 		},
 	});

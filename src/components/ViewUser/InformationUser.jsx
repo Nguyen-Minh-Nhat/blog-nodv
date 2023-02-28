@@ -49,7 +49,7 @@ const InformationUser = () => {
 									id={profile?.id}
 									userEmail={user?.email}
 									isFollowed={profile?.followerId?.includes(
-										user?.id
+										user?.id,
 									)}
 									textColorBefore={'text-white'}
 									bgColorBefore={'bg-green-500'}
