@@ -1,17 +1,18 @@
-import { Button } from '@mui/material';
+import { useCreatePost, useUpdatePost } from '../post/hooks';
 import { useEffect, useState } from 'react';
-import { useMutation } from 'react-query';
 import { useNavigate, useParams } from 'react-router-dom';
-import { toast } from 'react-toastify';
-import { createPost, getPostById, updatePost } from '../../api/postApi';
+
+import { Button } from '@mui/material';
 import Editor from '../../components/Editor';
+import EditorJSHTML from 'editorjs-html';
+import Header from './components/Header';
 import ModalTrigger from '../../components/ModalTrigger';
-import QuestionDialog from '../../components/QuestionDialog/QuestionDialog';
 import PostPublicPreview from '../../features/post/components/PostPublicPreview';
-import usePrompt from '../../hooks/usePrompt';
+import QuestionDialog from '../../components/QuestionDialog/QuestionDialog';
 import { appRoutes } from '../../routes/AppRoutes';
 import { convertToPost } from '../../utils/editorJsUtils';
-import Header from './components/Header';
+import { getPostById } from '../../api/postApi';
+import usePrompt from '../../hooks/usePrompt';
 
 const initialPost = {
 	title: '',
@@ -45,7 +46,7 @@ const WritePage = () => {
 		const getPost = async () => {
 			setIsLoading(true);
 			const data = await getPostById(id);
-			setPost({ ...data, content: JSON.parse(data.content) });
+			setPost({ ...data, content: data.content });
 			setIsLoading(false);
 		};
 		if (id) {
@@ -53,16 +54,15 @@ const WritePage = () => {
 		}
 	}, [id]);
 	// create post
-	const createPostMutation = useMutation(createPost, {
+	const { mutate: createPost } = useCreatePost({
 		onSuccess: (data) => {
 			navigate(`${appRoutes.POST}/${data.id}`);
 		},
 	});
 
-	const updatePostMutation = useMutation(updatePost, {
+	const { mutate: updatePost } = useUpdatePost({
 		onSuccess: (data) => {
 			navigate(`${appRoutes.POST}/${data.id}`);
-			toast.success('Post update successfully');
 		},
 	});
 
@@ -81,27 +81,26 @@ const WritePage = () => {
 		convertRawContentToPost(editorJsData);
 	};
 
-	const handlePublish = () => {
+	const handlePublish = async () => {
 		setShowDialog(false);
-		post.content = editorJsData;
+		const editor = new EditorJSHTML();
+		const htmlContent = await editor.parse(editorJsData).join('');
 		const postUpload = {
 			title: post.title,
 			subtitle: post.subtitle,
-			content: JSON.stringify(post.content),
+			content: htmlContent,
 			thumbnail: post.thumbnail,
 			topics: post.topics,
 			timeRead: post.timeRead,
 		};
-
 		if (isEdit) {
-			updatePostMutation.mutate({ id, ...postUpload });
+			updatePost({ id, ...postUpload });
 		} else {
-			createPostMutation.mutate(postUpload);
+			createPost({ ...postUpload });
 		}
 	};
 
 	const autoSave = (editorJsData, timeRead) => {
-		console.log(editorJsData);
 		setEditorJsData(editorJsData);
 		setPost((prev) => ({ ...prev, timeRead }));
 		setShowDialog(true);
@@ -133,7 +132,9 @@ const WritePage = () => {
 					</ModalTrigger>
 				</Header>
 			</div>
-			{!isLoading && <Editor onChange={autoSave} defaultValue={post.content} />}
+			{!isLoading && (
+				<Editor onChange={autoSave} defaultValue={post.content} />
+			)}
 			<QuestionDialog
 				title="Warning"
 				message="There are some changes? Are you sure you want to navigate!!!!"
