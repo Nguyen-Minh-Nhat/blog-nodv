@@ -101,6 +101,7 @@ const WritePage = () => {
 	};
 
 	const autoSave = (editorJsData, timeRead) => {
+		console.log(editorJsData);
 		setEditorJsData(editorJsData);
 		setPost((prev) => ({ ...prev, timeRead }));
 		setShowDialog(true);
