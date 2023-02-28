@@ -1,14 +1,14 @@
-import { useQuery } from 'react-query';
-import { useDispatch, useSelector } from 'react-redux';
-import { getAuthInfo } from './api/authApi';
-import LoginModal from './pages/auth/LoginModal';
-import { setUser } from './redux/slices/userSlice';
-import SocketClient from './web-socket/SocketClient';
-import { setBookmark } from './redux/slices/bookmarkSlice';
-import { getBookmarkByUserId } from './api/bookmarkApi';
-import { Route, Routes, useNavigate } from 'react-router-dom';
 import AppRoutes, { appRoutes } from './routes/AppRoutes';
-import ComponentPage from './pages/component-test';
+import { useDispatch, useSelector } from 'react-redux';
+
+import LoginModal from './pages/auth/LoginModal';
+import SocketClient from './web-socket/SocketClient';
+import { getAuthInfo } from './api/authApi';
+import { getBookmarkByUserId } from './api/bookmarkApi';
+import { setBookmark } from './redux/slices/bookmarkSlice';
+import { setUser } from './redux/slices/userSlice';
+import { useNavigate } from 'react-router-dom';
+import { useQuery } from 'react-query';
 
 const App = () => {
 	const { isLogin } = useSelector((state) => state.user.data);
