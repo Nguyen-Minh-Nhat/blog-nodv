@@ -13,7 +13,7 @@ const Post = ({ post, isBookmarked, onLike, onUnlike, ...menuActionProps }) => {
     setOpen(false);
   };
   return (
-    <div className="relative h-full">
+    <div className="relative h-full p">
       <PostHeader post={post}>
         <PostShares />
         <PostAction
