@@ -77,7 +77,9 @@ export function htmlToBlocks(html) {
 			case 'img':
 				block.type = 'image';
 				block.data = {
-					url: node.getAttribute('src'),
+					file: {
+						url: node.getAttribute('src'),
+					},
 					caption: node.getAttribute('alt') || '',
 				};
 				break;
@@ -96,22 +98,6 @@ export function htmlToBlocks(html) {
 				block.data = {
 					html: node.innerHTML,
 				};
-				break;
-			case 'div':
-				// Check if the div contains a specific class or attribute to determine its type
-				if (node.classList.contains('my-custom-class')) {
-					block.type = 'myCustomBlock';
-					block.data = {
-						// Parse the content of the div as needed
-						content: node.innerText,
-					};
-				} else {
-					// Default to treating the div as a generic container block
-					block.type = 'container';
-					block.data = {
-						html: node.innerHTML,
-					};
-				}
 				break;
 			case 'strong':
 				block.type = 'text';
@@ -168,13 +154,18 @@ export function htmlToBlocks(html) {
 					};
 				}
 				break;
+			case 'div':
+				// Treat each child node of the div as a separate block
+				const childBlocks = htmlToBlocks(node.innerHTML).blocks;
+				blocks.push(...childBlocks);
+				break;
 		}
 
 		if (block.type) {
 			blocks.push(block);
 		}
 	}
-
+	console.log(blocks);
 	return {
 		time: Date.now(),
 		blocks,
