@@ -1,17 +1,19 @@
 import { Alert, TextField } from '@mui/material';
+
 import { useState } from 'react';
 import InputTopic from './InputTopics';
 import ThumbnailSelectBox from './ThumbnailSelectBox';
 
 const PostPublicEditor = ({ post, setPost }) => {
 	const [thumbnailSelected, setThumbnailSelected] = useState(post?.images[0]);
-	const [topics, setTopics] = useState(post?.topics || []);
+	const [topics] = useState(post?.topics || []);
 	return (
 		<div className="">
 			<Alert severity="info" className="mb-8">
-				<span className="font-bold">Note:</span> Changes here will affect how
-				your story appears in public places like Medium’s homepage and in
-				subscribers’ inboxes — not the contents of the story itself.
+				<span className="font-bold">Note:</span> Changes here will
+				affect how your story appears in public places like Medium’s
+				homepage and in subscribers’ inboxes — not the contents of the
+				story itself.
 			</Alert>
 			<div className="flex flex-1 flex-col gap-4">
 				<TextField
@@ -35,7 +37,10 @@ const PostPublicEditor = ({ post, setPost }) => {
 					label="Subtitle"
 					defaultValue={post.subtitle}
 					onChange={(e) =>
-						setPost((prev) => ({ ...prev, subtitle: e.target.value }))
+						setPost((prev) => ({
+							...prev,
+							subtitle: e.target.value,
+						}))
 					}
 				/>
 				<div>
@@ -46,8 +51,9 @@ const PostPublicEditor = ({ post, setPost }) => {
 						}}
 					/>
 					<span className="text-sm text-slate-500">
-						<span className="font-bold">Note:</span> Add or change topics (up to
-						5) so readers know what your story is about
+						<span className="font-bold">Note:</span> Add or change
+						topics (up to 5) so readers know what your story is
+						about
 					</span>
 				</div>
 
@@ -55,7 +61,10 @@ const PostPublicEditor = ({ post, setPost }) => {
 					images={post.images}
 					onChange={(thumbnailSelected) => {
 						setThumbnailSelected(thumbnailSelected);
-						setPost((prev) => ({ ...prev, thumbnail: thumbnailSelected }));
+						setPost((prev) => ({
+							...prev,
+							thumbnail: thumbnailSelected,
+						}));
 					}}
 					initial={thumbnailSelected}
 				/>

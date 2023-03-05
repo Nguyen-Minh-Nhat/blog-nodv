@@ -1,14 +1,15 @@
 import { useEffect, useState } from 'react';
-import { useMutation } from 'react-query';
 import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
-import { Popover } from 'react-tiny-popover';
-import { searchUser } from '../../api/userApi';
-import useDebounce from '../../hooks/useDebounce';
-import { appRoutes } from '../../routes/AppRoutes';
-import ShadowWrapper from '../ShadowWrapper';
 
+import { Popover } from 'react-tiny-popover';
 import SearchBar from './SearchBar';
 import SearchResult from './SearchResultPanel';
+import ShadowWrapper from '../ShadowWrapper';
+import { appRoutes } from '../../routes/AppRoutes';
+import { searchUser } from '../../api/userApi';
+import useDebounce from '../../hooks/useDebounce';
+import { useMutation } from 'react-query';
+
 const TIMEOUT = 800;
 const Search = () => {
 	const [searchInput, setSearchInput] = useState('');
@@ -28,6 +29,7 @@ const Search = () => {
 		}
 	}, [pathname]);
 
+	// eslint-disable-next-line no-unused-vars
 	const [_, setSearchParams] = useSearchParams();
 
 	const searchUserMutation = useMutation(searchUser, {

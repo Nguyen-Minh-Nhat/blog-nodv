@@ -17,17 +17,7 @@ import usePrompt from '../../hooks/usePrompt';
 const initialPost = {
 	title: '',
 	subtitle: '',
-	content: {
-		blocks: [
-			{
-				id: 'sheNwCUP5A',
-				type: 'header',
-				data: {
-					level: 1,
-				},
-			},
-		],
-	},
+	content: '',
 	thumbnail: '',
 	topics: [],
 	createdDate: new Date(),
@@ -101,7 +91,6 @@ const WritePage = () => {
 	};
 
 	const autoSave = (editorJsData, timeRead) => {
-		console.log(editorJsData);
 		setEditorJsData(editorJsData);
 		setPost((prev) => ({ ...prev, timeRead }));
 		setShowDialog(true);

@@ -158,6 +158,13 @@ export function htmlToBlocks(html) {
 				// Treat each child node of the div as a separate block
 				const childBlocks = htmlToBlocks(node.innerHTML).blocks;
 				blocks.push(...childBlocks);
+
+				break;
+			default:
+				block.type = 'paragraph';
+				block.data = {
+					text: node.data,
+				};
 				break;
 		}
 
@@ -165,7 +172,6 @@ export function htmlToBlocks(html) {
 			blocks.push(block);
 		}
 	}
-	console.log(blocks);
 	return {
 		time: Date.now(),
 		blocks,

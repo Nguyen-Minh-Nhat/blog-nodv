@@ -1,9 +1,10 @@
 import { LoadingIcon, MagnifyingGlassIcon } from '../Icons';
+
 import IconWrapper from '../IconWrapper';
 
 const SearchBar = ({ onChange, onFocus, loading, ...props }) => {
 	return (
-		<div className="flex h-10 w-full items-center rounded-full border p-1">
+		<div className="flex h-10 w-full items-center rounded-full border p-1 px-2">
 			{loading ? (
 				<IconWrapper size="h-10 w-10">
 					<LoadingIcon />

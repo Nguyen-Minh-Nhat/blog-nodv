@@ -5,6 +5,7 @@ import { useQuery, useQueryClient } from 'react-query';
 import Header from './components/Header';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { PostList } from '../../features/post';
+import { PostListLoading } from '../../features/post/components';
 import useInfiniteScroll from '../../hooks/useInfiniteScroll';
 import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
@@ -14,7 +15,7 @@ const HomePage = () => {
 	const { tab } = useParams(); //get tab from url
 	const storeKey = ['posts', tab]; //key for react-query
 
-	const { data: posts } = useQuery(
+	const { data: posts, isLoading } = useQuery(
 		storeKey,
 		() => getPosts({ topic: tab, limit: LIMIT }),
 		{
@@ -26,16 +27,21 @@ const HomePage = () => {
 
 	const postIdsBookmark = useSelector((state) => state.bookmark.postIds);
 
-	const { isHasMore, handleFetchMore, setIsHasMore, setPage } =
-		useInfiniteScroll(
-			getPosts,
-			(data) => {
-				queryClient.setQueryData(storeKey, (oldData) => {
-					return [...oldData, ...data];
-				});
-			},
-			LIMIT,
-		); // get more posts when scroll to bottom
+	const {
+		isHasMore,
+		handleFetchMore,
+		setIsHasMore,
+		setPage,
+		isLoading: isLoadingMore,
+	} = useInfiniteScroll(
+		getPosts,
+		(data) => {
+			queryClient.setQueryData(storeKey, (oldData) => {
+				return [...oldData, ...data];
+			});
+		},
+		LIMIT,
+	); // get more posts when scroll to bottom
 
 	useEffect(() => {
 		setPage(0);
@@ -63,12 +69,15 @@ const HomePage = () => {
 					<Header />
 				</div>
 				<Main>
-					<PostList
-						postList={posts}
-						storeKey={storeKey}
-						postIdsBookmark={postIdsBookmark}
-						postIdsHide={hidePost}
-					/>
+					{!isLoading && (
+						<PostList
+							postList={posts}
+							storeKey={storeKey}
+							postIdsBookmark={postIdsBookmark}
+							postIdsHide={hidePost}
+						/>
+					)}
+					{(isLoading || isLoadingMore) && <PostListLoading />}
 				</Main>
 			</InfiniteScroll>
 		</>
@@ -78,9 +87,7 @@ const HomePage = () => {
 const Main = ({ children }) => {
 	return (
 		<div className="flex justify-center">
-			<div className="mx-4 max-w-[700px] basis-[700px] pt-12">
-				{children}
-			</div>
+			<div className="mx-4 max-w-2xl basis-[672px] pt-12">{children}</div>
 		</div>
 	);
 };
