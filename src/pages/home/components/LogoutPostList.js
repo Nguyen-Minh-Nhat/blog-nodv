@@ -2,6 +2,7 @@ import { useQuery, useQueryClient } from 'react-query';
 
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { PostList } from '../../../features/post';
+import { PostListLoading } from '../../../features/post/components';
 import { getPosts } from '../../../api/postApi';
 import useInfiniteScroll from '../../../hooks/useInfiniteScroll';
 
@@ -9,7 +10,11 @@ const LIMIT = 5;
 const LogoutPostList = () => {
 	const queryClient = useQueryClient();
 	const storeKey = ['posts-home']; //key for react-query
-	const { isHasMore, handleFetchMore } = useInfiniteScroll(
+	const {
+		isHasMore,
+		handleFetchMore,
+		isLoading: isLoadingMore,
+	} = useInfiniteScroll(
 		getPosts,
 		(data) => {
 			queryClient.setQueryData(storeKey, (oldData) => {
@@ -19,13 +24,13 @@ const LogoutPostList = () => {
 		LIMIT,
 	); // get more posts when scroll to bottom
 
-	const { data: posts, isSuccess } = useQuery(
-		storeKey,
-		() => getPosts({ limit: LIMIT }),
-		{
-			refetchOnWindowFocus: false,
-		},
-	);
+	const {
+		data: posts,
+		isSuccess,
+		isLoading,
+	} = useQuery(storeKey, () => getPosts({ limit: LIMIT }), {
+		refetchOnWindowFocus: false,
+	});
 
 	return (
 		<InfiniteScroll
@@ -40,8 +45,9 @@ const LogoutPostList = () => {
 				</div>
 			}
 		>
-			<div className="w-[692px] max-w-full flex-1 pt-8">
+			<div className="max-w-2xl flex-1 pt-8">
 				{isSuccess && <PostList postList={posts} />}
+				{(isLoading || isLoadingMore) && <PostListLoading />}
 			</div>
 		</InfiniteScroll>
 	);

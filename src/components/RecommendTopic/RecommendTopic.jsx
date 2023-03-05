@@ -1,22 +1,21 @@
-import React from 'react';
-import { useQuery } from 'react-query';
-import { getRecommendTopics } from '../../api/topicApi';
 import PanelWrapper from '../PanelWrapper';
+import React from 'react';
 import TopicList from '../Topic/TopicList';
+import { getRecommendTopics } from '../../api/topicApi';
+import { useQuery } from 'react-query';
 
 const RecommendTopic = () => {
 	const { data: topics, isSuccess } = useQuery(
 		'recommendTopics',
 		getRecommendTopics,
-		{
-			refetchOnWindowFocus: false,
-		}
 	);
 	return (
 		<>
-			<PanelWrapper title="Recommend Topics">
-				{isSuccess && <TopicList topics={topics} />}
-			</PanelWrapper>
+			{isSuccess && (
+				<PanelWrapper title="Recommend Topics">
+					<TopicList topics={topics} />
+				</PanelWrapper>
+			)}
 		</>
 	);
 };

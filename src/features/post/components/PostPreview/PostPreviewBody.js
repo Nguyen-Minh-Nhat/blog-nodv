@@ -29,7 +29,7 @@ const PostPreviewBody = ({ post, isBookmarked, ...menuActionProps }) => {
 							{post.title}
 						</h3>
 					</div>
-					<div className="">
+					<div className="hidden sm:block">
 						<p
 							className={`text-slate-600 ${
 								subtitleClamp === 3

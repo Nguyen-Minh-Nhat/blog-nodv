@@ -1,8 +1,10 @@
-import React from 'react';
 import { useQuery, useQueryClient } from 'react-query';
-import { getOwnedPosts } from '../../api/postApi';
+
 import PageWithTitle from '../../components/PageWithTitle';
 import { PostList } from '../../features/post';
+import { PostListLoading } from '../../features/post/components';
+import React from 'react';
+import { getOwnedPosts } from '../../api/postApi';
 
 const filterType = {
 	ALL: null,
@@ -19,7 +21,9 @@ const filterConfigs = [
 const StoriesPage = () => {
 	const [filter, setFilter] = React.useState(filterType.ALL);
 	const queryClient = useQueryClient();
-	useQuery(['stories', filter], () => getOwnedPosts(filter));
+	const { isLoading } = useQuery(['stories', filter], () =>
+		getOwnedPosts(filter),
+	);
 	const data = queryClient.getQueryData(['stories', filter]);
 	return (
 		<PageWithTitle
@@ -30,7 +34,10 @@ const StoriesPage = () => {
 			tabItems={filterConfigs}
 		>
 			<div>
-				<PostList postList={data} storeKey={['stories', filter]} />
+				{!isLoading && (
+					<PostList postList={data} storeKey={['stories', filter]} />
+				)}
+				{isLoading && <PostListLoading />}
 			</div>
 		</PageWithTitle>
 	);

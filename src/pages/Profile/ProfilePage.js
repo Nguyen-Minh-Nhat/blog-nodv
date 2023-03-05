@@ -1,10 +1,11 @@
-import React, { useMemo } from 'react';
-import { useQuery } from 'react-query';
-import { useDispatch, useSelector } from 'react-redux';
 import { Outlet, useNavigate, useParams } from 'react-router-dom';
-import { getUserProfile } from '../../api/userApi';
+import React, { useMemo } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+
 import PageWithTitle from '../../components/PageWithTitle';
+import { getUserProfile } from '../../api/userApi';
 import { setProfile } from '../../redux/slices/profileSlice';
+import { useQuery } from 'react-query';
 
 const ProfilePage = () => {
 	const profile = useSelector((state) => state?.profile?.data);

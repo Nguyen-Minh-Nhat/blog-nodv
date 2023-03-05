@@ -2,7 +2,7 @@ import React from 'react';
 
 export const PostListLoading = () => {
 	return (
-		<div className="mt-4 flex flex-col gap-24">
+		<div className="flex flex-col gap-24">
 			<Item />
 			<Item />
 			<Item />

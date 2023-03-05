@@ -1,20 +1,9 @@
-import { useSelector } from 'react-redux';
 import PageWithTitle from '../../components/PageWithTitle';
 import { PostList } from '../../features/post';
+import { useSelector } from 'react-redux';
 
 const BookmarkPage = () => {
-	// const bookmark = queryClient.getQueryData("bookmark");
 	const bookmark = useSelector((state) => state.bookmark);
-
-	// useQuery(["bookmark"], getBookmarkByUserId, {
-	//   onSuccess: (data) => {
-	//     console.log("bookmakr page ", data);
-	//     // if (!bookmark.postIds.length) {
-	//     dispatch(setBookmark(data));
-	//     // }
-	//   },
-	// });
-
 	return (
 		<PageWithTitle title="Bookmark">
 			<div>
