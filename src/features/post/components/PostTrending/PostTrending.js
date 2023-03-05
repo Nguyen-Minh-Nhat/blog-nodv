@@ -17,7 +17,7 @@ const PostTrending = () => {
 				</IconWrapper>
 				<h4 className="text-sm font-bold">Trending on Blog NODV</h4>
 			</div>
-			<div className="grid grid-cols-3 gap-x-4 gap-y-4">
+			<div className="grid grid-cols-1 gap-x-4 gap-y-4 md:grid-cols-2 lg:grid-cols-3">
 				{isSuccess &&
 					posts.map((post, index) => (
 						<div key={index} className="flex pb-4">

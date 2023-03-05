@@ -87,7 +87,7 @@ const HomePage = () => {
 const Main = ({ children }) => {
 	return (
 		<div className="flex justify-center">
-			<div className="mx-4 max-w-2xl basis-[672px] pt-12">{children}</div>
+			<div className="mx-4 max-w-2xl pt-12">{children}</div>
 		</div>
 	);
 };

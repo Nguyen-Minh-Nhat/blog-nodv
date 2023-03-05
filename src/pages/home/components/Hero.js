@@ -4,12 +4,19 @@ import TriggerLogin from '../../../features/auth/components/TriggerLogin';
 
 const Hero = () => {
 	return (
-		<div className="w-[500px]">
-      <h2 className="break-words text-8xl" style={{
-        fontFamily: "lora"}}>Stay curious.</h2>
+		<div className="w-[500px] px-4">
+			<h2
+				className="break-words text-8xl"
+				style={{
+					fontFamily: 'lora',
+				}}
+			>
+				Stay curious.
+			</h2>
 			<div className="mb-12 w-[80%]">
 				<p className="text-2xl">
-					Discover stories, thinking, and expertise from writers on any topic.
+					Discover stories, thinking, and expertise from writers on
+					any topic.
 				</p>
 			</div>
 			<TriggerLogin>
