@@ -1,7 +1,7 @@
 import { Avatar } from '@mui/material';
-import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import UserFollowButton from '../ButtonFollow/UserFollowButton';
+import { useSelector } from 'react-redux';
 
 const UserList = ({ users }) => {
 	const userLogin = useSelector((state) => state.user?.data?.info);
@@ -14,7 +14,7 @@ const UserList = ({ users }) => {
 							id={user.id}
 							userEmail={userLogin.email}
 							isFollowed={user?.followerId?.includes(
-								userLogin.id
+								userLogin.id,
 							)}
 						/>
 					</User>
@@ -36,16 +36,14 @@ const User = ({ user, children }) => {
 				<Link to={profileUrl}>
 					<Avatar
 						src={user?.avatar}
-						className="h-12 w-12"
+						className="h-10 w-10"
 						alt={user.username}
 					/>
 				</Link>
 				<Link to={profileUrl}>
 					<div className="ml-4 mr-2 block">
-						<h2 className="break-all text-base font-bold">
-							{user.username}
-						</h2>
-						<div className="mt-1 block  break-words">
+						<h2 className="text-base font-bold">{user.username}</h2>
+						<div className="mt-1 block break-words">
 							<p className=" color break-all text-sm font-normal line-clamp-2">
 								{user?.bio}
 							</p>

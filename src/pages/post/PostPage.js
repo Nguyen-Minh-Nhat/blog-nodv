@@ -1,10 +1,3 @@
-import { useEffect } from 'react';
-import { useMutation, useQuery, useQueryClient } from 'react-query';
-import { useDispatch, useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
-import { toast } from 'react-toastify';
-import { updatePostToBookmark } from '../../api/bookmarkApi';
-import { createNotification } from '../../api/notificationApi';
 import {
 	deletePost,
 	getPostById,
@@ -14,13 +7,21 @@ import {
 	unLikePost,
 	unpublishPost,
 } from '../../api/postApi';
-import { updateCountNotifications } from '../../api/userApi';
+import { useDispatch, useSelector } from 'react-redux';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
+
+import Main from './components/Main';
 import { NotificationType } from '../../config/dataType';
 import Post from '../../features/post/components/Post';
-import { updatePostByIdToBookmark } from '../../redux/slices/bookmarkSlice';
-import { setProfile } from '../../redux/slices/profileSlice';
 import { callApiCreateNotification } from '../../utils/generationNotification';
-import Main from './components/Main';
+import { createNotification } from '../../api/notificationApi';
+import { setProfile } from '../../redux/slices/profileSlice';
+import { toast } from 'react-toastify';
+import { updateCountNotifications } from '../../api/userApi';
+import { updatePostByIdToBookmark } from '../../redux/slices/bookmarkSlice';
+import { updatePostToBookmark } from '../../api/bookmarkApi';
+import { useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 
 const PostPage = () => {
 	const { id } = useParams();

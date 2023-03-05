@@ -1,8 +1,10 @@
-import InfiniteScroll from 'react-infinite-scroll-component';
 import { useQuery, useQueryClient } from 'react-query';
-import { getPosts } from '../../../api/postApi';
+
+import InfiniteScroll from 'react-infinite-scroll-component';
 import { PostList } from '../../../features/post';
+import { getPosts } from '../../../api/postApi';
 import useInfiniteScroll from '../../../hooks/useInfiniteScroll';
+
 const LIMIT = 5;
 const LogoutPostList = () => {
 	const queryClient = useQueryClient();
@@ -14,7 +16,7 @@ const LogoutPostList = () => {
 				return [...oldData, ...data];
 			});
 		},
-		LIMIT
+		LIMIT,
 	); // get more posts when scroll to bottom
 
 	const { data: posts, isSuccess } = useQuery(
@@ -22,7 +24,7 @@ const LogoutPostList = () => {
 		() => getPosts({ limit: LIMIT }),
 		{
 			refetchOnWindowFocus: false,
-		}
+		},
 	);
 
 	return (
@@ -32,7 +34,9 @@ const LogoutPostList = () => {
 			hasMore={isHasMore}
 			endMessage={
 				<div className="py-10">
-					<p className="text-center font-thin">Yay! You have seen it all</p>
+					<p className="text-center font-thin">
+						Yay! You have seen it all
+					</p>
 				</div>
 			}
 		>

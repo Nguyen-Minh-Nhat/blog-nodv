@@ -2,7 +2,7 @@ import AppRoutes, { appRoutes } from './routes/AppRoutes';
 import { useDispatch, useSelector } from 'react-redux';
 
 import LoginModal from './pages/auth/LoginModal';
-import SocketClient from './web-socket/SocketClient';
+import SocketClient from './websocket/SocketClient';
 import { getAuthInfo } from './api/authApi';
 import { getBookmarkByUserId } from './api/bookmarkApi';
 import { setBookmark } from './redux/slices/bookmarkSlice';

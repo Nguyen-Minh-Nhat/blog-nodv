@@ -1,15 +1,16 @@
-import { useMutation, useQueryClient } from 'react-query';
-import { useDispatch } from 'react-redux';
-import { toast } from 'react-toastify';
-import { updatePostToBookmark } from '../../../api/bookmarkApi';
 import {
 	deletePost,
 	hidePost,
 	publishPost,
 	unpublishPost,
 } from '../../../api/postApi';
-import { updatePostByIdToBookmark } from '../../../redux/slices/bookmarkSlice';
+import { useMutation, useQueryClient } from 'react-query';
+
 import PostPreview from './PostPreview';
+import { toast } from 'react-toastify';
+import { updatePostByIdToBookmark } from '../../../redux/slices/bookmarkSlice';
+import { updatePostToBookmark } from '../../../api/bookmarkApi';
+import { useDispatch } from 'react-redux';
 
 export const PostList = ({
 	postList = [],
@@ -28,7 +29,7 @@ export const PostList = ({
 					return updatedPost;
 				}
 				return post;
-			})
+			}),
 		);
 	};
 	const deleteLocalPost = (postId) => {

@@ -1,13 +1,14 @@
 import { Badge, Tooltip } from '@mui/material';
-import IconButton from '@mui/material/IconButton';
-import React, { useEffect, useState, useCallback } from 'react';
-import { useMutation } from 'react-query';
-import { useDispatch, useSelector } from 'react-redux';
 import { matchPath, useLocation } from 'react-router';
+import { useCallback, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+
+import IconButton from '@mui/material/IconButton';
 import { NavLink } from 'react-router-dom';
-import { updateCountNotifications } from '../../api/userApi';
-import { setUser } from '../../redux/slices/userSlice';
 import { appRoutes } from '../../routes/AppRoutes';
+import { setUser } from '../../redux/slices/userSlice';
+import { updateCountNotifications } from '../../api/userApi';
+import { useMutation } from 'react-query';
 
 const Navbar = () => {
 	const { pathname } = useLocation();
@@ -28,7 +29,7 @@ const Navbar = () => {
 			};
 			updateUserCountNotification.mutate(data);
 		},
-		[updateUserCountNotification]
+		[updateUserCountNotification],
 	);
 
 	useEffect(() => {
@@ -42,7 +43,7 @@ const Navbar = () => {
 			const data = JSON.parse(payload.body);
 			dispatch(setUser(data));
 		},
-		[dispatch]
+		[dispatch],
 	);
 
 	useEffect(() => {
@@ -70,7 +71,9 @@ const Navbar = () => {
 			icon: (
 				<Badge
 					badgeContent={
-						user?.notificationsCount !== undefined ? user.notificationsCount : 0
+						user?.notificationsCount !== undefined
+							? user.notificationsCount
+							: 0
 					}
 					color="success"
 				>
@@ -108,7 +111,9 @@ const Navbar = () => {
 				return (
 					<NavLink key={item.title} to={item.path} className="active">
 						<Tooltip title={item.title} placement="right" arrow>
-							<IconButton className={`h-10 w-10 text-xl text-black`}>
+							<IconButton
+								className={`h-10 w-10 text-xl text-black`}
+							>
 								{isActive ? item.iconActive : item.icon}
 							</IconButton>
 						</Tooltip>
