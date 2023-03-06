@@ -1,17 +1,16 @@
-import { Button } from '@mui/material';
 import React, { useState } from 'react';
-import { useMutation } from 'react-query';
-import { useDispatch } from 'react-redux';
-import { updateUserProfile } from '../../../../api/userApi';
+
+import { Button } from '@mui/material';
 import { setUser } from '../../../../redux/slices/userSlice';
+import { updateUserProfile } from '../../../../api/userApi';
+import { useDispatch } from 'react-redux';
+import { useMutation } from 'react-query';
 
 const AboutForm = ({ onClick, user }) => {
 	const [newBio, setNewBio] = useState(user.bio != null ? user.bio : '');
 	const dispatch = useDispatch();
-	console.log(newBio);
 	const updateUserBio = useMutation(updateUserProfile, {
 		onSuccess: (data) => {
-			console.log('done');
 			dispatch(setUser(data));
 			onClick();
 		},
@@ -19,7 +18,6 @@ const AboutForm = ({ onClick, user }) => {
 	const userUpdate = { ...user };
 
 	const handleUpdateUserBio = (user, newBio) => {
-		console.log('update ', user);
 		user.bio = newBio;
 		updateUserBio.mutate(user);
 	};

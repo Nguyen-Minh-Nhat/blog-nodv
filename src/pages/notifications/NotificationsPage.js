@@ -30,7 +30,6 @@ const NotificationsPage = () => {
 	useEffect(() => {
 		const topic = `/topic/notifications/${userId}/new`;
 		if (socket) {
-			console.log('subscribing');
 			socket.subscribe(topic, handleReceiveNotificationSocket, {
 				id: topic,
 			});
