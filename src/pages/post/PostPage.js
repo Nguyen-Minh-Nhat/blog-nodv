@@ -107,13 +107,11 @@ const PostPage = () => {
 
 	const updateBookmarkMutation = useMutation(updatePostToBookmark, {
 		onSuccess: (data) => {
-			// console.log("data ", data);
 			dispatch(updatePostByIdToBookmark(data));
 		},
 	});
 
 	const handleReceiveLikePostSocket = (payload) => {
-		// console.log(payload);
 		const { userLikeIds } = JSON.parse(payload.body);
 		updateLocalPost({ userLikeIds: userLikeIds });
 	};
@@ -125,7 +123,6 @@ const PostPage = () => {
 		}
 		return () => {
 			if (socket) {
-				console.log('unsubscribing');
 				socket.unsubscribe(topic);
 			}
 		};

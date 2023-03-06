@@ -1,10 +1,10 @@
 import { Button, TextField, Typography } from "@mui/material";
-import { Box } from "@mui/system";
 import React, { useState } from "react";
+
+import { Box } from "@mui/system";
 
 const EmailAddressForm = ({ onSubmit, initialValue, onClose }) => {
   const [email, setEmail] = useState(initialValue.username);
-  console.log(email);
 
   const handleSubmit = (e) => {
     onSubmit(email);

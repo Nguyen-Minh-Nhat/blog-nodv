@@ -1,6 +1,8 @@
 import { Avatar } from '@mui/material';
 import IconWrapper from '../../../../components/IconWrapper';
+import { Link } from 'react-router-dom';
 import { TrendingIcon } from '../../../../components/Icons';
+import { appRoutes } from '../../../../routes/AppRoutes';
 import { getPostsTrending } from '../../../../api/postApi';
 import { intlFormatDistance } from 'date-fns';
 import { useQuery } from 'react-query';
@@ -35,9 +37,11 @@ const PostTrending = () => {
 											{post.user.username}
 										</span>
 									</div>
-									<h4 className="mt-2 font-bold capitalize">
-										{post.title}
-									</h4>
+									<Link to={`${appRoutes.POST}/${post.id}`}>
+										<h4 className="mt-2 font-bold capitalize">
+											{post.title}
+										</h4>
+									</Link>
 								</div>
 								<div className="text-[13px] opacity-75">
 									<span>

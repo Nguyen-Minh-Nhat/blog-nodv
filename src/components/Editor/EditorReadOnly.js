@@ -9,7 +9,6 @@ const EditorReadOnly = ({ defaultValue }) => {
 		return htmlToBlocks(defaultValue);
 	}, [defaultValue]);
 
-	console.log(blockData);
 
 	return (
 		<div id="article" className="prose max-w-none">
