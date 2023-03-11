@@ -25,11 +25,11 @@ const PostPreviewHeader = ({ post }) => {
 					</span>
 				</Link>
 			</div>
+			<div className="flex items-center pb-1.5">
+				<i className="fa-solid fa-period opacity-40" />
+			</div>
 			<div className="flex items-center gap-1">
-				<div className="flex items-center pb-1.5">
-					<i className="fa-solid fa-period opacity-40" />
-				</div>
-				<span className="text-sm font-normal text-slate-400">
+				<span className="text-sm font-normal text-[#757575]">
 					{timeDisplay}
 				</span>
 			</div>

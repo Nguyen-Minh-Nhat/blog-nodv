@@ -8,7 +8,9 @@ const PostPreviewFooter = ({ post, isBookmarked, ...menuActionProps }) => {
 				{post?.topics?.length > 0 && (
 					<TopicList topics={post.topics} limitDisplay={1} />
 				)}
-				<div className="text-sm font-thin">{post?.timeRead} min read</div>
+				<div className="text-sm font-thin text-[#757575]">
+					{post?.timeRead} min read
+				</div>
 			</div>
 			<PostAction
 				post={post}
