@@ -6,13 +6,15 @@ export const PostListLoading = () => {
 			<Item />
 			<Item />
 			<Item />
+			<Item />
+			<Item />
 		</div>
 	);
 };
 
 function Item() {
 	return (
-		<div className="relative flex w-full justify-between gap-32">
+		<div className="relative mt-10 flex w-full justify-between gap-32">
 			<div className="flex flex-1 flex-col">
 				<div className="flex items-center gap-2">
 					<div className="h-6 w-6 animate-pulse rounded-full bg-gray-200" />

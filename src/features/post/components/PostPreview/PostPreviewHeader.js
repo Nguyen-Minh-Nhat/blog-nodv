@@ -29,7 +29,7 @@ const PostPreviewHeader = ({ post }) => {
 				<div className="flex items-center pb-1.5">
 					<i className="fa-solid fa-period opacity-40" />
 				</div>
-				<span className="text-sm font-normal text-slate-400">
+				<span className="text-sm font-normal text-gray-400">
 					{timeDisplay}
 				</span>
 			</div>

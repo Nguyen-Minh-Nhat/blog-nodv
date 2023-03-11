@@ -12,12 +12,31 @@ const Header = () => {
 	const { data: topics, isSuccess } = useQuery('topics', getOwnTopics);
 	const tabItems = useMemo(() => {
 		if (isSuccess)
-			return [{ id: 0, title: 'For you', slug: '' }, ...topics];
+			return [
+				{ id: 0, title: 'For you', value: 'for-you', type: 'feed' },
+				{ id: 1, title: 'Following', value: 'following', type: 'feed' },
+				...topics.map((topic) => ({
+					id: topic.id,
+					title: topic.name,
+					value: topic.slug,
+					type: 'topic',
+				})),
+			];
 	}, [topics, isSuccess]);
+
 	const navigate = useNavigate();
+	const handleTabChange = (itemId) => {
+		if (itemId === 0) {
+			navigate('/');
+			return;
+		}
+		const tabItem = tabItems.find((item) => item.id === itemId);
+		const path = `/?${tabItem.type}=${tabItem.value}`;
+		navigate(path);
+	};
 
 	return (
-		<div className="flex justify-center">
+		<div className="sticky top-0 z-10 flex justify-center bg-white pt-6">
 			<div className="mx-4 flex max-w-[700px] basis-[700px] items-center">
 				<Box sx={{ width: '100%' }} className="flex">
 					{isSuccess && (
@@ -32,12 +51,7 @@ const Header = () => {
 							</Link>
 							<Tab
 								tabItems={tabItems}
-								onChange={(value) => {
-									const slug = tabItems.find(
-										(item) => item.id === value,
-									)?.slug;
-									navigate(`/${slug}`);
-								}}
+								onChange={handleTabChange}
 							/>
 						</>
 					)}

@@ -33,11 +33,11 @@ const PeopleTab = () => {
 
 const UserQuickView = ({ user }) => {
 	return (
-		<div className="flex items-center border-b py-4">
+		<div className="flex items-center border-b py-9">
 			<Avatar
 				src={user.avatar}
 				alt={user.username}
-				className="mx-7 h-16 w-16"
+				className="mr-7 h-12 w-12"
 			/>
 			<div className="flex flex-col">
 				<div className="">{user.username}</div>

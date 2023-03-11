@@ -1,18 +1,42 @@
-import axios from 'axios';
 import axiosClient, { axiosClientPrivate } from './axiosClient';
+
+import axios from 'axios';
 
 const url = '/posts';
 
 const postApi = {
-	getPosts: ({ page = 0, limit = 5, topic, title }) =>
-		axiosClient.get(url, {
-			params: {
-				page,
-				limit,
-				topic,
-				title,
-			},
-		}),
+	getPosts: ({
+		page = 0,
+		limit = 5,
+		topic = null,
+		title = null,
+		isFollowing = null,
+	}) => {
+		const params = {
+			page,
+			limit,
+			topic,
+			title,
+			isFollowing,
+		};
+		const paramsString = Object.keys(params)
+			.filter((key) => params[key] !== null)
+			.map((key) => `${key}=${params[key]}`)
+			.join('&');
+		return axiosClient.get(`${url}?${paramsString}`);
+	},
+
+	getPostsByFollowing: ({ page = 0, limit = 5 }) => {
+		const params = {
+			page,
+			limit,
+		};
+		const paramsString = Object.keys(params)
+			.filter((key) => params[key] !== null)
+			.map((key) => `${key}=${params[key]}`)
+			.join('&');
+		return axiosClientPrivate.get(`${url}/following?${paramsString}`);
+	},
 
 	getPostsTrending: (limit = 6) =>
 		axiosClient.get(`${url}/trending?limit=${limit}`),
@@ -20,10 +44,18 @@ const postApi = {
 	getPostById: (id) => axiosClient.get(`${url}/${id}`),
 	getPostsByUserId: (id) => axiosClient.get(`${url}/user/${id}`),
 
-	getOwnedPosts: (isPublish) =>
-		axiosClientPrivate.get(
-			`${url}/me${!!isPublish ? '?isPublish=' + isPublish : ''}`
-		),
+	getOwnedPosts: ({ page = 0, limit = 5, isPublish = null }) => {
+		const params = {
+			page,
+			limit,
+			isPublish,
+		};
+		const paramsString = Object.keys(params)
+			.filter((key) => params[key] !== null)
+			.map((key) => `${key}=${params[key]}`)
+			.join('&');
+		return axiosClientPrivate.get(`${url}/me?${paramsString}`);
+	},
 
 	createPost: (post) => axiosClientPrivate.post(url, post),
 
@@ -48,7 +80,7 @@ const postApi = {
 
 	getPostsRecommend: async (id) => {
 		const response = await axios.get(
-			`${process.env.REACT_APP_SERVER_RECOMMEND_URL}/api/posts/${id}/recommend`
+			`${process.env.REACT_APP_SERVER_RECOMMEND_URL}/api/posts/${id}/recommend`,
 		);
 		return response.data;
 	},
@@ -70,6 +102,7 @@ export const {
 	hidePost,
 	getListPostHided,
 	getPostsRecommend,
+	getPostsByFollowing,
 } = postApi;
 
 export default postApi;

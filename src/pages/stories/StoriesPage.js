@@ -1,15 +1,13 @@
-import { useQuery, useQueryClient } from 'react-query';
+import React, { useState } from 'react';
 
 import PageWithTitle from '../../components/PageWithTitle';
-import { PostList } from '../../features/post';
-import { PostListLoading } from '../../features/post/components';
-import React from 'react';
+import { PostListFetch } from '../../features/post/components';
 import { getOwnedPosts } from '../../api/postApi';
 
 const filterType = {
 	ALL: null,
-	PUBLISHED: 'true',
-	UNPUBLISHED: 'false',
+	PUBLISHED: true,
+	UNPUBLISHED: false,
 };
 
 const filterConfigs = [
@@ -19,26 +17,32 @@ const filterConfigs = [
 ];
 
 const StoriesPage = () => {
-	const [filter, setFilter] = React.useState(filterType.ALL);
-	const queryClient = useQueryClient();
-	const { isLoading } = useQuery(['stories', filter], () =>
-		getOwnedPosts(filter),
-	);
-	const data = queryClient.getQueryData(['stories', filter]);
+	const [filter, setFilter] = useState();
+	const handleTabChange = (id) => {
+		const filter = {};
+		switch (id) {
+			case '1':
+				filter.isPublish = true;
+				break;
+			case '2':
+				filter.isPublish = false;
+				break;
+			default:
+				break;
+		}
+		setFilter(filter);
+	};
 	return (
 		<PageWithTitle
 			title={'Your Stories'}
-			onTabChange={(id) => {
-				setFilter(filterConfigs[id].filter);
-			}}
+			onTabChange={handleTabChange}
 			tabItems={filterConfigs}
 		>
-			<div>
-				{!isLoading && (
-					<PostList postList={data} storeKey={['stories', filter]} />
-				)}
-				{isLoading && <PostListLoading />}
-			</div>
+			<PostListFetch
+				queryKey="stories"
+				filter={filter}
+				queryFn={getOwnedPosts}
+			/>
 		</PageWithTitle>
 	);
 };
