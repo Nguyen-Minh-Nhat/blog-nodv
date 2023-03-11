@@ -28,17 +28,17 @@ const Tab = ({
 				value={value}
 				onChange={handleChange}
 				textColor="inherit"
-				aria-label="secondary tabs example"
 				scrollButtons="auto"
 				variant="scrollable"
 				className="flex items-center"
 			>
 				{tabItems.map((item) => (
 					<MuiTab
+						disableTouchRipple
 						key={item.id}
 						value={item.id}
 						label={item?.title || item?.name}
-						className="normal-case"
+						className="mr-5 w-fit min-w-0 items-start p-0 font-[lora] normal-case"
 					/>
 				))}
 			</Tabs>

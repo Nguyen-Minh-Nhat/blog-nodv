@@ -1,5 +1,6 @@
-import { useEffect, useState } from 'react';
 import { Button, TextField } from '@mui/material';
+import { useEffect, useState } from 'react';
+
 import { useSelector } from 'react-redux';
 
 const SocketTest = () => {
@@ -9,9 +10,7 @@ const SocketTest = () => {
 	const handleSendMessage = () => {};
 	useEffect(() => {
 		if (socket) {
-			socket.subscribe('/topic/message', (message) => {
-				console.log(message);
-			});
+			socket.subscribe('/topic/message', (message) => {});
 		}
 
 		return () => {

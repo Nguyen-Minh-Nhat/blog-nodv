@@ -5,6 +5,7 @@ import PeopleTab from '../pages/search/components/PeopleTab';
 import ProtectedRoutes from './ProtectedRoutes';
 import StoriesTab from '../pages/search/components/StoriesTab';
 import SuspenseProgress from '../components/SuspenseProgress/SuspenseProgress';
+import { TopicDetailPage } from '../pages/topic';
 import TopicsTab from '../pages/search/components/TopicsTab';
 import { useRoutes } from 'react-router-dom';
 import { useSelector } from 'react-redux';
@@ -55,6 +56,7 @@ export const appRoutes = {
 	PROFILE_ABOUT: '/profile/:email/about',
 	COMPONENT: '/component',
 	TOPIC: '/topic',
+	TOPIC_DETAIL: '/topic/:slug',
 	TOPIC_PICK: '/topic/pick',
 	SEARCH: '/search',
 	SEARCH_STORIES: '/search/posts',
@@ -175,6 +177,10 @@ export const routeConfig = [
 			{
 				path: appRoutes.TOPIC_PICK,
 				element: <PickTopicPage />,
+			},
+			{
+				path: appRoutes.TOPIC_DETAIL,
+				element: <TopicDetailPage />,
 			},
 		],
 	},
