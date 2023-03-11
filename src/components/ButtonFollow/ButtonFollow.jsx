@@ -1,8 +1,8 @@
+import AuthClick from "../../features/auth/components/AuthClick";
 import { Chip } from "@mui/material";
 import React from "react";
-import { useState } from "react";
 import { useSelector } from "react-redux";
-import AuthClick from "../../features/auth/components/AuthClick";
+import { useState } from "react";
 
 const ButtonFollow = ({
   isFollowed = false,
@@ -18,7 +18,6 @@ const ButtonFollow = ({
     if (isLogin) {
       setFollowed(!followed);
       onClick(!followed);
-      console.log(2);
     }
   };
 
