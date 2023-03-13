@@ -5,7 +5,7 @@ import {
 	likePost,
 	publishPost,
 	unLikePost,
-	unpublishPost,
+	unPublishPost,
 } from '../../api/postApi';
 import { useDispatch, useSelector } from 'react-redux';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
@@ -69,7 +69,7 @@ const PostPage = () => {
 		},
 	});
 
-	const unpublishPostMutation = useMutation(unpublishPost, {
+	const unpublishPostMutation = useMutation(unPublishPost, {
 		onSuccess: (data) => {
 			updateLocalPost(data);
 			toast.success('Post was unpublished');

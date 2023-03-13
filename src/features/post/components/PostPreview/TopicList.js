@@ -1,20 +1,27 @@
 import { Chip, Popover } from '@mui/material';
+
+import { Link } from 'react-router-dom';
 import usePopover from '../../../../hooks/usePopover';
 
 const TopicList = ({ topics = [], limitDisplay = topics.length }) => {
 	const { id, handleClick, handleClose, anchorEl, open } = usePopover();
 	return (
-		<div className="flex gap-1">
+		<div className="flex items-center gap-1">
 			{topics.length > 0 &&
 				[...Array(limitDisplay).keys()].map((index) => (
-					<Chip
+					<Link
+						to={`topic/${topics[index].slug}`}
 						key={index}
 						size="small"
-						label={topics[index].name}
-						variant="filled"
-						className="capitalize"
-						clickable
-					/>
+					>
+						<Chip
+							size="small"
+							label={topics[index].name}
+							variant="filled"
+							className="capitalize"
+							clickable
+						/>
+					</Link>
 				))}
 			{topics.length > limitDisplay && limitDisplay && (
 				<>
@@ -41,7 +48,9 @@ const TopicList = ({ topics = [], limitDisplay = topics.length }) => {
 						}}
 					>
 						<div className="flex max-w-[160px] flex-wrap gap-2 p-2">
-							{[...Array(topics.length - limitDisplay).keys()].map((index) => (
+							{[
+								...Array(topics.length - limitDisplay).keys(),
+							].map((index) => (
 								<Chip
 									key={index}
 									size="small"

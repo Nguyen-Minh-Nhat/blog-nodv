@@ -1,10 +1,11 @@
 import { Button } from '@mui/material';
 import React from 'react';
 import TriggerLogin from '../../../features/auth/components/TriggerLogin';
+import { forwardRef } from 'react';
 
-const Hero = () => {
+export const Hero = forwardRef((props, ref) => {
 	return (
-		<div className="w-[500px] px-4">
+		<div className="w-[500px]" ref={ref} {...props}>
 			<h2
 				className="break-words text-8xl"
 				style={{
@@ -26,6 +27,4 @@ const Hero = () => {
 			</TriggerLogin>
 		</div>
 	);
-};
-
-export default Hero;
+});

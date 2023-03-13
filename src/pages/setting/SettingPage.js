@@ -1,23 +1,28 @@
-import React from "react";
-import {} from "@mui/material";
+import { Outlet, useNavigate } from 'react-router-dom';
 
-import PageWithTitle from "../../components/PageWithTitle";
-import { Outlet, useNavigate } from "react-router-dom";
-import { tabItems } from "./tab";
+import { MainContentLayout } from '../../layouts';
+import React from 'react';
+import Tab from '../../components/Tab';
+import { tabItems } from './tab';
 
 const SettingPage = () => {
-  const navigate = useNavigate();
-  return (
-    <PageWithTitle
-      title={"Setting"}
-      tabItems={tabItems}
-      onTabChange={(tabId) => {
-        navigate(tabItems[tabId].path);
-      }}
-    >
-      <Outlet />
-    </PageWithTitle>
-  );
+	const navigate = useNavigate();
+	return (
+		<MainContentLayout>
+			<MainContentLayout.Header>
+				<MainContentLayout.Title>Settings</MainContentLayout.Title>
+				<Tab
+					tabItems={tabItems}
+					onTabChange={(tabId) => {
+						navigate(tabItems[tabId].path);
+					}}
+				/>
+			</MainContentLayout.Header>
+			<MainContentLayout.Body>
+				<Outlet />
+			</MainContentLayout.Body>
+		</MainContentLayout>
+	);
 };
 
 export default SettingPage;

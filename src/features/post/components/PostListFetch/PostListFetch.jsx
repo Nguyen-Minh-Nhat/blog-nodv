@@ -5,10 +5,8 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 import PostList from '../PostList';
 import { PostListLoading } from '../PostListLoading';
 import { getListPostHided } from '../../../../api/postApi';
-import { useSelector } from 'react-redux';
 
 export const PostListFetch = ({ filter = {}, queryKey = 'posts', queryFn }) => {
-	const postIdsBookmark = useSelector((state) => state.bookmark.postIds);
 	const accurateFilter = useMemo(() => {
 		return Object.keys(filter).reduce((acc, key) => {
 			if (filter[key] !== null) {
@@ -40,12 +38,13 @@ export const PostListFetch = ({ filter = {}, queryKey = 'posts', queryFn }) => {
 
 	const posts = useMemo(() => {
 		const allPosts = [];
-		data?.pages.forEach((page) =>
-			page.content.forEach((post) => allPosts.push(post)),
-		);
+		data?.pages.forEach((page) => {
+			return page.content.forEach((post) =>
+				allPosts.push({ ...post, page: page.number }),
+			);
+		});
 		return allPosts;
 	}, [data]);
-
 	// reset page and isHasMore when tab change
 	const [hidePost, setHidePost] = useState([]);
 	useQuery('hidePost', () => getListPostHided(), {
@@ -64,17 +63,14 @@ export const PostListFetch = ({ filter = {}, queryKey = 'posts', queryFn }) => {
 			hasMore={hasNextPage}
 			endMessage={posts?.length > 0 ? <EndMessage /> : <></>}
 		>
-			<Main>
-				{isSuccess && (
-					<PostList
-						postList={posts}
-						storeKey={storeKey}
-						postIdsBookmark={postIdsBookmark}
-						postIdsHide={hidePost}
-					/>
-				)}
-				{(isLoading || isFetching) && <PostListLoading />}
-			</Main>
+			{isSuccess && (
+				<PostList
+					postList={posts}
+					storeKey={storeKey}
+					postIdsHide={hidePost}
+				/>
+			)}
+			{(isLoading || isFetching) && <PostListLoading />}
 		</InfiniteScroll>
 	);
 };
@@ -84,11 +80,3 @@ const EndMessage = () => (
 		<p className="text-center font-thin">Yay! You have seen it all</p>
 	</div>
 );
-
-const Main = ({ children }) => {
-	return (
-		<div className="flex justify-center">
-			<div className="mx-4 max-w-2xl basis-[672px] pt-12">{children}</div>
-		</div>
-	);
-};

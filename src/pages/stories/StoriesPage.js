@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 
-import PageWithTitle from '../../components/PageWithTitle';
+import { MainContentLayout } from '../../layouts';
 import { PostListFetch } from '../../features/post/components';
+import Tab from '../../components/Tab';
 import { getOwnedPosts } from '../../api/postApi';
 
 const filterType = {
@@ -33,17 +34,19 @@ const StoriesPage = () => {
 		setFilter(filter);
 	};
 	return (
-		<PageWithTitle
-			title={'Your Stories'}
-			onTabChange={handleTabChange}
-			tabItems={filterConfigs}
-		>
-			<PostListFetch
-				queryKey="stories"
-				filter={filter}
-				queryFn={getOwnedPosts}
-			/>
-		</PageWithTitle>
+		<MainContentLayout>
+			<MainContentLayout.Header>
+				<MainContentLayout.Title>Stories</MainContentLayout.Title>
+				<Tab tabItems={filterConfigs} onChange={handleTabChange} />
+			</MainContentLayout.Header>
+			<MainContentLayout.Body>
+				<PostListFetch
+					queryKey="stories"
+					filter={filter}
+					queryFn={getOwnedPosts}
+				/>
+			</MainContentLayout.Body>
+		</MainContentLayout>
 	);
 };
 

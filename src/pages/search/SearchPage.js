@@ -1,10 +1,12 @@
 import {
-	createSearchParams,
 	Outlet,
+	createSearchParams,
 	useNavigate,
 	useSearchParams,
 } from 'react-router-dom';
-import PageWithTitle from '../../components/PageWithTitle';
+
+import { MainContentLayout } from '../../layouts';
+import Tab from '../../components/Tab';
 
 const SearchPage = () => {
 	// use the useSearchParams hook to get the keyword from the URL
@@ -15,27 +17,29 @@ const SearchPage = () => {
 	];
 	const [searchParams] = useSearchParams();
 	const navigate = useNavigate();
+	const handleTabChange = (id) => {
+		const filter = filterConfigs[id].filter;
+		navigate({
+			pathname: '/search/' + filter,
+			search: createSearchParams({
+				query: searchParams.get('query'),
+			}).toString(),
+		});
+	};
+
 	return (
-		<PageWithTitle
-			title={
-				<div className="truncate">
-					<span className="opacity-50">Result for</span>{' '}
+		<MainContentLayout>
+			<MainContentLayout.Header>
+				<MainContentLayout.Title className="!font-normal">
+					<span className="opacity-50 ">Result for </span>
 					{searchParams.get('query')}
-				</div>
-			}
-			tabItems={filterConfigs}
-			onTabChange={(value) => {
-				const filter = filterConfigs[value].filter;
-				navigate({
-					pathname: '/search/' + filter,
-					search: createSearchParams({
-						query: searchParams.get('query'),
-					}).toString(),
-				});
-			}}
-		>
-			<Outlet />
-		</PageWithTitle>
+				</MainContentLayout.Title>
+				<Tab tabItems={filterConfigs} onChange={handleTabChange} />
+			</MainContentLayout.Header>
+			<MainContentLayout.Body>
+				<Outlet />
+			</MainContentLayout.Body>
+		</MainContentLayout>
 	);
 };
 

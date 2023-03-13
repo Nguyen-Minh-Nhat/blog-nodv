@@ -2,7 +2,8 @@ import { Outlet, useNavigate, useParams } from 'react-router-dom';
 import React, { useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import PageWithTitle from '../../components/PageWithTitle';
+import { MainContentLayout } from '../../layouts';
+import Tab from '../../components/Tab';
 import { getUserProfile } from '../../api/userApi';
 import { setProfile } from '../../redux/slices/profileSlice';
 import { useQuery } from 'react-query';
@@ -38,17 +39,22 @@ const ProfilePage = () => {
 	return (
 		<>
 			{profile && (
-				<>
-					<PageWithTitle
-						title={profile.username}
-						tabItems={tabItems}
-						onTabChange={(tabId) => {
-							navigate(tabItems[tabId].path);
-						}}
-					>
+				<MainContentLayout>
+					<MainContentLayout.Header>
+						<MainContentLayout.Title>
+							{profile.username}
+						</MainContentLayout.Title>
+						<Tab
+							tabItems={tabItems}
+							onChange={(tabId) => {
+								navigate(tabItems[tabId].path);
+							}}
+						/>
+					</MainContentLayout.Header>
+					<MainContentLayout.Body>
 						<Outlet context={ownProfile} />
-					</PageWithTitle>
-				</>
+					</MainContentLayout.Body>
+				</MainContentLayout>
 			)}
 		</>
 	);

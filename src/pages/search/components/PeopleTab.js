@@ -18,7 +18,9 @@ const PeopleTab = () => {
 		<>
 			<>
 				{isSuccess &&
-					users.map((user) => <UserQuickView user={user} />)}
+					users.map((user) => (
+						<UserQuickView user={user} key={user.id} />
+					))}
 			</>
 			{isLoading && (
 				<div>

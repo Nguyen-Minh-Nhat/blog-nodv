@@ -36,16 +36,19 @@ const Header = () => {
 	};
 
 	return (
-		<div className="sticky top-0 z-10 flex justify-center bg-white pt-6">
-			<div className="mx-4 flex max-w-[700px] basis-[700px] items-center">
+		<div className="z-10 flex justify-center bg-white">
+			<div className="flex w-full items-center">
 				<Box sx={{ width: '100%' }} className="flex">
 					{isSuccess && (
 						<>
 							<Link
 								to={appRoutes.TOPIC_PICK}
-								className="flex h-[49px] items-center border-b"
+								className="flex h-[49px] items-center border-b pr-5"
 							>
-								<IconButton size="small" className="h-8 w-8">
+								<IconButton
+									size="small"
+									className="h-8 w-8 text-[#757575]"
+								>
 									<PlusIcon />
 								</IconButton>
 							</Link>

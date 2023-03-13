@@ -1,6 +1,7 @@
 import { getPosts, getPostsByFollowing } from '../../api/postApi';
 
 import Header from './components/Header';
+import { MainContentLayout } from '../../layouts';
 import { PostListFetch } from '../../features/post/components';
 import { useMemo } from 'react';
 import { useSearchParams } from 'react-router-dom';
@@ -32,14 +33,18 @@ const HomePage = () => {
 		};
 	}, [searchParams]);
 	return (
-		<>
-			<Header />
-			<PostListFetch
-				filter={filter}
-				queryKey={queryKey}
-				queryFn={queryFn}
-			/>
-		</>
+		<MainContentLayout>
+			<MainContentLayout.Header className="sticky top-0 z-10">
+				<Header />
+			</MainContentLayout.Header>
+			<MainContentLayout.Body>
+				<PostListFetch
+					filter={filter}
+					queryKey={queryKey}
+					queryFn={queryFn}
+				/>
+			</MainContentLayout.Body>
+		</MainContentLayout>
 	);
 };
 

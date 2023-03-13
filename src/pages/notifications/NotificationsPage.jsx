@@ -1,8 +1,11 @@
+import {
+	NotificationList,
+	NotificationListLoading,
+} from '../../features/notification/components';
 import { useEffect, useState } from 'react';
 
-import { NotificationList } from '../../features/notification';
-import NotificationListLoading from '../../features/notification/components/NotificationListLoading/NotificationListLoading';
-import PageWithTitle from '../../components/PageWithTitle';
+import { MainContentLayout } from '../../layouts';
+import Tab from '../../components/Tab';
 import { getNotifications } from '../../api/notificationApi';
 import { useQuery } from 'react-query';
 import { useSelector } from 'react-redux';
@@ -54,47 +57,40 @@ const NotificationsPage = () => {
 			},
 		},
 	);
+	const handleTabChange = (id) => {
+		switch (id) {
+			case NotificationStatus[0].id:
+				setFilter(null);
+				break;
+
+			case NotificationStatus[1].id:
+				setFilter(false);
+				break;
+
+			case NotificationStatus[2].id:
+				setFilter(true);
+				break;
+
+			default:
+				setFilter(null);
+				break;
+		}
+	};
+
 	return (
-		<PageWithTitle
-			onTabChange={(id) => {
-				switch (id) {
-					case NotificationStatus[0].id:
-						setFilter(null);
-						break;
-
-					case NotificationStatus[1].id:
-						setFilter(false);
-						break;
-
-					case NotificationStatus[2].id:
-						setFilter(true);
-						break;
-
-					default:
-						setFilter(null);
-						break;
-				}
-			}}
-			title={'Notifications'}
-			tabItems={NotificationStatus}
-		>
-			{!isLoading && (
-				<>
-					{notifications?.length ? (
-						<div>
-							<NotificationList
-								notificationList={notifications}
-							/>
-						</div>
-					) : (
-						<div className="text-center text-gray-500">
-							you don't have any notifications right now
-						</div>
-					)}
-				</>
-			)}
-			{isLoading && <NotificationListLoading />}
-		</PageWithTitle>
+		<MainContentLayout>
+			<MainContentLayout.Header>
+				<MainContentLayout.Title>Notifications</MainContentLayout.Title>
+				<Tab tabItems={NotificationStatus} onChange={handleTabChange} />
+			</MainContentLayout.Header>
+			<MainContentLayout.Body>
+				{!isLoading ? (
+					<NotificationList notificationList={notifications} />
+				) : (
+					<NotificationListLoading />
+				)}
+			</MainContentLayout.Body>
+		</MainContentLayout>
 	);
 };
 

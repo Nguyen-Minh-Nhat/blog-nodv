@@ -10,6 +10,8 @@ const postApi = {
 		limit = 5,
 		topic = null,
 		title = null,
+		sort = null,
+		direction = null,
 		isFollowing = null,
 	}) => {
 		const params = {
@@ -18,6 +20,8 @@ const postApi = {
 			topic,
 			title,
 			isFollowing,
+			sort,
+			direction,
 		};
 		const paramsString = Object.keys(params)
 			.filter((key) => params[key] !== null)
@@ -67,7 +71,7 @@ const postApi = {
 
 	publishPost: (id) => axiosClientPrivate.patch(`${url}/${id}/publish`, null),
 
-	unpublishPost: (id) =>
+	unPublishPost: (id) =>
 		axiosClientPrivate.patch(`${url}/${id}/unpublished`, null),
 
 	likePost: (id) => axiosClientPrivate.patch(`${url}/${id}/like`, null),
@@ -93,7 +97,7 @@ export const {
 	getOwnedPosts,
 	deletePost,
 	publishPost,
-	unpublishPost,
+	unPublishPost,
 	likePost,
 	unLikePost,
 	updatePost,

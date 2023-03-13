@@ -172,7 +172,7 @@ export const routeConfig = [
 	{
 		path: appRoutes.TOPIC,
 		protected: false,
-		layout: layouts.NONE,
+		layout: layouts.DEFAULT,
 		children: [
 			{
 				path: appRoutes.TOPIC_PICK,

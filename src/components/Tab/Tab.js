@@ -1,5 +1,6 @@
 import { Box, Tab as MuiTab, Tabs } from '@mui/material';
 
+import { useEffect } from 'react';
 import { useState } from 'react';
 
 const Tab = ({
@@ -8,13 +9,17 @@ const Tab = ({
 		{ id: 2, title: 'item 2' },
 	],
 	onChange = () => {},
+	activeTab = tabItems[0],
 }) => {
 	const [value, setValue] = useState(tabItems[0].id);
-
 	const handleChange = (e, newValue) => {
 		setValue(newValue);
 		onChange(newValue);
 	};
+
+	useEffect(() => {
+		setValue(activeTab.id);
+	}, [activeTab]);
 
 	return (
 		<Box sx={{ width: '100%' }} className="flex items-center border-b">

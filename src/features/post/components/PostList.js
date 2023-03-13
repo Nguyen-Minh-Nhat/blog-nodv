@@ -1,9 +1,4 @@
-import {
-	deletePost,
-	hidePost,
-	publishPost,
-	unpublishPost,
-} from '../../../api/postApi';
+import { hidePost, publishPost, unPublishPost } from '../../../api/postApi';
 import { useMutation, useQueryClient } from 'react-query';
 
 import PostPreview from './PostPreview';
@@ -16,34 +11,48 @@ export const PostList = ({
 	postList = [],
 	storeKey = 'posts',
 	postIdsHide = [],
-	postIdsBookmark = [],
 }) => {
 	const queryClient = useQueryClient();
 
 	const dispatch = useDispatch();
 
 	const updateLocalPost = (updatedPost) => {
-		queryClient.setQueryData(storeKey, (oldData) =>
-			oldData.map((post) => {
-				if (post.id === updatedPost.id) {
-					return updatedPost;
-				}
-				return post;
-			}),
-		);
-	};
-	const deleteLocalPost = (postId) => {
 		queryClient.setQueryData(storeKey, (oldData) => {
-			const newPostList = oldData.filter((post) => post.id !== postId);
-			return newPostList;
+			const { pages } = oldData;
+			const newPages = pages.map((page) => {
+				if (page.number !== updatedPost.page) return page;
+				return {
+					...page,
+					content: page.content.map((post) => {
+						if (post.id !== updatedPost.id) return post;
+						return updatedPost;
+					}),
+				};
+			});
+			return {
+				...oldData,
+				pages: newPages,
+			};
 		});
 	};
-	const deletePostMutation = useMutation(deletePost, {
-		onSuccess: (id) => {
-			deleteLocalPost(id);
-			toast.success('Post deleted successfully');
-		},
-	});
+	const deleteLocalPost = (postDelete) => {
+		queryClient.setQueryData(storeKey, (oldData) => {
+			const { pages } = oldData;
+			const newPages = pages.map((page) => {
+				if (page.number !== postDelete.page) return page;
+				return {
+					...page,
+					content: page.content.filter(
+						(post) => post.id !== postDelete.id,
+					),
+				};
+			});
+			return {
+				...oldData,
+				pages: newPages,
+			};
+		});
+	};
 
 	const publishPostMutation = useMutation(publishPost, {
 		onSuccess: (data) => {
@@ -52,7 +61,7 @@ export const PostList = ({
 		},
 	});
 
-	const unpublishPostMutation = useMutation(unpublishPost, {
+	const unpublishPostMutation = useMutation(unPublishPost, {
 		onSuccess: (data) => {
 			updateLocalPost(data);
 			toast.success('Post was unpublished ');
@@ -82,9 +91,9 @@ export const PostList = ({
 					>
 						<PostPreview
 							post={post}
-							isBookmarked={postIdsBookmark?.includes(post.id)}
 							onUpdateBookmark={updateBookmarkMutation.mutate}
-							onDelete={deletePostMutation.mutate}
+							onDelete={deleteLocalPost}
+							updatePost={updateLocalPost}
 							onPublish={publishPostMutation.mutate}
 							onUnpublish={unpublishPostMutation.mutate}
 							onHidePost={hidePostMutation.mutate}

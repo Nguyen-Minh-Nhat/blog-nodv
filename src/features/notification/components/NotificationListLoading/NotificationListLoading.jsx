@@ -1,6 +1,6 @@
 import React from 'react';
 
-const NotificationListLoading = () => {
+export const NotificationListLoading = () => {
 	return (
 		<div className="flex flex-col gap-2">
 			<Item />
@@ -25,5 +25,3 @@ function Item() {
 		</div>
 	);
 }
-
-export default NotificationListLoading;

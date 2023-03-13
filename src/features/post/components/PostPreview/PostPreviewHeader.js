@@ -3,8 +3,10 @@ import { Link } from 'react-router-dom';
 import { appRoutes } from '../../../../routes/AppRoutes';
 import { intlFormatDistance } from 'date-fns';
 import { useMemo } from 'react';
+import { usePost } from '../../context/PostContext';
 
-const PostPreviewHeader = ({ post }) => {
+const PostPreviewHeader = () => {
+	const { post } = usePost();
 	const timeDisplay = useMemo(() => {
 		return intlFormatDistance(new Date(post.createdDate), new Date());
 	}, [post.createdDate]);
