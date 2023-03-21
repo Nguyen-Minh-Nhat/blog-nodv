@@ -6,14 +6,13 @@ import SearchBar from './SearchBar';
 import SearchResult from './SearchResultPanel';
 import ShadowWrapper from '../ShadowWrapper';
 import { appRoutes } from '../../routes/AppRoutes';
-import { searchUser } from '../../api/userApi';
 import useDebounce from '../../hooks/useDebounce';
-import { useMutation } from 'react-query';
+import { useSearchUser } from '../../features/user/hooks';
 
 const TIMEOUT = 800;
 const Search = () => {
 	const [searchInput, setSearchInput] = useState('');
-	const [searchResult, setSearchResult] = useState([]);
+
 	const [showResult, setShowResult] = useState(false);
 	const debouncedValue = useDebounce(searchInput, TIMEOUT);
 	const navigate = useNavigate();
@@ -32,12 +31,7 @@ const Search = () => {
 	// eslint-disable-next-line no-unused-vars
 	const [_, setSearchParams] = useSearchParams();
 
-	const searchUserMutation = useMutation(searchUser, {
-		onSuccess: (data) => {
-			const searchResult = data || [];
-			setSearchResult(searchResult);
-		},
-	});
+	const { data: searchResult, isLoading, setQuery } = useSearchUser();
 
 	useEffect(() => {
 		if (searchResult.length <= 0) setShowResult(false);
@@ -46,12 +40,10 @@ const Search = () => {
 
 	useEffect(() => {
 		if (!debouncedValue.trim() || disableSearch) {
-			setSearchResult([]);
 			setShowResult(false);
 			return;
 		}
-		searchUserMutation.mutate(debouncedValue);
-
+		setQuery(debouncedValue);
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [debouncedValue]);
 
@@ -82,7 +74,7 @@ const Search = () => {
 			>
 				<div>
 					<SearchBar
-						loading={searchUserMutation.isLoading}
+						loading={isLoading}
 						onChange={handleTypingInput}
 						onFocus={() => {
 							if (searchResult.length > 0) setShowResult(true);

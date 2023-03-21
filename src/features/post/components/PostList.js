@@ -1,20 +1,13 @@
-import { hidePost, publishPost, unPublishPost } from '../../../api/postApi';
-import { useMutation, useQueryClient } from 'react-query';
-
 import PostPreview from './PostPreview';
-import { toast } from 'react-toastify';
-import { updatePostByIdToBookmark } from '../../../redux/slices/bookmarkSlice';
-import { updatePostToBookmark } from '../../../api/bookmarkApi';
-import { useDispatch } from 'react-redux';
+import { useQueryClient } from 'react-query';
 
 export const PostList = ({
 	postList = [],
 	storeKey = 'posts',
-	postIdsHide = [],
+	isDeleteOnBookmark = false,
+	isDeleteOnPublish = false,
 }) => {
 	const queryClient = useQueryClient();
-
-	const dispatch = useDispatch();
 
 	const updateLocalPost = (updatedPost) => {
 		queryClient.setQueryData(storeKey, (oldData) => {
@@ -54,49 +47,21 @@ export const PostList = ({
 		});
 	};
 
-	const publishPostMutation = useMutation(publishPost, {
-		onSuccess: (data) => {
-			updateLocalPost(data);
-			toast.success('Post was published');
-		},
-	});
-
-	const unpublishPostMutation = useMutation(unPublishPost, {
-		onSuccess: (data) => {
-			updateLocalPost(data);
-			toast.success('Post was unpublished ');
-		},
-	});
-
-	const updateBookmarkMutation = useMutation(updatePostToBookmark, {
-		onSuccess: (data) => {
-			dispatch(updatePostByIdToBookmark(data));
-		},
-	});
-
-	const hidePostMutation = useMutation(hidePost, {
-		onSuccess: (id) => {
-			deleteLocalPost(id.pop());
-		},
-	});
 	return (
-		<div className="flex flex-col">
+		<div className="flex flex-col gap-8">
 			{postList?.length ? (
 				postList?.map((post) => (
-					<div
-						key={post.id}
-						className={`${
-							postIdsHide?.includes(post.id) ? 'hidden' : ''
-						} border-b pt-8 first:pt-0`}
-					>
+					<div key={post.id} className="border-b first:pt-0">
 						<PostPreview
 							post={post}
-							onUpdateBookmark={updateBookmarkMutation.mutate}
 							onDelete={deleteLocalPost}
 							updatePost={updateLocalPost}
-							onPublish={publishPostMutation.mutate}
-							onUnpublish={unpublishPostMutation.mutate}
-							onHidePost={hidePostMutation.mutate}
+							onUpdateBookmark={
+								isDeleteOnBookmark ? deleteLocalPost : null
+							}
+							onPublish={
+								isDeleteOnPublish ? deleteLocalPost : null
+							}
 						/>
 					</div>
 				))

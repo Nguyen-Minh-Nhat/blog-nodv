@@ -3,13 +3,15 @@ import {
 	deletePost,
 	hidePost,
 	publishPost,
+	unHidePost,
 	unPublishPost,
 } from '../../../api/postApi';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { toast } from 'react-toastify';
-import { updatePostByIdToBookmark } from '../../../redux/slices/bookmarkSlice';
 import { updatePostToBookmark } from '../../../api/bookmarkApi';
-import { useDispatch } from 'react-redux';
+import { updateUserInfo } from '../../../redux/slices/userSlice';
+import { useMemo } from 'react';
 import { useMutation } from 'react-query';
 
 const postContext = createContext({
@@ -19,6 +21,7 @@ const postContext = createContext({
 	unPublishPost: () => {},
 	updateBookmark: () => {},
 	hidePost: () => {},
+	unHidePost: () => {},
 });
 
 export default postContext;
@@ -29,13 +32,19 @@ export const usePost = () => {
 
 export const PostProvider = ({
 	onDeletePost = () => {},
-	onUpdateBookmark = () => {},
-	onHidePost = () => {},
+	onUpdateBookmark,
 	onUpdatePost = () => {},
+	onUpdatePublish,
 	post = {},
 	children,
 }) => {
 	const dispatch = useDispatch();
+	const bookmarkIds = useSelector(
+		(state) => state.user?.data?.info?.bookmarkIds,
+	);
+	const isBookmarked = useMemo(() => {
+		return bookmarkIds?.includes(post.id);
+	}, [bookmarkIds, post.id]);
 
 	const deletePostMutation = useMutation(deletePost, {
 		onSuccess: () => {
@@ -47,6 +56,7 @@ export const PostProvider = ({
 	const publishPostMutation = useMutation(publishPost, {
 		onSuccess: () => {
 			onUpdatePost({ ...post, isPublish: true });
+			onUpdatePublish && onUpdatePublish(post);
 			toast.success('Post was published');
 		},
 	});
@@ -54,32 +64,51 @@ export const PostProvider = ({
 	const unPublishPostMutation = useMutation(unPublishPost, {
 		onSuccess: () => {
 			onUpdatePost({ ...post, isPublish: false });
+			onUpdatePublish && onUpdatePublish(post);
 			toast.success('Post was unpublished ');
 		},
 	});
 
 	const updateBookmarkMutation = useMutation(updatePostToBookmark, {
-		onSuccess: (data) => {
-			onUpdateBookmark(data);
-			dispatch(updatePostByIdToBookmark(data));
+		onSuccess: () => {
+			onUpdateBookmark && onUpdateBookmark(post);
+			let newBookmarkIds = [...bookmarkIds];
+			if (isBookmarked) {
+				newBookmarkIds = newBookmarkIds.filter((id) => id !== post.id);
+			} else {
+				newBookmarkIds.push(post.id);
+			}
+			dispatch(updateUserInfo({ bookmarkIds: newBookmarkIds }));
 		},
 	});
 
 	const hidePostMutation = useMutation(hidePost, {
 		onSuccess: (id) => {
-			onHidePost(id);
+			onUpdatePost({
+				...post,
+				isHide: true,
+			});
+		},
+	});
+	const unHidePostMutation = useMutation(unHidePost, {
+		onSuccess: () => {
+			onUpdatePost({
+				...post,
+				isHide: false,
+			});
 		},
 	});
 
 	return (
 		<postContext.Provider
 			value={{
-				post,
+				post: { ...post, isBookmarked },
 				deletePost: deletePostMutation.mutate,
 				publishPost: publishPostMutation.mutate,
 				unPublishPost: unPublishPostMutation.mutate,
 				updateBookmark: updateBookmarkMutation.mutate,
 				hidePost: hidePostMutation.mutate,
+				unHidePost: () => unHidePostMutation.mutate(post.id),
 			}}
 		>
 			{children}

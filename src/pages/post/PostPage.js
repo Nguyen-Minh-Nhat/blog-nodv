@@ -1,25 +1,15 @@
-import {
-	deletePost,
-	getPostById,
-	hidePost,
-	likePost,
-	publishPost,
-	unLikePost,
-	unPublishPost,
-} from '../../api/postApi';
+import { getPostById, likePost, unLikePost } from '../../api/postApi';
 import { useDispatch, useSelector } from 'react-redux';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 
 import Main from './components/Main';
 import { NotificationType } from '../../config/dataType';
-import Post from '../../features/post/components/Post';
+import { Post } from '../../features/post/components';
+import { PostProvider } from '../../features/post/context/PostContext';
 import { callApiCreateNotification } from '../../utils/generationNotification';
 import { createNotification } from '../../api/notificationApi';
 import { setProfile } from '../../redux/slices/profileSlice';
-import { toast } from 'react-toastify';
 import { updateCountNotifications } from '../../api/userApi';
-import { updatePostByIdToBookmark } from '../../redux/slices/bookmarkSlice';
-import { updatePostToBookmark } from '../../api/bookmarkApi';
 import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 
@@ -28,7 +18,6 @@ const PostPage = () => {
 	const dispatch = useDispatch();
 
 	const socket = useSelector((state) => state.socket.data);
-	const postIdsBookmark = useSelector((state) => state.bookmark.postIds);
 
 	const queryClient = useQueryClient();
 
@@ -56,25 +45,6 @@ const PostPage = () => {
 		});
 	};
 
-	const deletePostMutation = useMutation(deletePost, {
-		onSuccess: () => {
-			toast.success('Post deleted successfully');
-		},
-	});
-
-	const publishPostMutation = useMutation(publishPost, {
-		onSuccess: (data) => {
-			updateLocalPost(data);
-			toast.success('Post was published');
-		},
-	});
-
-	const unpublishPostMutation = useMutation(unPublishPost, {
-		onSuccess: (data) => {
-			updateLocalPost(data);
-			toast.success('Post was unpublished');
-		},
-	});
 	const updateUserIncreaseNumOfNotification = useMutation(
 		updateCountNotifications,
 	);
@@ -105,12 +75,6 @@ const PostPage = () => {
 		},
 	});
 
-	const updateBookmarkMutation = useMutation(updatePostToBookmark, {
-		onSuccess: (data) => {
-			dispatch(updatePostByIdToBookmark(data));
-		},
-	});
-
 	const handleReceiveLikePostSocket = (payload) => {
 		const { userLikeIds } = JSON.parse(payload.body);
 		updateLocalPost({ userLikeIds: userLikeIds });
@@ -129,29 +93,17 @@ const PostPage = () => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [post?.id, socket]);
 
-	const hidePostMutation = useMutation(hidePost, {
-		onSuccess: (id) => {
-			toast.success('Post hided successfully');
-			setTimeout(() => {
-				window.location.href = '/';
-			}, 1500);
-		},
-	});
 	return (
 		<div className="flex flex-col">
 			<Main>
 				{post && (
-					<Post
-						post={post}
-						isBookmarked={postIdsBookmark?.includes(post.id)}
-						onUpdateBookmark={updateBookmarkMutation.mutate}
-						onPublish={publishPostMutation.mutate}
-						onDelete={deletePostMutation.mutate}
-						onUnpublish={unpublishPostMutation.mutate}
-						onLike={likePostMutation.mutate}
-						onUnlike={unlikePostMutation.mutate}
-						onHidePost={hidePostMutation.mutate}
-					/>
+					<PostProvider post={post} onUpdatePost={updateLocalPost}>
+						<Post
+							post={post}
+							onLike={likePostMutation.mutate}
+							onUnlike={unlikePostMutation.mutate}
+						/>
+					</PostProvider>
 				)}
 			</Main>
 		</div>

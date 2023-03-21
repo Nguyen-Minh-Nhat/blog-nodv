@@ -1,22 +1,14 @@
-import MarkEmailReadSharpIcon from '@mui/icons-material/MarkEmailReadSharp';
 import { Avatar } from '@mui/material';
-import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { FollowUser } from '../../features/user/components';
 import { Link } from 'react-router-dom';
-import { setProfile } from '../../redux/slices/profileSlice';
+import React from 'react';
 import { appRoutes } from '../../routes/AppRoutes';
-import UserFollowButton from '../ButtonFollow/UserFollowButton';
+import { useSelector } from 'react-redux';
+
 const InformationUser = () => {
 	const user = useSelector((state) => state.user?.data.info);
 	const profile = useSelector((state) => state.profile?.data);
 	const profileUrl = `/profile/${profile?.email}`;
-
-	const dispatch = useDispatch();
-
-	const handleUpdate = (data) => {
-		dispatch(setProfile(data));
-	};
-
 	return (
 		<div className="mt-10 block ">
 			{profile && (
@@ -44,23 +36,14 @@ const InformationUser = () => {
 					<div className=" mt-4  block"></div>
 					<div className="mb-10 flex ">
 						{user?.id !== profile?.id ? (
-							<>
-								<UserFollowButton
-									id={profile?.id}
-									userEmail={user?.email}
-									isFollowed={profile?.followerId?.includes(
-										user?.id,
-									)}
+							<FollowUser followId={profile?.id}>
+								<FollowUser.Button
 									textColorBefore={'text-white'}
 									bgColorBefore={'bg-green-500'}
 									textColorAfter={'text-green-500'}
 									bgColorAfter={'rgb'}
-									onUpdate={handleUpdate}
 								/>
-								<button className="ml-2 block">
-									<MarkEmailReadSharpIcon className="color h-9 w-9 rounded-full bg-green-500 fill-white p-1.5" />
-								</button>
-							</>
+							</FollowUser>
 						) : (
 							<Link to={appRoutes.SETTING_ACCOUNT}>
 								<span className="text-green-600">

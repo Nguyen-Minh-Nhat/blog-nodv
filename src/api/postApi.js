@@ -1,6 +1,7 @@
 import axiosClient, { axiosClientPrivate } from './axiosClient';
 
 import axios from 'axios';
+import { generateParamsString } from '../utils';
 
 const url = '/posts';
 
@@ -10,6 +11,7 @@ const postApi = {
 		limit = 5,
 		topic = null,
 		title = null,
+		user = null,
 		sort = null,
 		direction = null,
 		isFollowing = null,
@@ -18,15 +20,13 @@ const postApi = {
 			page,
 			limit,
 			topic,
+			user,
 			title,
 			isFollowing,
 			sort,
 			direction,
 		};
-		const paramsString = Object.keys(params)
-			.filter((key) => params[key] !== null)
-			.map((key) => `${key}=${params[key]}`)
-			.join('&');
+		const paramsString = generateParamsString(params);
 		return axiosClient.get(`${url}?${paramsString}`);
 	},
 
@@ -35,10 +35,7 @@ const postApi = {
 			page,
 			limit,
 		};
-		const paramsString = Object.keys(params)
-			.filter((key) => params[key] !== null)
-			.map((key) => `${key}=${params[key]}`)
-			.join('&');
+		const paramsString = generateParamsString(params);
 		return axiosClientPrivate.get(`${url}/following?${paramsString}`);
 	},
 
@@ -54,10 +51,7 @@ const postApi = {
 			limit,
 			isPublish,
 		};
-		const paramsString = Object.keys(params)
-			.filter((key) => params[key] !== null)
-			.map((key) => `${key}=${params[key]}`)
-			.join('&');
+		const paramsString = generateParamsString(params);
 		return axiosClientPrivate.get(`${url}/me?${paramsString}`);
 	},
 
@@ -79,6 +73,7 @@ const postApi = {
 	unLikePost: (id) => axiosClientPrivate.patch(`${url}/${id}/unlike`, null),
 
 	hidePost: (id) => axiosClientPrivate.patch(`/blackLists/${id}`, null),
+	unHidePost: (id) => axiosClientPrivate.delete(`/blackLists/${id}`, null),
 
 	getListPostHided: () => axiosClientPrivate.get('/blackLists/list'),
 
@@ -104,6 +99,7 @@ export const {
 	getPostsTrending,
 	getPostsByUserId,
 	hidePost,
+	unHidePost,
 	getListPostHided,
 	getPostsRecommend,
 	getPostsByFollowing,

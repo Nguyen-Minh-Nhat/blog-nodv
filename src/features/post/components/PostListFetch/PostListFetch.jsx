@@ -1,12 +1,17 @@
-import React, { useMemo, useState } from 'react';
-import { useInfiniteQuery, useQuery } from 'react-query';
+import React, { useMemo } from 'react';
 
 import InfiniteScroll from 'react-infinite-scroll-component';
 import PostList from '../PostList';
 import { PostListLoading } from '../PostListLoading';
-import { getListPostHided } from '../../../../api/postApi';
+import { useInfiniteQuery } from 'react-query';
 
-export const PostListFetch = ({ filter = {}, queryKey = 'posts', queryFn }) => {
+export const PostListFetch = ({
+	filter = {},
+	queryKey = 'posts',
+	queryFn,
+	isDeleteOnBookmark = false,
+	isDeleteOnPublish = false,
+}) => {
 	const accurateFilter = useMemo(() => {
 		return Object.keys(filter).reduce((acc, key) => {
 			if (filter[key] !== null) {
@@ -46,15 +51,6 @@ export const PostListFetch = ({ filter = {}, queryKey = 'posts', queryFn }) => {
 		return allPosts;
 	}, [data]);
 	// reset page and isHasMore when tab change
-	const [hidePost, setHidePost] = useState([]);
-	useQuery('hidePost', () => getListPostHided(), {
-		onSuccess: (data) => {
-			setHidePost(data);
-		},
-		onError: (err) => {
-			console.log('err', err);
-		},
-	});
 
 	return (
 		<InfiniteScroll
@@ -67,7 +63,8 @@ export const PostListFetch = ({ filter = {}, queryKey = 'posts', queryFn }) => {
 				<PostList
 					postList={posts}
 					storeKey={storeKey}
-					postIdsHide={hidePost}
+					isDeleteOnBookmark={isDeleteOnBookmark}
+					isDeleteOnPublish={isDeleteOnPublish}
 				/>
 			)}
 			{(isLoading || isFetching) && <PostListLoading />}

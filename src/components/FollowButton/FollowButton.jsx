@@ -1,5 +1,6 @@
 import AuthClick from '../../features/auth/components/AuthClick';
 import { Chip } from '@mui/material';
+import clsx from 'clsx';
 import { useSelector } from 'react-redux';
 import { useState } from 'react';
 
@@ -10,6 +11,7 @@ export const FollowButton = ({
 	textColorAfter = 'text-white',
 	bgColorAfter = 'bg-black',
 	onClick = () => {},
+	primary = false,
 }) => {
 	const [followed, setFollowed] = useState(isFollowed);
 	const { isLogin } = useSelector((state) => state.user.data);
@@ -26,11 +28,11 @@ export const FollowButton = ({
 				<Chip
 					label={followed ? 'Following' : 'Follow'}
 					variant="outlined"
-					className={
+					className={clsx(
 						followed
 							? `${textColorAfter} ${bgColorAfter} px-1 py-1 text-sm `
-							: `${textColorBefore} ${bgColorBefore} px-1 py-1 text-sm`
-					}
+							: `${textColorBefore} ${bgColorBefore} px-1 py-1 text-sm`,
+					)}
 					onClick={handleToggleFollow}
 				/>
 			</AuthClick>

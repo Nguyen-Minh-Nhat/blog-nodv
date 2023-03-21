@@ -7,15 +7,13 @@ const StoriesTab = () => {
 	const storeKey = ['posts', searchParams.get('query')];
 
 	return (
-		<div>
-			<PostListFetch
-				filter={{
-					title: searchParams.get('query'),
-				}}
-				queryKey={storeKey}
-				queryFn={getPosts}
-			/>
-		</div>
+		<PostListFetch
+			filter={{
+				title: searchParams.get('query'),
+			}}
+			queryKey={storeKey}
+			queryFn={getPosts}
+		/>
 	);
 };
 

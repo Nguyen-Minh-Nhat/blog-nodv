@@ -27,7 +27,7 @@ const PostPreviewBody = () => {
 			<div className="flex-1">
 				<Link to={postLink} className="flex h-24 max-w-full flex-col">
 					<div className="flex" ref={titleRef}>
-						<h3 className="mb-2 text-xl font-bold sm:text-2xl">
+						<h3 className="mb-2 text-xl font-bold line-clamp-2 sm:text-2xl">
 							{post.title}
 						</h3>
 					</div>

@@ -1,14 +1,15 @@
+import { useEffect, useMemo, useState } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 
-import { FollowButton } from '../../components';
 import { MainContentLayout } from '../../layouts';
 import { PostListFetch } from '../../features/post/components';
 import Tab from '../../components/Tab';
+import { TagIcon } from '../../components/Icons';
+import { TopicFollow } from '../../features/topic/components/TopicFollow';
 import { appRoutes } from '../../routes/AppRoutes';
 import { getPosts } from '../../api/postApi';
-import { useEffect } from 'react';
-import { useMemo } from 'react';
-import { useState } from 'react';
+import { getTopicDetail } from '../../api/topicApi';
+import { useQuery } from 'react-query';
 
 const tabItems = [
 	{
@@ -27,6 +28,10 @@ export const TopicDetailPage = () => {
 	const { search } = location;
 	const navigate = useNavigate();
 	const { slug } = useParams();
+
+	const { data: topic, isSuccess } = useQuery(['topic-detail', slug], () =>
+		getTopicDetail(slug),
+	);
 
 	const getCurrentTab = (search) => {
 		if (!search) return tabItems[0];
@@ -58,35 +63,50 @@ export const TopicDetailPage = () => {
 	}, [currentTab, slug]);
 
 	return (
-		<MainContentLayout>
-			<MainContentLayout.Header>
-				<MainContentLayout.Title>{slug}</MainContentLayout.Title>
-				<div className="my-4 mt-6 flex flex-col justify-center gap-4">
-					<div className="flex items-center gap-4">
-						<NumberText number={12} text="stories" />
-						<NumberText number={12} text="followers" />
+		isSuccess && (
+			<MainContentLayout>
+				<MainContentLayout.Header>
+					<MainContentLayout.Title className="flex items-center gap-2 !font-normal">
+						<div className="flex items-center justify-center rounded-full bg-gray-100 p-1">
+							<TagIcon className="h-6 w-6" />
+						</div>
+						{topic.name}
+					</MainContentLayout.Title>
+					<div className="my-4 mt-6 flex gap-4">
+						<TopicFollow topicId={topic.id}>
+							<TopicFollow.Button
+								bgColorBefore="bg-green-700"
+								textColorBefore="text-white"
+								bgColorAfter="bg-white"
+								textColorAfter="text-green-700"
+							/>
+						</TopicFollow>
+						<div className="flex items-center gap-4">
+							<NumberText
+								number={topic.postCounts}
+								text="stories"
+							/>
+							<NumberText
+								number={topic.followerCounts}
+								text="followers"
+							/>
+						</div>
 					</div>
-					<FollowButton
-						bgColorBefore="bg-green-700"
-						textColorBefore="text-white"
-						bgColorAfter="bg-white"
-						textColorAfter="text-green-700"
+					<Tab
+						tabItems={tabItems}
+						onChange={handleTabChange}
+						activeTab={currentTab}
 					/>
-				</div>
-				<Tab
-					tabItems={tabItems}
-					onChange={handleTabChange}
-					activeTab={currentTab}
-				/>
-			</MainContentLayout.Header>
-			<MainContentLayout.Body>
-				<PostListFetch
-					filter={filter}
-					queryKey="posts-topic"
-					queryFn={getPosts}
-				/>
-			</MainContentLayout.Body>
-		</MainContentLayout>
+				</MainContentLayout.Header>
+				<MainContentLayout.Body>
+					<PostListFetch
+						filter={filter}
+						queryKey="posts-topic"
+						queryFn={getPosts}
+					/>
+				</MainContentLayout.Body>
+			</MainContentLayout>
+		)
 	);
 };
 

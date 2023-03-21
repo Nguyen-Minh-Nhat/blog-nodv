@@ -1,31 +1,34 @@
 import { Avatar } from '@mui/material';
+import { FollowUser } from '../../features/user/components';
 import { Link } from 'react-router-dom';
-import UserFollowButton from '../ButtonFollow/UserFollowButton';
 import { useSelector } from 'react-redux';
 
-const UserList = ({ users }) => {
+const UserList = ({ users, loading }) => {
 	const userLogin = useSelector((state) => state.user?.data?.info);
 	return (
 		<div className="flex flex-col gap-4">
 			{userLogin &&
 				users.map((user) => (
-					<User user={user} key={user.id}>
-						<UserFollowButton
-							id={user.id}
-							userEmail={userLogin.email}
-							isFollowed={user?.followerId?.includes(
-								userLogin.id,
-							)}
-						/>
-					</User>
+					<UserItem user={user} key={user.id}>
+						<FollowUser followId={user.id}>
+							<FollowUser.Button />
+						</FollowUser>
+					</UserItem>
 				))}
+			{loading && (
+				<>
+					<UserItemLoading />
+					<UserItemLoading />
+					<UserItemLoading />
+				</>
+			)}
 		</div>
 	);
 };
 
 export default UserList;
 
-const User = ({ user, children }) => {
+const UserItem = ({ user, children }) => {
 	const profileUrl = `/profile/${user?.email}`;
 	return (
 		<div
@@ -52,6 +55,23 @@ const User = ({ user, children }) => {
 				</Link>
 			</div>
 			<div>{children}</div>
+		</div>
+	);
+};
+
+const UserItemLoading = () => {
+	return (
+		<div className="relative flex w-full items-center justify-between">
+			<div className="flex items-center">
+				<div className="h-10 w-10 animate-pulse rounded-full bg-gray-300"></div>
+				<div className="ml-4 mr-2 block">
+					<div className="h-4 w-20 animate-pulse rounded-full bg-gray-300"></div>
+					<div className="mt-1 block break-words">
+						<div className="h-4 w-40 animate-pulse rounded-full bg-gray-300"></div>
+					</div>
+				</div>
+			</div>
+			<div className="h-8 w-20 animate-pulse rounded-full bg-gray-300"></div>
 		</div>
 	);
 };

@@ -18,7 +18,7 @@ const SearchBar = ({ onChange, onFocus, loading, ...props }) => {
 			)}
 			<input
 				placeholder="search"
-				className="w-full bg-transparent outline-none placeholder:font-thin"
+				className="ml-2 w-full bg-transparent outline-none placeholder:font-thin"
 				onChange={onChange}
 				onFocus={onFocus}
 				{...props}

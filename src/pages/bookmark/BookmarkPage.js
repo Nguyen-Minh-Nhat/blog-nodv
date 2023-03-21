@@ -1,10 +1,9 @@
 import { Divider } from '@mui/material';
 import { MainContentLayout } from '../../layouts';
-import { PostList } from '../../features/post';
-import { useSelector } from 'react-redux';
+import { PostListFetch } from '../../features/post/components';
+import { getBookmark } from '../../api/bookmarkApi';
 
 const BookmarkPage = () => {
-	const bookmark = useSelector((state) => state.bookmark);
 	return (
 		<MainContentLayout>
 			<MainContentLayout.Header>
@@ -12,10 +11,10 @@ const BookmarkPage = () => {
 				<Divider />
 			</MainContentLayout.Header>
 			<MainContentLayout.Body>
-				<PostList
-					postList={bookmark?.posts}
-					postIdsBookmark={bookmark?.postIds}
-					// onHidePost={hidePostMutation.mutate}
+				<PostListFetch
+					queryKey="bookmark"
+					queryFn={getBookmark}
+					isDeleteOnBookmark
 				/>
 			</MainContentLayout.Body>
 		</MainContentLayout>

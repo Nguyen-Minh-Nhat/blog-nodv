@@ -44,6 +44,9 @@ const StoriesPage = () => {
 					queryKey="stories"
 					filter={filter}
 					queryFn={getOwnedPosts}
+					isDeleteOnPublish={
+						filter && filter.hasOwnProperty('isPublish')
+					}
 				/>
 			</MainContentLayout.Body>
 		</MainContentLayout>
