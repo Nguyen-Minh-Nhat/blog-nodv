@@ -1,4 +1,4 @@
-import { Button, TextField, Typography } from "@mui/material";
+import { TextField, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import { useState } from "react";
 
@@ -35,28 +35,6 @@ const EmailForm = ({ onSubmit, initialValue, onClose }) => {
           setEmail(e.target.value);
         }}
       />
-
-      <div className="flex justify-end">
-        <Button
-          variant="outlined"
-          className="btn rounded-full normal-case"
-          size="medium"
-          color="success"
-          onClick={handleCancel}
-        >
-          Cancel
-        </Button>
-        <Button
-          variant="contained"
-          className="btn ml-3 rounded-full normal-case"
-          size="medium"
-          color="success"
-          disableElevation
-          onClick={handleSubmit}
-        >
-          Save
-        </Button>
-      </div>
     </Box>
   );
 };
