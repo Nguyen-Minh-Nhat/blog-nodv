@@ -1,37 +1,23 @@
-import { Button } from '@mui/material';
-import { useMemo, useState } from 'react';
-import { useMutation, useQuery } from 'react-query';
-import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
-import { getTopics } from '../../api/topicApi';
-import { addTopics } from '../../api/userApi';
 import { CheckIcon, PlusIcon } from '../../components/Icons';
+import { useMemo, useState } from 'react';
+
+import { Button } from '@mui/material';
+import { Link } from 'react-router-dom';
 import Logo from '../../layouts/components/Logo';
-import { setUser } from '../../redux/slices/userSlice';
-import { appRoutes } from '../../routes/AppRoutes';
+import { TopicFollow } from '../../features/topic/components/TopicFollow';
+import { getTopics } from '../../api/topicApi';
+import { useQuery } from 'react-query';
 
 const LIMIT = 30;
 const PickTopicPage = () => {
 	const { data: topics, isSuccess } = useQuery('topics', getTopics);
-	const user = useSelector((state) => state.user.data.info);
-	const [selectedTopics, setSelectedTopics] = useState(user?.topics || []);
 	const [page, setPage] = useState(0);
-	const dispatch = useDispatch();
-	const navigate = useNavigate();
-
 	const topicsToShow = useMemo(() => {
 		if (topics) {
 			return topics.slice(page * LIMIT, LIMIT * (page + 1));
 		}
 		return [];
 	}, [topics, page]);
-
-	const addTopicsMutation = useMutation(addTopics, {
-		onSuccess: (data) => {
-			dispatch(setUser(data));
-			navigate(appRoutes.HOME);
-		},
-	});
 
 	return (
 		<div className="mx-auto flex h-screen max-w-[692px] flex-col items-center px-10">
@@ -41,25 +27,16 @@ const PickTopicPage = () => {
 				</div>
 			</div>
 			<div className="mt-20 flex flex-1 flex-col items-center">
-				<h1 className="text-4xl text-black">What are you interested in?</h1>
+				<h1 className="text-4xl text-black">
+					What are you interested in?
+				</h1>
 				<span className="mt-4 opacity-50">Choose three or more.</span>
 				<div className="my-10 mb-6 flex flex-wrap justify-center gap-2">
 					{isSuccess &&
 						topicsToShow.map((topic) => (
-							<Topic
-								key={topic.id}
-								topic={topic}
-								isActive={selectedTopics.includes(topic.id)}
-								onClick={(active) => {
-									if (active) {
-										setSelectedTopics((prev) => [...prev, topic.id]);
-									} else {
-										setSelectedTopics((prev) =>
-											prev.filter((t) => t !== topic.id)
-										);
-									}
-								}}
-							/>
+							<TopicFollow key={topic.id} topicId={topic.id}>
+								<Topic key={topic.id} topic={topic} />
+							</TopicFollow>
 						))}
 				</div>
 				{topicsToShow.length >= LIMIT ? (
@@ -79,16 +56,15 @@ const PickTopicPage = () => {
 						Start over
 					</Button>
 				)}
-				<div className="mb-10">
+				<Link to={`/`} className="mb-10">
 					<Button
 						className="btn w-[216px]"
 						variant="contained"
 						color="success"
-						onClick={() => addTopicsMutation.mutate(selectedTopics)}
 					>
 						Continue
 					</Button>
-				</div>
+				</Link>
 			</div>
 		</div>
 	);
@@ -96,8 +72,8 @@ const PickTopicPage = () => {
 
 export default PickTopicPage;
 
-const Topic = ({ isActive, topic, onClick }) => {
-	const [active, setActive] = useState(isActive);
+const Topic = ({ topic, onClick, isFollowing }) => {
+	const [active, setActive] = useState(isFollowing);
 	const handleActive = () => {
 		setActive(!active);
 		onClick(!active);
@@ -114,7 +90,9 @@ const Topic = ({ isActive, topic, onClick }) => {
 			disableElevation
 			key={topic.id}
 			onClick={handleActive}
-			endIcon={active ? <CheckIcon /> : <PlusIcon className={'font-thin'} />}
+			endIcon={
+				active ? <CheckIcon /> : <PlusIcon className={'font-thin'} />
+			}
 		>
 			{topic.name}
 		</Button>

@@ -1,4 +1,6 @@
 import { Box, Tab as MuiTab, Tabs } from '@mui/material';
+
+import { useEffect } from 'react';
 import { useState } from 'react';
 
 const Tab = ({
@@ -7,13 +9,17 @@ const Tab = ({
 		{ id: 2, title: 'item 2' },
 	],
 	onChange = () => {},
+	activeTab = tabItems[0],
 }) => {
 	const [value, setValue] = useState(tabItems[0].id);
-
 	const handleChange = (e, newValue) => {
 		setValue(newValue);
 		onChange(newValue);
 	};
+
+	useEffect(() => {
+		setValue(activeTab.id);
+	}, [activeTab]);
 
 	return (
 		<Box sx={{ width: '100%' }} className="flex items-center border-b">
@@ -27,17 +33,17 @@ const Tab = ({
 				value={value}
 				onChange={handleChange}
 				textColor="inherit"
-				aria-label="secondary tabs example"
 				scrollButtons="auto"
 				variant="scrollable"
 				className="flex items-center"
 			>
 				{tabItems.map((item) => (
 					<MuiTab
+						disableTouchRipple
 						key={item.id}
 						value={item.id}
 						label={item?.title || item?.name}
-						className="normal-case"
+						className="mr-5 w-fit min-w-0 items-start p-0 font-[lora] normal-case"
 					/>
 				))}
 			</Tabs>

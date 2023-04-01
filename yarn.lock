@@ -4771,6 +4771,11 @@ editorjs-header-with-alignment@^1.0.1:
   resolved "https://registry.npmjs.org/editorjs-header-with-alignment/-/editorjs-header-with-alignment-1.0.1.tgz"
   integrity sha512-L7cDSx/H3wgb9dg05HH9xPMotj3tkoElTd0TeY81pxvO0+tPV+yRZ9hV7fUyZolYUObKfYL9QS+yeTY/YCht5g==
 
+editorjs-html@^3.4.2:
+  version "3.4.2"
+  resolved "https://registry.yarnpkg.com/editorjs-html/-/editorjs-html-3.4.2.tgz#1ebe6b6631e3011ef974bb52727f645464c84428"
+  integrity sha512-Gy8FV4oHMvnPDXLsdpZYW0Dgjaagff9bPd28/WW9aFdy87FvktJxQz8H+NKpxiGcGoNY27MmjFffurK2yhXjEg==
+
 editorjs-paragraph-with-alignment@3.x:
   version "3.0.0"
   resolved "https://registry.npmjs.org/editorjs-paragraph-with-alignment/-/editorjs-paragraph-with-alignment-3.0.0.tgz"

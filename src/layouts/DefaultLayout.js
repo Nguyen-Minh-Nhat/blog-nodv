@@ -1,7 +1,7 @@
-import { useSelector } from 'react-redux';
 import SidebarLeft from './components/SidebarLeft';
 import SidebarRight from './components/SidebarRight';
 import StickyBox from 'react-sticky-box';
+import { useSelector } from 'react-redux';
 
 const DefaultLayout = ({ children }) => {
 	const { isLogin } = useSelector((state) => state.user.data);

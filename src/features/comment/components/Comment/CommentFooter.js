@@ -1,15 +1,16 @@
-import { useMutation } from "react-query";
-import { useDispatch, useSelector } from "react-redux";
 import { likeComment, unlikeComment } from "../../../../api/commentApi";
-import { createNotification } from "../../../../api/notificationApi";
-import { updateCountNotifications } from "../../../../api/userApi";
+import { useDispatch, useSelector } from "react-redux";
+
+import AuthClick from "../../../auth/components/AuthClick";
 import IconWrapper from "../../../../components/IconWrapper";
 import LikeButton from "../../../../components/LikeButton";
-import Number from "../../../../components/Number";
 import { NotificationType } from "../../../../config/dataType";
-import { updateComment } from "../../../../redux/slices/commentSlice";
+import Number from "../../../../components/Number";
 import { callApiCreateNotification } from "../../../../utils/generationNotification";
-import AuthClick from "../../../auth/components/AuthClick";
+import { createNotification } from "../../../../api/notificationApi";
+import { updateComment } from "../../../../redux/slices/commentSlice";
+import { updateCountNotifications } from "../../../../api/userApi";
+import { useMutation } from "react-query";
 
 const CommentFooter = ({
   onComment,
@@ -23,8 +24,7 @@ const CommentFooter = ({
   const dispatch = useDispatch();
 
   const likeCommentMutation = useMutation(likeComment, {
-    onSuccess: (data) => {
-      console.log(data);
+    onSuccess: (data) => {  
       dispatch(updateComment(data));
       callApiCreateNotification(
         data,

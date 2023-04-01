@@ -1,18 +1,43 @@
-import axios from 'axios';
 import axiosClient, { axiosClientPrivate } from './axiosClient';
+
+import axios from 'axios';
+import { generateParamsString } from '../utils';
 
 const url = '/posts';
 
 const postApi = {
-	getPosts: ({ page = 0, limit = 5, topic, title }) =>
-		axiosClient.get(url, {
-			params: {
-				page,
-				limit,
-				topic,
-				title,
-			},
-		}),
+	getPosts: ({
+		page = 0,
+		limit = 5,
+		topic = null,
+		title = null,
+		user = null,
+		sort = null,
+		direction = null,
+		isFollowing = null,
+	}) => {
+		const params = {
+			page,
+			limit,
+			topic,
+			user,
+			title,
+			isFollowing,
+			sort,
+			direction,
+		};
+		const paramsString = generateParamsString(params);
+		return axiosClient.get(`${url}?${paramsString}`);
+	},
+
+	getPostsByFollowing: ({ page = 0, limit = 5 }) => {
+		const params = {
+			page,
+			limit,
+		};
+		const paramsString = generateParamsString(params);
+		return axiosClientPrivate.get(`${url}/following?${paramsString}`);
+	},
 
 	getPostsTrending: (limit = 6) =>
 		axiosClient.get(`${url}/trending?limit=${limit}`),
@@ -20,10 +45,15 @@ const postApi = {
 	getPostById: (id) => axiosClient.get(`${url}/${id}`),
 	getPostsByUserId: (id) => axiosClient.get(`${url}/user/${id}`),
 
-	getOwnedPosts: (isPublish) =>
-		axiosClientPrivate.get(
-			`${url}/me${!!isPublish ? '?isPublish=' + isPublish : ''}`
-		),
+	getOwnedPosts: ({ page = 0, limit = 5, isPublish = null }) => {
+		const params = {
+			page,
+			limit,
+			isPublish,
+		};
+		const paramsString = generateParamsString(params);
+		return axiosClientPrivate.get(`${url}/me?${paramsString}`);
+	},
 
 	createPost: (post) => axiosClientPrivate.post(url, post),
 
@@ -35,7 +65,7 @@ const postApi = {
 
 	publishPost: (id) => axiosClientPrivate.patch(`${url}/${id}/publish`, null),
 
-	unpublishPost: (id) =>
+	unPublishPost: (id) =>
 		axiosClientPrivate.patch(`${url}/${id}/unpublished`, null),
 
 	likePost: (id) => axiosClientPrivate.patch(`${url}/${id}/like`, null),
@@ -43,12 +73,13 @@ const postApi = {
 	unLikePost: (id) => axiosClientPrivate.patch(`${url}/${id}/unlike`, null),
 
 	hidePost: (id) => axiosClientPrivate.patch(`/blackLists/${id}`, null),
+	unHidePost: (id) => axiosClientPrivate.delete(`/blackLists/${id}`, null),
 
 	getListPostHided: () => axiosClientPrivate.get('/blackLists/list'),
 
 	getPostsRecommend: async (id) => {
 		const response = await axios.get(
-			`${process.env.REACT_APP_SERVER_RECOMMEND_URL}/api/posts/${id}/recommend`
+			`${process.env.REACT_APP_SERVER_RECOMMEND_URL}/api/posts/${id}/recommend`,
 		);
 		return response.data;
 	},
@@ -61,15 +92,17 @@ export const {
 	getOwnedPosts,
 	deletePost,
 	publishPost,
-	unpublishPost,
+	unPublishPost,
 	likePost,
 	unLikePost,
 	updatePost,
 	getPostsTrending,
 	getPostsByUserId,
 	hidePost,
+	unHidePost,
 	getListPostHided,
 	getPostsRecommend,
+	getPostsByFollowing,
 } = postApi;
 
 export default postApi;

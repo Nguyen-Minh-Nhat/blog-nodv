@@ -1,13 +1,14 @@
-import React from 'react';
-import { useQuery, useQueryClient } from 'react-query';
+import React, { useState } from 'react';
+
+import { MainContentLayout } from '../../layouts';
+import { PostListFetch } from '../../features/post/components';
+import Tab from '../../components/Tab';
 import { getOwnedPosts } from '../../api/postApi';
-import PageWithTitle from '../../components/PageWithTitle';
-import { PostList } from '../../features/post';
 
 const filterType = {
 	ALL: null,
-	PUBLISHED: 'true',
-	UNPUBLISHED: 'false',
+	PUBLISHED: true,
+	UNPUBLISHED: false,
 };
 
 const filterConfigs = [
@@ -17,22 +18,38 @@ const filterConfigs = [
 ];
 
 const StoriesPage = () => {
-	const [filter, setFilter] = React.useState(filterType.ALL);
-	const queryClient = useQueryClient();
-	useQuery(['stories', filter], () => getOwnedPosts(filter));
-	const data = queryClient.getQueryData(['stories', filter]);
+	const [filter, setFilter] = useState();
+	const handleTabChange = (id) => {
+		const filter = {};
+		switch (id) {
+			case '1':
+				filter.isPublish = true;
+				break;
+			case '2':
+				filter.isPublish = false;
+				break;
+			default:
+				break;
+		}
+		setFilter(filter);
+	};
 	return (
-		<PageWithTitle
-			title={'Your Stories'}
-			onTabChange={(id) => {
-				setFilter(filterConfigs[id].filter);
-			}}
-			tabItems={filterConfigs}
-		>
-			<div>
-				<PostList postList={data} storeKey={['stories', filter]} />
-			</div>
-		</PageWithTitle>
+		<MainContentLayout>
+			<MainContentLayout.Header>
+				<MainContentLayout.Title>Stories</MainContentLayout.Title>
+				<Tab tabItems={filterConfigs} onChange={handleTabChange} />
+			</MainContentLayout.Header>
+			<MainContentLayout.Body>
+				<PostListFetch
+					queryKey="stories"
+					filter={filter}
+					queryFn={getOwnedPosts}
+					isDeleteOnPublish={
+						filter && filter.hasOwnProperty('isPublish')
+					}
+				/>
+			</MainContentLayout.Body>
+		</MainContentLayout>
 	);
 };
 

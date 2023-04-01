@@ -1,9 +1,10 @@
+import { appRoutes } from '../routes/AppRoutes';
 import axios from 'axios';
+import jwt_decode from 'jwt-decode';
+import { logout } from '../redux/slices/userSlice';
 import { setIsCallLogin } from '../redux/slices/authSlice';
 import store from '../redux/store';
-import jwt_decode from 'jwt-decode';
-import { appRoutes } from '../routes/AppRoutes';
-import { logout } from '../redux/slices/userSlice';
+
 const baseURL = process.env.REACT_APP_API_URL;
 const axiosClient = axios.create({
 	baseURL,
@@ -45,7 +46,7 @@ axiosClientPrivate.interceptors.request.use(
 	},
 	(error) => {
 		return Promise.reject(error.response.data);
-	}
+	},
 );
 
 axiosClientPrivate.interceptors.response.use(
@@ -53,8 +54,11 @@ axiosClientPrivate.interceptors.response.use(
 		return response.data;
 	},
 	function (error) {
+		if (error.code === 'ERR_NETWORK') {
+			// window.location.href = '/404';
+		}
 		return Promise.reject(error.response.data);
-	}
+	},
 );
 
 axiosClient.interceptors.request.use(
@@ -66,7 +70,7 @@ axiosClient.interceptors.request.use(
 	},
 	(error) => {
 		return Promise.reject(error.response.data);
-	}
+	},
 );
 
 axiosClient.interceptors.response.use(
@@ -77,8 +81,9 @@ axiosClient.interceptors.response.use(
 		if (error.response.data.status === 404) {
 			window.location.href = '/404';
 		}
+
 		return Promise.reject(error.response.data);
-	}
+	},
 );
 
 export default axiosClient;

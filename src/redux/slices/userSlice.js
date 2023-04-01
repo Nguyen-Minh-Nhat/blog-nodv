@@ -18,6 +18,9 @@ const userSlice = createSlice({
 			state.data.info = action.payload;
 			state.data.isLogin = true;
 		},
+		updateUserInfo: (state, action) => {
+			state.data.info = { ...state.data.info, ...action.payload };
+		},
 		setAccessToken: (state, action) => {
 			state.data.accessToken = action.payload;
 			state.data.isLogin = true;
@@ -30,7 +33,8 @@ const userSlice = createSlice({
 	},
 });
 
-export const { setUser, setAccessToken, logout } = userSlice.actions;
+export const { setUser, setAccessToken, logout, updateUserInfo } =
+	userSlice.actions;
 
 const userReducer = userSlice.reducer;
 export default userReducer;

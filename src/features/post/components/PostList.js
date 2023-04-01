@@ -1,92 +1,67 @@
-import { useMutation, useQueryClient } from 'react-query';
-import { useDispatch } from 'react-redux';
-import { toast } from 'react-toastify';
-import { updatePostToBookmark } from '../../../api/bookmarkApi';
-import {
-	deletePost,
-	hidePost,
-	publishPost,
-	unpublishPost,
-} from '../../../api/postApi';
-import { updatePostByIdToBookmark } from '../../../redux/slices/bookmarkSlice';
 import PostPreview from './PostPreview';
+import { useQueryClient } from 'react-query';
 
 export const PostList = ({
 	postList = [],
 	storeKey = 'posts',
-	postIdsHide = [],
-	postIdsBookmark = [],
+	isDeleteOnBookmark = false,
+	isDeleteOnPublish = false,
 }) => {
 	const queryClient = useQueryClient();
 
-	const dispatch = useDispatch();
-
 	const updateLocalPost = (updatedPost) => {
-		queryClient.setQueryData(storeKey, (oldData) =>
-			oldData.map((post) => {
-				if (post.id === updatedPost.id) {
-					return updatedPost;
-				}
-				return post;
-			})
-		);
-	};
-	const deleteLocalPost = (postId) => {
 		queryClient.setQueryData(storeKey, (oldData) => {
-			const newPostList = oldData.filter((post) => post.id !== postId);
-			return newPostList;
+			const { pages } = oldData;
+			const newPages = pages.map((page) => {
+				if (page.number !== updatedPost.page) return page;
+				return {
+					...page,
+					content: page.content.map((post) => {
+						if (post.id !== updatedPost.id) return post;
+						return updatedPost;
+					}),
+				};
+			});
+			return {
+				...oldData,
+				pages: newPages,
+			};
 		});
 	};
-	const deletePostMutation = useMutation(deletePost, {
-		onSuccess: (id) => {
-			deleteLocalPost(id);
-			toast.success('Post deleted successfully');
-		},
-	});
+	const deleteLocalPost = (postDelete) => {
+		queryClient.setQueryData(storeKey, (oldData) => {
+			const { pages } = oldData;
+			const newPages = pages.map((page) => {
+				if (page.number !== postDelete.page) return page;
+				return {
+					...page,
+					content: page.content.filter(
+						(post) => post.id !== postDelete.id,
+					),
+				};
+			});
+			return {
+				...oldData,
+				pages: newPages,
+			};
+		});
+	};
 
-	const publishPostMutation = useMutation(publishPost, {
-		onSuccess: (data) => {
-			updateLocalPost(data);
-			toast.success('Post was published');
-		},
-	});
-
-	const unpublishPostMutation = useMutation(unpublishPost, {
-		onSuccess: (data) => {
-			updateLocalPost(data);
-			toast.success('Post was unpublished ');
-		},
-	});
-
-	const updateBookmarkMutation = useMutation(updatePostToBookmark, {
-		onSuccess: (data) => {
-			dispatch(updatePostByIdToBookmark(data));
-		},
-	});
-
-	const hidePostMutation = useMutation(hidePost, {
-		onSuccess: (id) => {
-			deleteLocalPost(id.pop());
-		},
-	});
 	return (
-		<div className="flex flex-col">
+		<div className="flex flex-col gap-8">
 			{postList?.length ? (
 				postList?.map((post) => (
-					<div
-						key={post.id}
-						className={`${
-							postIdsHide?.includes(post.id) ? 'hidden' : ''
-						} border-b pt-8 first:pt-0`}
-					>
+					<div key={post.id} className="border-b first:pt-0">
 						<PostPreview
 							post={post}
-							isBookmarked={postIdsBookmark?.includes(post.id)}
-							onUpdateBookmark={updateBookmarkMutation.mutate}
-							onDelete={deletePostMutation.mutate}
-							onPublish={publishPostMutation.mutate}
-							onUnpublish={unpublishPostMutation.mutate}
-							onHidePost={hidePostMutation.mutate}
+							onDelete={deleteLocalPost}
+							updatePost={updateLocalPost}
+							onUpdateBookmark={
+								isDeleteOnBookmark ? deleteLocalPost : null
+							}
+							onPublish={
+								isDeleteOnPublish ? deleteLocalPost : null
+							}
 						/>
 					</div>
 				))

@@ -1,12 +1,15 @@
-import React, { lazy, memo, useMemo } from 'react';
-import { useSelector } from 'react-redux';
-import { useRoutes } from 'react-router-dom';
-import SuspenseProgress from '../components/SuspenseProgress/SuspenseProgress';
 import Layout, { layouts } from '../layouts/Layout';
+import React, { lazy, memo, useMemo } from 'react';
+
 import PeopleTab from '../pages/search/components/PeopleTab';
-import StoriesTab from '../pages/search/components/StoriesTab';
-import TopicsTab from '../pages/search/components/TopicsTab';
 import ProtectedRoutes from './ProtectedRoutes';
+import StoriesTab from '../pages/search/components/StoriesTab';
+import SuspenseProgress from '../components/SuspenseProgress/SuspenseProgress';
+import { TopicDetailPage } from '../pages/topic';
+import TopicsTab from '../pages/search/components/TopicsTab';
+import { useRoutes } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+
 const RedirectLogin = lazy(() => import('../pages/auth/RedirectLogin'));
 const ProfilePage = lazy(() => import('../pages/Profile/ProfilePage'));
 const ProfileHomeTab = lazy(() => import('../pages/Profile/tab/HomeTab'));
@@ -14,7 +17,7 @@ const ProfileListsTab = lazy(() => import('../pages/Profile/tab/ListsTab'));
 const ProfileAboutTab = lazy(() => import('../pages/Profile/tab/AboutTab'));
 const AccountTab = lazy(() => import('../pages/setting/tab/AccountTab'));
 const NotificationsTab = lazy(() =>
-	import('../pages/setting/tab/NotificationsTab')
+	import('../pages/setting/tab/NotificationsTab'),
 );
 const PublishedTab = lazy(() => import('../pages/setting/tab/PublishedTab'));
 const PickTopicPage = lazy(() => import('../pages/topic/PickTopicPage'));
@@ -53,6 +56,7 @@ export const appRoutes = {
 	PROFILE_ABOUT: '/profile/:email/about',
 	COMPONENT: '/component',
 	TOPIC: '/topic',
+	TOPIC_DETAIL: '/topic/:slug',
 	TOPIC_PICK: '/topic/pick',
 	SEARCH: '/search',
 	SEARCH_STORIES: '/search/posts',
@@ -168,11 +172,15 @@ export const routeConfig = [
 	{
 		path: appRoutes.TOPIC,
 		protected: false,
-		layout: layouts.NONE,
+		layout: layouts.DEFAULT,
 		children: [
 			{
 				path: appRoutes.TOPIC_PICK,
 				element: <PickTopicPage />,
+			},
+			{
+				path: appRoutes.TOPIC_DETAIL,
+				element: <TopicDetailPage />,
 			},
 		],
 	},
