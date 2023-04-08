@@ -4,7 +4,7 @@ import AccountQuickView from "../../../../components/Account/AccountQuickView";
 import MenuTrigger from "../../../../components/MenuTrigger/MenuTrigger";
 import CommentMenu from "./CommentMenu";
 
-const CommentHeader = ({ comment, isUser, onDelete, onEdit }) => {
+const CommentHeader = ({ comment, isUser, onDelete, onEdit, onReport }) => {
   const time = useMemo(() => {
     return intlFormatDistance(new Date(comment.createdDate), new Date());
   }, [comment.createdDate]);
@@ -24,7 +24,12 @@ const CommentHeader = ({ comment, isUser, onDelete, onEdit }) => {
         }
       />
       <MenuTrigger>
-        <CommentMenu onDelete={onDelete} onEdit={onEdit} isUser={isUser} />
+        <CommentMenu
+          onDelete={onDelete}
+          onEdit={onEdit}
+          isUser={isUser}
+          onReport={onReport}
+        />
       </MenuTrigger>
     </div>
   );

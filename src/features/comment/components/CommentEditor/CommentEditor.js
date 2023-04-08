@@ -37,7 +37,7 @@ const CommentEditor = ({
   };
 
   return (
-    <div className="mx-6 rounded py-4 shadow-[0_2px_8px_rgba(0,0,0,0.12)]">
+    <div className="mx-7 rounded py-4 shadow-[0_2px_8px_rgba(0,0,0,0.12)]">
       <Collapse orientation="vertical" in={isFocused && !hideHeader}>
         <CommentEditorHeader />
       </Collapse>
