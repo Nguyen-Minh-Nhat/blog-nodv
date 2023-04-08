@@ -28,6 +28,14 @@ export const Notification = ({ notification, setNotificationReadMutation }) => {
 				res.message = 'clapped for your comment';
 				res.icon = <i className="fa-solid fa-hands-clapping"></i>;
 				break;
+			case NotificationType.WARNINGCOMMENT:
+					res.message = 'your comment violates our community standards';
+					res.icon = <i class="fa-light fa-triangle-exclamation"></i>;
+					break;
+			case NotificationType.WARNINGPOST:
+				res.message = 'your post violates our community standards';
+				res.icon = <i class="fa-light fa-triangle-exclamation"></i>;
+				break;
 
 			default:
 				res = 'notification';
