@@ -3,6 +3,7 @@ import {
 	EditIcon,
 	EyeIcon,
 	EyeSlashIcon,
+	FlagIcon,
 } from '../../../../components/Icons';
 import { ListItemIcon, MenuItem, MenuList } from '@mui/material';
 
@@ -13,8 +14,14 @@ import { usePost } from '../../context/PostContext';
 import { useSelector } from 'react-redux';
 
 const PostMenu = () => {
-	const { deletePost, hidePost, publishPost, unPublishPost, post } =
-		usePost();
+	const {
+		deletePost,
+		hidePost,
+		publishPost,
+		unPublishPost,
+		post,
+		setShowReportModal,
+	} = usePost();
 	const userId = useSelector((state) => state.user?.data?.info?.id);
 	const navigate = useNavigate();
 	const isUser = post.user.id === userId;
@@ -53,10 +60,11 @@ const PostMenu = () => {
 					label: 'Hide this post',
 					onClick: () => hidePost(post.id),
 				},
-				// {
-				// 	icon: <FlagIcon />,
-				// 	label: 'Report this post',
-				// },
+				{
+					icon: <FlagIcon />,
+					label: 'Report this post',
+					onClick: () => setShowReportModal(true),
+				},
 			];
 		}
 
@@ -70,6 +78,7 @@ const PostMenu = () => {
 		unPublishPost,
 		publishPost,
 		hidePost,
+		setShowReportModal,
 	]);
 	return (
 		<div className="flex min-w-[180px] flex-col justify-end bg-white">

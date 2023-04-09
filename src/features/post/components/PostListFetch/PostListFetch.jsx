@@ -50,7 +50,6 @@ export const PostListFetch = ({
 		});
 		return allPosts;
 	}, [data]);
-	// reset page and isHasMore when tab change
 
 	return (
 		<InfiniteScroll
