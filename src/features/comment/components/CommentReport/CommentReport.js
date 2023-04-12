@@ -4,10 +4,10 @@ import { toast } from "react-toastify";
 import { reportComment } from "../../../../api/commentApi";
 
 const CommentReport = ({ comment, onSubmit, onCancel }) => {
-  const [type, setType] = useState(0);
+  const [contentReport, setContentReport] = useState(0);
   const idComment = comment.id;
   const handleSubmit = async () => {
-    await reportComment(idComment, type);
+    await reportComment(idComment, contentReport);
     toast.success("Report successfully");
     onSubmit();
   };
@@ -30,19 +30,19 @@ const CommentReport = ({ comment, onSubmit, onCancel }) => {
                   value="1"
                   control={<Radio />}
                   label="Rules Violation"
-                  onClick={() => setType(1)}
+                  onClick={() => setContentReport("Rules Violation")}
                 />
                 <FormControlLabel
                   value="2"
                   control={<Radio />}
                   label="Harassment"
-                  onClick={() => setType(2)}
+                  onClick={() => setContentReport("Harassment")}
                 />
                 <FormControlLabel
                   value="3"
                   control={<Radio />}
                   label="Spam"
-                  onClick={() => setType(3)}
+                  onClick={() => setContentReport("Spam")}
                 />
               </RadioGroup>
             </div>
