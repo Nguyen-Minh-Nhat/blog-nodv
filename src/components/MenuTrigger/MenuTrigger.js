@@ -1,9 +1,9 @@
-import { IconButton } from '@mui/material';
-import { useState } from 'react';
-import { Popover } from 'react-tiny-popover';
-import IconWrapper from '../IconWrapper';
-import ShadowWrapper from '../ShadowWrapper';
 import DotIcon from '../Icons/DotIcon';
+import { IconButton } from '@mui/material';
+import IconWrapper from '../IconWrapper';
+import { Popover } from 'react-tiny-popover';
+import ShadowWrapper from '../ShadowWrapper';
+import { useState } from 'react';
 
 const MenuTrigger = ({ children }) => {
 	const [open, setOpen] = useState(false);
