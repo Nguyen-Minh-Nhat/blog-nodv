@@ -5,20 +5,19 @@ import {
 	Modal,
 	Radio,
 	RadioGroup,
-	TextareaAutosize,
 } from '@mui/material';
-import { createContext, useContext } from 'react';
+import { createContext, useContext, useMemo, useState } from 'react';
 import {
 	deletePost,
 	hidePost,
 	publishPost,
+	reportPost,
 	unHidePost,
 	unPublishPost,
 } from '../../../api/postApi';
 import { useDispatch, useSelector } from 'react-redux';
-import { useMemo, useRef, useState } from 'react';
 
-import { createReport } from '../../../api/reportApi';
+import { REPORT_REASON } from '../../../config/dataType';
 import { toast } from 'react-toastify';
 import { updatePostToBookmark } from '../../../api/bookmarkApi';
 import { updateUserInfo } from '../../../redux/slices/userSlice';
@@ -111,7 +110,7 @@ export const PostProvider = ({
 	});
 
 	const [showReportModal, setShowReportModal] = useState(false);
-	const { isLoading, mutate } = useMutation(createReport, {
+	const { isLoading, mutate } = useMutation(reportPost, {
 		onSuccess: () => {
 			toast.success('Reported successfully');
 			setShowReportModal(false);
@@ -138,9 +137,8 @@ export const PostProvider = ({
 				isLoading={isLoading}
 				onSubmit={(value) => {
 					mutate({
-						objectId: post.id,
 						content: value,
-						type: 'POST',
+						id: post.id,
 					});
 				}}
 			/>
@@ -154,25 +152,14 @@ function ReportModal({
 	onSubmit,
 	isLoading,
 }) {
-	const [reason, setReason] = useState('spam');
+	const [reason, setReason] = useState(REPORT_REASON.SPAM);
 	const handleReasonChange = (event) => {
 		setReason(event.target.value);
 	};
-	const showTextarea = reason === 'other';
 
 	const handleSubmit = () => {
-		if (showTextarea) {
-			if (!textareaRef.current.value.trim()) {
-				toast.error('Please enter your reason');
-				return;
-			}
-			onSubmit(textareaRef.current.value);
-			return;
-		}
 		onSubmit(reason);
 	};
-
-	const textareaRef = useRef(null);
 
 	return (
 		<Modal open={showReportModal}>
@@ -187,31 +174,25 @@ function ReportModal({
 						name="radio-buttons-group"
 						onChange={handleReasonChange}
 					>
-						{['Spam', 'Inappropriate', 'Other'].map(
-							(item, index) => (
-								<FormControlLabel
-									key={index}
-									value={item.toLowerCase()}
-									control={<Radio />}
-									label={item}
-								/>
-							),
-						)}
-						{showTextarea && (
-							<TextareaAutosize
-								ref={textareaRef}
-								aria-label="other reason"
-								className="h-32 w-full rounded bg-slate-50 p-2"
-								placeholder="describe your reason"
+						{Object.values(REPORT_REASON).map((item, index) => (
+							<FormControlLabel
+								key={index}
+								value={item.toLowerCase()}
+								control={<Radio />}
+								label={item}
 							/>
-						)}
+						))}
 					</RadioGroup>
 					<div className="mt-auto flex justify-end gap-4 py-4">
 						<Button onClick={() => setShowReportModal(false)}>
 							Cancel
 						</Button>
-						<Button variant="contained" onClick={handleSubmit}>
-							Report
+						<Button
+							color="error"
+							variant="contained"
+							onClick={handleSubmit}
+						>
+							{isLoading ? 'Loading...' : 'Report'}
 						</Button>
 					</div>
 				</FormControl>

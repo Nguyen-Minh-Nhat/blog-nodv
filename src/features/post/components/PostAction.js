@@ -21,7 +21,7 @@ const PostAction = ({ post }) => {
 				</IconButton>
 			</div>
 			<MenuTrigger>
-				<PostMenu post={post} />
+				{({ setOpen }) => <PostMenu post={post} setOpen={setOpen} />}
 			</MenuTrigger>
 		</div>
 	);

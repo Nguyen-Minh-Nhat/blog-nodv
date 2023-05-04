@@ -13,7 +13,13 @@ const MenuTrigger = ({ children }) => {
 			padding={4}
 			positions={['bottom', 'top']}
 			onClickOutside={() => setOpen(false)}
-			content={<ShadowWrapper>{children}</ShadowWrapper>}
+			content={
+				<ShadowWrapper>
+					{typeof children === 'function'
+						? children({ setOpen })
+						: children}
+				</ShadowWrapper>
+			}
 			containerStyle={{ zIndex: 9999 }}
 		>
 			<IconButton size="small" onClick={() => setOpen(!open)}>

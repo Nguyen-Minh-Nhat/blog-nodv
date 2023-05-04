@@ -75,6 +75,12 @@ const postApi = {
 	hidePost: (id) => axiosClientPrivate.patch(`/blackLists/${id}`, null),
 	unHidePost: (id) => axiosClientPrivate.delete(`/blackLists/${id}`, null),
 
+	reportPost: ({ id, content }) =>
+		axiosClientPrivate.post(`${url}/${id}/report`, {
+			objectId: id,
+			content: [content],
+		}),
+
 	getListPostHided: () => axiosClientPrivate.get('/blackLists/list'),
 
 	getPostsRecommend: async (id) => {
@@ -103,6 +109,7 @@ export const {
 	getListPostHided,
 	getPostsRecommend,
 	getPostsByFollowing,
+	reportPost,
 } = postApi;
 
 export default postApi;

@@ -13,7 +13,7 @@ import { useNavigate } from 'react-router-dom';
 import { usePost } from '../../context/PostContext';
 import { useSelector } from 'react-redux';
 
-const PostMenu = () => {
+const PostMenu = ({ setOpen }) => {
 	const {
 		deletePost,
 		hidePost,
@@ -63,7 +63,10 @@ const PostMenu = () => {
 				{
 					icon: <FlagIcon />,
 					label: 'Report this post',
-					onClick: () => setShowReportModal(true),
+					onClick: () => {
+						setOpen(false);
+						setShowReportModal(true);
+					},
 				},
 			];
 		}
