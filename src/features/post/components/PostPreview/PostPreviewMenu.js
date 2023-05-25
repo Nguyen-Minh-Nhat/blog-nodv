@@ -72,6 +72,7 @@ const PostMenu = ({ setOpen }) => {
 		}
 
 		return items;
+	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [
 		isUser,
 		post.isPublish,
