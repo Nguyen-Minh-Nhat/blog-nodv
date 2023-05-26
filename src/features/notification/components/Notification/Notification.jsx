@@ -16,6 +16,10 @@ export const Notification = ({ notification, setNotificationReadMutation }) => {
 				res.message = 'clapped for your post';
 				res.icon = <i className="fa-solid fa-hands-clapping"></i>;
 				break;
+			case NotificationType.POST:
+				res.message = 'posted a new story';
+				res.icon = <i className="fa-solid fa-file"></i>;
+				break;
 			case NotificationType.COMMENT:
 				res.message = 'comment on your post';
 				res.icon = <i className="fa-solid fa-comment"></i>;

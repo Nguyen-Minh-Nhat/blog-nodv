@@ -1,16 +1,29 @@
+import React, { useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 
-import React from 'react';
 import redirectImg from '../../assets/images/redirect_rocket.gif';
 import { setAccessToken } from '../../redux/slices/userSlice';
 import { useDispatch } from 'react-redux';
-import { useEffect } from 'react';
 
 const RedirectLogin = () => {
 	const [searchParams] = useSearchParams();
+
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
 	useEffect(() => {
+		const error = searchParams.get('error');
+
+		if (error) {
+			if (error === 'User has been blocked') {
+				navigate('/blocked', {
+					state: { message: error },
+				});
+				return;
+			}
+			navigate('/error', { state: { message: error } });
+			return;
+		}
+
 		const token = searchParams.get('token');
 		if (!token) return;
 		dispatch(setAccessToken(token));

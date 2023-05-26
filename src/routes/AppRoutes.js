@@ -1,6 +1,8 @@
 import Layout, { layouts } from '../layouts/Layout';
 import React, { lazy, memo, useMemo } from 'react';
 
+import BlockedUserPage from '../pages/user-block';
+import ErrorPage from '../pages/auth/ErrorPage';
 import PeopleTab from '../pages/search/components/PeopleTab';
 import ProtectedRoutes from './ProtectedRoutes';
 import StoriesTab from '../pages/search/components/StoriesTab';
@@ -63,6 +65,8 @@ export const appRoutes = {
 	SEARCH_PEOPLE: '/search/users',
 	SEARCH_TOPICS: '/search/topics',
 	NOT_FOUND: '404',
+	BLOCKED_USER: '/blocked',
+	ERROR: '/error',
 };
 
 export const routeConfig = [
@@ -207,6 +211,18 @@ export const routeConfig = [
 	{
 		path: appRoutes.NOT_FOUND,
 		element: <NotFoundPage />,
+		protected: false,
+		layout: layouts.NONE,
+	},
+	{
+		path: appRoutes.BLOCKED_USER,
+		element: <BlockedUserPage />,
+		protected: false,
+		layout: layouts.NONE,
+	},
+	{
+		path: appRoutes.ERROR,
+		element: <ErrorPage />,
 		protected: false,
 		layout: layouts.NONE,
 	},
