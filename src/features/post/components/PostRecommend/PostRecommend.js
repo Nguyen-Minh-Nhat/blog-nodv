@@ -32,7 +32,7 @@ const PostRecommend = () => {
 	}, [posts, isSuccess]);
 
 	return (
-		<PanelWrapper title="Relative posts">
+		<PanelWrapper title="Suggesting posts">
 			{isSuccess && <PostList posts={postsRender.data} />}
 			{showMore && (
 				<div className="mt-6">
