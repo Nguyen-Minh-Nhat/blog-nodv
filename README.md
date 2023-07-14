@@ -96,9 +96,6 @@ pnpm start
 ```
 6. Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-## Usage
-Watch in [NovSocial Youtube](https://www.youtube.com)
-
 ## Contributing
 
 * [Nguyễn Minh Nhật](https://github.com/minhnhat165)
