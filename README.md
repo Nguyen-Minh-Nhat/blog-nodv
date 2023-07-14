@@ -4,7 +4,8 @@
 
 The Blog Web is a responsive web application that allows users to read and create blog posts. It leverages React as the JavaScript library for building user interfaces, Tailwind CSS for styling, and Material-UI (MUI) for UI components.
 
-![Home Feed](https://github.com/minhnhat165/nov-social-frontend/assets/72795828/c890f04a-a0b7-4bcc-9c0d-dfe762ec0012)
+![Home Feed](https://github.com/minhnhat165/blog-nodv/assets/72795828/180c71e7-9f8b-466c-8373-3c7407001469)
+
 
 ## Features
 - Login by Google or Facebook: Users can log in to the platform using their Google or Facebook accounts.
